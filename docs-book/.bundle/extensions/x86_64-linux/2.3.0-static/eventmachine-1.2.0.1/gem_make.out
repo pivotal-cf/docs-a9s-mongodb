@@ -1,0 +1,24 @@
+current directory: /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/gems/eventmachine-1.2.0.1/ext/fastfilereader
+/usr/local/opt/rbenv/versions/2.3.1/bin/ruby -r ./siteconf20160920-1894-w7vft.rb extconf.rb
+creating Makefile
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/extensions/x86_64-linux/2.3.0-static/eventmachine-1.2.0.1/mkmf.log
+
+current directory: /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/gems/eventmachine-1.2.0.1/ext/fastfilereader
+make "DESTDIR=" clean
+
+current directory: /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/gems/eventmachine-1.2.0.1/ext/fastfilereader
+make "DESTDIR="
+compiling mapper.cpp
+cc1plus: warning: command line option ‘-Wdeclaration-after-statement’ is valid for C/ObjC but not for C++ [enabled by default]
+cc1plus: warning: command line option ‘-Wimplicit-function-declaration’ is valid for C/ObjC but not for C++ [enabled by default]
+compiling rubymain.cpp
+cc1plus: warning: command line option ‘-Wdeclaration-after-statement’ is valid for C/ObjC but not for C++ [enabled by default]
+cc1plus: warning: command line option ‘-Wimplicit-function-declaration’ is valid for C/ObjC but not for C++ [enabled by default]
+linking shared-object fastfilereaderext.so
+
+current directory: /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/gems/eventmachine-1.2.0.1/ext/fastfilereader
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 fastfilereaderext.so ./.gem.20160920-1894-1hnm1io

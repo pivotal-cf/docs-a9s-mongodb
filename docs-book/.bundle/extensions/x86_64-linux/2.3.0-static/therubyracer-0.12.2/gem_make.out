@@ -1,0 +1,47 @@
+current directory: /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/gems/therubyracer-0.12.2/ext/v8
+/usr/local/opt/rbenv/versions/2.3.1/bin/ruby -r ./siteconf20160920-1894-18zqxsl.rb extconf.rb
+checking for main() in -lpthread... yes
+creating Makefile
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/extensions/x86_64-linux/2.3.0-static/therubyracer-0.12.2/mkmf.log
+
+current directory: /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/gems/therubyracer-0.12.2/ext/v8
+make "DESTDIR=" clean
+
+current directory: /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/gems/therubyracer-0.12.2/ext/v8
+make "DESTDIR="
+compiling script.cc
+compiling accessor.cc
+compiling trycatch.cc
+compiling constraints.cc
+compiling heap.cc
+compiling primitive.cc
+compiling object.cc
+compiling handles.cc
+compiling message.cc
+compiling date.cc
+compiling stack.cc
+compiling rr.cc
+compiling template.cc
+compiling string.cc
+compiling function.cc
+compiling locker.cc
+compiling constants.cc
+compiling v8.cc
+compiling invocation.cc
+compiling init.cc
+compiling backref.cc
+compiling signature.cc
+compiling gc.cc
+compiling array.cc
+compiling external.cc
+compiling context.cc
+compiling exception.cc
+compiling value.cc
+linking shared-object v8/init.so
+
+current directory: /home/nitrous/code/mongodb/docs-partners-template/docs-book/.bundle/gems/therubyracer-0.12.2/ext/v8
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 init.so ./.gem.20160920-1894-1dug6f2/v8

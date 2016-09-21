@@ -1,0 +1,16 @@
+---
+:archive_menu:
+  ".": 
+:production_host: hello
+:subnav_templates:
+  a9s-mongodb-for-pcf: a9s-mongodb-for-pcf_subnav
+:template_variables: 
+:local_repo_dir: "/home/nitrous/code/mongodb/docs-partners-template"
+:workspace: !ruby/object:Pathname
+  path: "/home/nitrous/code/mongodb/docs-partners-template/docs-book/output/master_middleman/source"
+:feedback_enabled: 
+:repo_link_enabled: false
+:repo_links: 
+:product_info:
+  a9s-mongodb-for-pcf: {}
+:elastic_search: false

@@ -1,0 +1,63 @@
+---
+title: Installing and Configuring the a9s MongoDB for PCF
+owner: Partners
+---
+
+This topic describes how to install and configure the a9s MongoDB for PCF.
+
+##<a id='prerequisites'></a> Prerequisites
+
+Please ensure that the following required tiles have been successfully installed:
+
+* Elastic Runtime (>= 1.6)
+* a9s Consul DNS for PCF (>= 0.9.0)
+* a9s BOSH for PCF (>= 0.9.0)
+
+
+##<a id='install'></a> Install the a9s MongoDB for PCF
+
+1. Download the product file from the Pivotal Network.
+
+2. Navigate to the Ops Manager Installation Dashboard and click **Import a Product**
+to upload the product file.
+
+3. Click **Add** next to the uploaded a9s MongoDB for PCF tile in the Ops Manager
+**Available Products** view to add it to your staging area.
+
+4. Click the newly added tile to review configurable Setting.
+
+5. Click **Apply Changes** to deploy the service.
+
+##<a id='configure'></a> Configure the a9s MongoDB for PCF
+
+Once all required tiles have been installed, there is **no need for additional
+configuration. The a9s MongoDB for PCF is ready to be used**.
+
+The following **errands** are available but should **only be executed when explicitly required**.
+
+### Run BOSH Configurator
+This errand configures *a9s BOSH for PCF* so that it can provision MongoDB
+service instances. In detail, this means uploading the required
+stemcells in the BOSH release. Deactivating this errand could speed up the
+deployment of all tiles.
+
+<p class="note">In order to keep the configuration up-to-date we
+don't recommand deactivating this command.</p>
+
+### Run Template Uploader
+This errand is required to configure generic components
+that are included in a9s MongoDB for PCF with MongoDB specific configurations.
+Deactiviting this errand could speed up the deployment of all tiles.
+
+<p class="note">In order to keep the configuration up-to-date we
+don't recommand deactivating this command.</p>
+
+### Run Broker Registrar
+This errand will register the a9s MongoDB for PCF service broker
+at the Elastic Runtime so that the service becomes available in the Elastic Runtime
+marketplace.
+
+### Run Broker Deregistrar
+This will deregister the a9s MongoDB for PCF service broker at the Elastic Runtime and thus removes the a9s MongoDB service
+from the Elastic Runtime marketplace.
+

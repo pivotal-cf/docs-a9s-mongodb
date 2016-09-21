@@ -1,0 +1,151 @@
+---
+title: Using the a9s MongoDB for PCF
+owner: Partners
+---
+
+This topic describes how to create and use the a9s MongoDB for PCF once it has been successfully installed.
+
+##<a id='using'></a> Using the a9s MongoDB for PCF within an application
+
+In order to use the a9s MongoDB for PCF with one of your
+applications, you will have to do two things: **create** a service instance
+and **bind** it to your application. Read more about<a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html" target="_blank">
+how to manage service instances</a>.
+
+
+When the tile is installed, you can see the *a9s-mongodb* and its service
+plans appear in your PCF marketplace. Run `cf marketplace` to
+see the service listing:
+
+```
+$ cf marketplace
+Getting services from marketplace in org test / space test as admin...
+OK
+
+service            plans                                                                                  description
+a9s-mongodb        mongodb-single-small, mongodb-cluster-small, mongodb-single-big, mongodb-cluster-big   This is the anynines mongodb 32 service.
+```
+
+You can create MongoDB service instances from the following list of given plans. For the purpose of this tutorial, we'll create a *mongodb-
+single-small* service which provisions a single VM MongoDB server. In contrast to this, the *cluster* service plans provision MongoDB cluster service
+instances consisting of three (3) virtual machines.
+
+
+### Creating a Service Instance
+
+A database can be provisioned with the `cf create-service` or `cf cs` command:
+
+```
+$ cf create-service a9s-mongodb mongodb-single-small my-mongodb-service
+```
+
+Depending on your infrastructure and service broker utilization, the creation of the service instance may take up to several minutes.
+
+You can **check the creation status** by displaying all
+your service instances using `cf services` (alias: `cf s`). Alternatively, you can
+specifically check the status of a given service instance with `cf service
+my-mongodb-service`.
+
+
+### Binding an Application to a Service Instance
+
+Once your database has been created, you can bind it to your app with
+`cf bind-service` command (alias: `cf bs`):
+
+```
+$ cf bind-service a9s-mongodb-app my-mongodb-service                                                                                                                  !10350
+```
+
+In order to provide your application access to the service instance, a restage or restart of your application is required.
+This can be triggered by issuing `cf restage` or `cf restart`.
+
+
+##<a id='deleting'></a> Deleting an a9s MongoDB for PCF Service Instance
+
+<p class="note">Please backup data stored on the service instance before deleting it. This operation cannot be undone and all the data will be lost.</p>
+
+Before you can delete a service instance, it needs to be unbound from all applications.
+
+### Unbinding a Service Instance
+
+If we list our services, we see that my *my-mongodb-service* is bound to the *a9s-
+mongodb-app* application.
+
+```
+$ cf service                                                                                                                                                                !10313
+Getting services in org test / space test as admin...
+OK
+
+name                 service       plan                   bound apps        last operation
+my-mongodb-service   a9s-mongodb   mongodb-single-small   a9s-mongodb-app   create succeeded
+```
+
+
+Unbinding works with the `cf unbind-service` command (alias: `cf us`),
+which can take up to a few seconds:
+
+```
+$ cf unbind-service a9s-mongodb-app my-mongodb-service
+```
+
+
+### Deleting a Service Instance
+Now that the service instance is not bound to any applications anymore, we can
+delete it with the `cf delete-service` command (alias: `cf ds`):
+
+```
+$ cf delete-service my-mongodb-service                                                                                                                                !10318
+```
+
+The deletion of a service instance may take a couple of minutes until the deprovisioning of the
+corresponding infrastructure resources has been completed.
+
+You can **check the deletion status**, similar to the creation status, by either checking
+the status of all service instances with `cf services` or by checking the
+status of a particular service instance by issuing `cf service my-mongodb-service`.
+
+
+##<a id='credentials'></a> Obtaining Service Intance Access Credentials
+
+Once your service instance is bound to your application, the credentials of your MongoDB
+database can be found in the environment variables of the application. You can
+display them with the `cf env` command. The credentials can be found under
+the <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/environment-variable.html#VCAP-SERVICES" target="_blank">VCAP_SERVICES</a> key.
+
+```
+$ cf env a9s-mongodb-app
+Getting env variables for app a9s-mongodb-app in org test / space test as admin...
+OK
+
+System-Provided:
+{
+ "VCAP_SERVICES": {
+  "a9s-mongodb": [
+   {
+    "credentials": {
+     "default_database": "d22906",
+     "hosts": [
+      "d22906-mongod-avl1-0.node.dc1.a9svs:27017"
+     ],
+     "password": "a9sf0d07af6823b7684bd326c1c514f56f8341fd893",
+     "uri": "mongodb://a9s-brk-usr-15b5ba10d0153256d9542bfb50e4009c6f62e635:a9sf0d07af6823b7684bd326c1c514f56f8341fd893@d22906-mongod-avl1-0.node.dc1.a9svs:27017/d22906",
+     "username": "a9s-brk-usr-15b5ba10d0153256d9542bfb50e4009c6f62e635"
+    },
+    "label": "a9s-mongodb",
+    "name": "my-mongodb-service",
+    "plan": "mongodb-single-small",
+    "tags": [
+     "nosql",
+     "database",
+     "document store",
+     "eventual consistent"
+    ]
+   }
+  ]
+ }
+}
+...
+```
+
+With this information you could, for instance, use the host, username and
+password values with a MongoDB client to connect to the database.
