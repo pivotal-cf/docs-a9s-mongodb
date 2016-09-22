@@ -3,9 +3,12 @@ title: a9s MongoDB for PCF
 owner: Partners
 ---
 
-<img src="../images/a9s-mongodb-tile.png" alt="a9s MongoDB for PCF logo" height="215" width="215" />
+This documentation describes the a9s MongoDB for Pivotal Cloud Foundry (PCF) tile. a9s MongoDB for PCF 
+enables on-demand provisioning of VM-based, dedicated MongoDB servers and clusters. Developers can 
+create instances of a MongoDB server or cluster using Apps Manager or the Cloud Foundry Command Line 
+interface (cf CLI) and bind these instances to an application. Depending on your service plan, a service instance may be associated with a single, dedicated virtual machine or a set of VMs consisting of multiple virtual machines containing a MongoDB replica set cluster.
 
-This documentation describes the a9s MongoDB for Pivotal Cloud Foundry (PCF). a9s MongoDB for PCF enables on-demand provisioning of VM-based, dedicated MongoDB servers and clusters. Developers can create instances of a MongoDB server or cluster using Apps Manager or the Cloud Foundry Command Line interface (cf CLI) and bind these instances to an application. Depending on your service plan, a service instance may be associated with a single, dedicated virtual machine or a set of VMs consisting of multiple virtual machines containing a MongoDB replica set cluster.
+<img src="../images/a9s-mongodb-tile.png" alt="a9s MongoDB for PCF logo" height="215" width="215" />
 
 
 ## <a id='overview'></a>Overview
@@ -29,13 +32,13 @@ failures of individual infrastructure hosts or entire availability zones.
 
 ### <a></a>Current Features
 
-The a9s MongoDB for PCF includes the following key features:
+a9s MongoDB for PCF includes the following key features:
 
 | Feature | Benefit |
 |---|---|
 | **On­-Demand Service Instance Provisioning** | a9s MongoDB for PCF deploys MongoDB instances automatically. Developers can provision a single-VM MongoDB server or a multi-VM MongoDB Replica Set using a single command. |
 | **Service Instance Isolation** | Each MongoDB server runs on a dedicated virtual machine to ensure bad neighborhood protection in order to be aligned with enterprise security requirements.<br/><br/>a9s MongoDB for PCF uses Cloud Foundry security groups to prevent network connections being established by unauthorized applications.
-| **High Availability** | a9s MongoDB for PCF ensures high-availability using <a href="https://docs.mongodb.com/manual/replication/" target="_blank">MongoDB **Replica Sets**</a>.<br/><br/>The Consul-based internal DNS system provided by the a9s Consul DNS for PCF ensures that the connected application always connects to a working node. |
+| **High Availability** | a9s MongoDB for PCF ensures high-availability using <a href="https://docs.mongodb.com/manual/replication/" target="_blank">MongoDB **Replica Sets**</a>.<br/><br/>The Consul-based internal DNS system provided by a9s Consul DNS for PCF ensures that the connected application always connects to a working node. |
 
 
 ### <a></a>Upcoming Features
@@ -61,12 +64,11 @@ The following features have been developed and tested on <a href="https://paas.a
 
 ## <a id="reqs"></a>Requirements
 
-For this service to work you will need the following products, given with their
-minimal version:
+To use a9s MongoDB for PCF, you must install the minimum versions of the following products:
 
-* Elastic Runtime (1.6)
-* a9s Consul DNS for PCF (0.9.0)
-* a9s BOSH for PCF (0.9.0)
+* Elastic Runtime, v1.6
+* a9s Consul DNS for PCF, v0.9.0
+* a9s BOSH for PCF, v0.9.0
 
 ## <a id="feedback"></a>Feedback and Support
 

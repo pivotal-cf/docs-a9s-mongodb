@@ -1,20 +1,22 @@
 ---
-title: Installing and Configuring the a9s MongoDB for PCF
+title: Installing and Configuring a9s MongoDB for PCF
 owner: Partners
 ---
 
-This topic describes how to install and configure the a9s MongoDB for PCF.
+This topic describes how to install and configure a9s MongoDB for PCF.
 
 ##<a id='prerequisites'></a> Prerequisites
 
-Please ensure that the following required tiles have been successfully installed:
+Before installing a9s MongoDB for PCF, ensure that the following required tiles have been successfully installed:
 
-* Elastic Runtime (>= 1.6)
-* a9s Consul DNS for PCF (>= 0.9.0)
-* a9s BOSH for PCF (>= 0.9.0)
+* Elastic Runtime, v1.6 or greater
+* a9s Consul DNS for PCF, v0.9.0 or greater
+* a9s BOSH for PCF, v0.9.0 or greater
 
 
-##<a id='install'></a> Install the a9s MongoDB for PCF
+##<a id='install'></a> Install and Configure a9s MongoDB for PCF
+
+To install a9s MongoDB for PCF, perform the following steps:
 
 1. Download the product file from the Pivotal Network.
 
@@ -28,12 +30,12 @@ to upload the product file.
 
 5. Click **Apply Changes** to deploy the service.
 
-##<a id='configure'></a> Configure the a9s MongoDB for PCF
+After installing the a9s MongoDB for PCF and prerequisites, there are no additional configuration requirements. a9s MongoDB for PCF is available in the list of marketplace services. For more information, see [Using a9s MongoDB for PCF](./using.html)
 
-Once all required tiles have been installed, there is **no need for additional
-configuration. The a9s MongoDB for PCF is ready to be used**.
 
-The following **errands** are available but should **only be executed when explicitly required**.
+##<a id='errands'></a>Run BOSH Errands
+
+The following BOSH errands are available, but should only be run when necessary.
 
 ### Run BOSH Configurator
 This errand configures *a9s BOSH for PCF* so that it can provision MongoDB
@@ -41,20 +43,18 @@ service instances. In detail, this means uploading the required
 stemcells in the BOSH release. Deactivating this errand could speed up the
 deployment of all tiles.
 
-<p class="note">In order to keep the configuration up-to-date we
-don't recommand deactivating this command.</p>
+<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
 
 ### Run Template Uploader
 This errand is required to configure generic components
 that are included in a9s MongoDB for PCF with MongoDB specific configurations.
 Deactiviting this errand could speed up the deployment of all tiles.
 
-<p class="note">In order to keep the configuration up-to-date we
-don't recommand deactivating this command.</p>
+<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
 
 ### Run Broker Registrar
-This errand will register the a9s MongoDB for PCF service broker
-at the Elastic Runtime so that the service becomes available in the Elastic Runtime
+This errand registers the a9s MongoDB for PCF service broker
+at the Elastic Runtime. This causes the service be available in the Elastic Runtime
 marketplace.
 
 ### Run Broker Deregistrar
