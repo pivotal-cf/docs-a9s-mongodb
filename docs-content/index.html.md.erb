@@ -1,55 +1,52 @@
 ---
-title: a9s MongoDB for PCF service
+title: a9s MongoDB for PCF
 owner: Partners
 ---
 
-The a9s MongoDB for PCF service enables the **on-demand provisioning of VM based dedicated
-MongoDB servers and clusters**. Depending on the chosen service plan, a service
-instance is represented by a single, dedicated virtual machine or a set of VMs
-consisting of multiple (e.g. three) virtual machines comprising a MongoDB
-replica set cluster. The provisioning of MongoDB service instances including the
-virtual machine orchestration is entirely automated. This way **service instances
-are highly isolated** and shielded by proven infrastructure virtualization
-mechanisms.
-
-Due to the on-demand provisioning on virtual machines, only existing service
-instances allocate infrastructure resources which will be released when service
-instances are destroyed. More than this, with on-demand provisioning **the number of
-service instances is not limited by design**.
-
-**Spread across several infrastructure availability zones**, the clustered data
-service plans enable very **short failover times** and a **strong resilience against
-failures** of individual infrastructure host or even entire availability zones.
-
-
-This means that whenever a user executes ```cf create-service a9s-mongodb ...```,
-dedicated virtual machines are created for this service instance. This allows
-the **best possible bad neighborhood protection**.
-
 <img src="../images/a9s-mongodb-tile.png" alt="a9s MongoDB for PCF logo" height="215" width="215" />
+
+This documentation describes the a9s MongoDB for Pivotal Cloud Foundry (PCF). a9s MongoDB for PCF enables on-demand provisioning of VM-based, dedicated MongoDB servers and clusters. Developers can create instances of a MongoDB server or cluster using Apps Manager or the Cloud Foundry Command Line interface (cf CLI) and bind these instances to an application. Depending on your service plan, a service instance may be associated with a single, dedicated virtual machine or a set of VMs consisting of multiple virtual machines containing a MongoDB replica set cluster.
+
 
 ## <a id='overview'></a>Overview
 
-### Features
+When you run the  ```cf create-service a9s-mongodb ...``` command,
+PCF creates dedicated virtual machines for this service instance. This allows
+the best possible bad neighborhood protection.
+
+MongoDB service instance provisioning, including virtual machine orchestration, is entirely automated. 
+This enables service instances to be highly isolated and shielded by infrastructure virtualization
+mechanisms.
+
+Due to the on-demand provisioning on virtual machines, only existing service
+instances allocate infrastructure resources. These resources are released when service
+instances are destroyed. Using on-demand provisioning the number of
+service instances is not limited by design.
+
+Distributed across multiple infrastructure availability zones,  clustered data
+service plans enable short failover times and are resilient against
+failures of individual infrastructure hosts or entire availability zones.
+
+### <a></a>Current Features
 
 The a9s MongoDB for PCF includes the following key features:
 
-* On-demand Service Instance Provisioning
-* Service Instance Isolation
-* High Availability
+| Feature | Benefit |
+|---|---|
+| **On­-Demand Service Instance Provisioning** | a9s MongoDB for PCF deploys MongoDB instances automatically. Developers can provision a single-VM MongoDB server or a multi-VM MongoDB Replica Set using a single command. |
+| **Service Instance Isolation** | Each MongoDB server runs on a dedicated virtual machine to ensure bad neighborhood protection in order to be aligned with enterprise security requirements.<br/><br/>a9s MongoDB for PCF uses Cloud Foundry security groups to prevent network connections being established by unauthorized applications.
+| **High Availability** | a9s MongoDB for PCF ensures high-availability using <a href="https://docs.mongodb.com/manual/replication/" target="_blank">MongoDB **Replica Sets**</a>.<br/><br/>The Consul-based internal DNS system provided by the a9s Consul DNS for PCF ensures that the connected application always connects to a working node. |
 
-Read more about the <a href="/a9s-mongodb-for-pcf/features.html#features" target="_blank">a9s MongoDB for PCF features</a>.
 
-### Features Coming Soon
+### <a></a>Upcoming Features
+The following features have been developed and tested on <a href="https://paas.anynines.com/" target="_blank">paas.anynines.com</a>. They will be tested and included in an upcoming a9s MongoDB for PCF release:
 
-The following features have already been developed and tested on <a href="https://paas.anynines.com/" target="_blank">paas.anynines.com</a>.
-They will be tested and included in upcoming a9s MongoDB for PCF tile releases:
+| Feature | Benefit |
+|---|---|
+| **On­-Demand Encrypted Remote Connectivity** | A public encrypted access can be established on demand. This connection can be used to perform manual backups. As soon as the public connection becomes obsolete, the tunnel can be terminated to prevent further access. This functionality is provided by additional components in the Service Jumper Module. |
+| **Service Instance Capacity Upgrade** | Cloud Foundry Service Plan updates allow upgrades to the RAM, CPU and storage capacity for your MongoDB instances. |
+| **Logging and Monitoring** | Each MongoDB service instance provides log messages and MongoDB-specific metrics to one or more `syslog/graphite` endpoints. You can configure the `syslog/graphite` endpoint to receive logging and monitoring information. |
 
-* On-demand Encrypted Remote Connectivity
-* Service Instane Capacity Upgrade
-* Logging and Monitoring
-
-Read more about the upcoming <a href="/a9s-mongodb-for-pcf/features.html#coming-soon" target="_blank">a9s MongoDB for PCF features</a>.
 
 ## <a id="snapshot"></a>Product Snapshot
 
@@ -80,7 +77,7 @@ a9s MongoDB for PCF is an automation toolset for open source MongoDB. The entire
 In case your company has specific MongoDB administration policies or configuration best practises. The anynines team will be happy to incorporate them
 if applicable.
 
-3rd party MongoDB support organizations are also welcome to assist. Contributations are welcome and will be investigated by the anynines team.
+Third-party MongoDB support organizations are also welcome to assist. Contributations are welcome and will be investigated by the anynines team.
 
 Please provide any bugs, feature requests, or questions to svc.support@anynines.com.
 
