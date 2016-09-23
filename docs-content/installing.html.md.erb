@@ -7,11 +7,7 @@ This topic describes how to install and configure a9s MongoDB for PCF.
 
 ##<a id='prerequisites'></a> Prerequisites
 
-Before installing a9s MongoDB for PCF, ensure that the following required tiles have been successfully installed:
-
-* Elastic Runtime, v1.6 or greater
-* a9s Consul DNS for PCF, v0.9.0 or greater
-* a9s BOSH for PCF, v0.9.0 or greater
+Before installing a9s MongoDB for PCF, ensure that you have installed and configured the products and tiles listed in [Requirements](./index.html#reqs).
 
 
 ##<a id='install'></a> Install and Configure a9s MongoDB for PCF
@@ -26,38 +22,75 @@ to upload the product file.
 3. Click **Add** next to the uploaded a9s MongoDB for PCF tile in the Ops Manager
 **Available Products** view to add it to your staging area.
 
-4. Click the newly added tile to review configurable Setting.
+4. Click the newly added tile, then click **Settings** to review the configuration settings for each tab. 
+	See the following sections for more information on how to configure the properties on each side-tab:
+	* [Assign AZs and Networks](#azs)
+	* [Configure BOSH Errands](#errands)
+	* [Configure Service Plans](#configure-service-instance)
+	* [Configure Stemcells](#stemcell)
 
 5. Click **Apply Changes** to deploy the service.
 
-After installing the a9s MongoDB for PCF and prerequisites, there are no additional configuration requirements. a9s MongoDB for PCF is available in the list of marketplace services. For more information, see [Using a9s MongoDB for PCF](./using.html)
+After installing the a9s MongoDB for PCF, it is available in the list of marketplace services. For more information, see [Using a9s MongoDB for PCF](./using.html).
+
+##<a id="azs"></a>Assign AZs and Networks
+
+Use **Assign AZs and Networks** to configure the location of service instance jobs. You should configure your network to balance cluster jobs between as many AZs as possible.
+
+<%= image_tag("az-and-networks.png") %>
+
+##<a id='errands'></a>Configure BOSH Errands
+
+Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. See [Understanding Lifecycle Errands](../partners/lifecycle-errands.html)
+
+<%= image_tag("a9s-mongodb-for-pcf-errands.png") %>
+
+### Post-Deploy Errands
+
+ * **Run BOSH Configurator**
+	This errand configures *a9s BOSH for PCF* so that it can provision MongoDB
+	service instances. When enabled, this errand uploads the required
+	stemcells in the BOSH release. Disabling this errand may speed up the
+	deployment of all tiles.
+
+	<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
+
+ * **Run Template Uploader**
+	This errand is required to configure generic components that are included in a9s MongoDB for PCF with MongoDB  configurations.
+	Disabling this errand may speed up the deployment of all tiles.
+
+	<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
+
+ * **Run Broker Registrar**
+	This errand registers the a9s MongoDB for PCF service broker
+	at the Elastic Runtime. This causes the service be available in the Elastic Runtime
+	marketplace.
+
+### Pre-Delete Errands
+
+ * **Run Broker Deregistrar**
+	This will deregister the a9s MongoDB for PCF service broker in Elastic Runtime. This errand removes the a9s MongoDB service from the Elastic Runtime marketplace.
+
+##<a id="configure-service-instance"></a> Configure Service Plans
+
+Use **Resource Config** to configure the resources available for each job type provided by a9s MongoDB for PCF.
+
+The size and types of VMs used to provision service instances of a given service plan are specified in the **IaaS Settings** of the **a9s BOSH for PCF** tile. For more iformation, see the [a9s BOSH for PCF documentation]("../a9s-bosh/installing.html").
 
 
-##<a id='errands'></a>Run BOSH Errands
+<%= image_tag("a9s-mongodb-for-pcf-ressource-config.png") %>
 
-The following BOSH errands are available, but should only be run when necessary.
+Each service plan is defined in the following fields:
 
-### Run BOSH Configurator
-This errand configures *a9s BOSH for PCF* so that it can provision MongoDB
-service instances. In detail, this means uploading the required
-stemcells in the BOSH release. Deactivating this errand could speed up the
-deployment of all tiles.
+| Plan | Specs for | Field |
+|------|-------|-------|
+|mongodb-single-small| Virtual Machine<br /> Persistent Disk | Cloud properties for the VM Type Small<br /> Cloud properties fo the Disk Type Small|
+|mongodb-cluster-small| Virtual Machines<br /> Persistent Disks | Cloud properties for the VM Type Small<br /> Cloud properties fo the Disk Type Small|
+|mongodb-single-big| Virtual Machine<br /> Persistent Disk | Cloud properties for the VM Type Large<br /> Cloud properties fo the Disk Type Big|
+|mongodb-cluster-big| Virtual Machines<br /> Persistent Disks | Cloud properties for the VM Type Large<br /> Cloud properties fo the Disk Type Big|
 
-<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
+##<a id="stemcell"></a>Configure Stemcells
 
-### Run Template Uploader
-This errand is required to configure generic components
-that are included in a9s MongoDB for PCF with MongoDB specific configurations.
-Deactiviting this errand could speed up the deployment of all tiles.
+Use **Configure Stemcells** enable another stemcell than the default one. Click **Import Stemcell** to upload a new stemcell.
 
-<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
-
-### Run Broker Registrar
-This errand registers the a9s MongoDB for PCF service broker
-at the Elastic Runtime. This causes the service be available in the Elastic Runtime
-marketplace.
-
-### Run Broker Deregistrar
-This will deregister the a9s MongoDB for PCF service broker at the Elastic Runtime and thus removes the a9s MongoDB service
-from the Elastic Runtime marketplace.
-
+<%= image_tag("stemcell-tab.png") %>

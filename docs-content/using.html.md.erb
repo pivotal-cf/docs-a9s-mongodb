@@ -13,9 +13,7 @@ Instances with the CLI</a>.
 
 ### View the a9s MongoDB for PCF Service
 
-After the tile is installed, you can see the *a9s-mongodb* and its service
-plans appear in your PCF marketplace. Run `cf marketplace` to
-see the service listing:
+After the tile is installed, you can see the *a9s-mongodb* and its service plans appear in your PCF marketplace. Run `cf marketplace` to see the service listing:
 <pre class="terminal">
 $ cf marketplace
 Getting services from marketplace in org test / space test as admin...
@@ -26,12 +24,7 @@ a9s-mongodb  mongodb-single-small, mongodb-cluster-small,    This is the anynine
              mongodb-single-big, mongodb-cluster-big         
 </pre>
 
-You can create MongoDB service instances based on the following service plans:
-
-* mongodb-single-small: provisions a single-VM MongoDB server.
-* mongodb-cluster-small: provisions a MongoDB cluster service running on three VMs.
-* mongodb-single-big:
-* mongodb-cluster-big:
+For more information on available service plans, see [Configure Service Plans](./installing.html#configure-service-instance)
 
 
 ### Create a Service Instance
