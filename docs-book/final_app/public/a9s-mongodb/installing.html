@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Always force latest IE rendering engine or request Chrome Frame -->
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400italic,400,600' rel='stylesheet' type='text/css'>
+  <!-- Use title if it's in the page YAML frontmatter -->
+  <title>
+      Installing and Configuring a9s MongoDB for PCF |
+    
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/stylesheets/all.css" rel="stylesheet" media="screen, print" />
+  <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
+  <link href='/images/favicon.ico' rel='shortcut icon'>
+
+  <script src="/javascripts/all.js"></script>
+  <script>
+//Global Google Search
+(function() {
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + '';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+})();
+</script>
+
+<script type="text/javascript">
+  if (window.location.host === 'hello') {
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_setDomainName', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+  }
+</script>
+
+<script type="text/javascript">
+  var blackList = ['acceptance'];
+
+  blackList.forEach(function(blackListedEnv) {
+    if (document.URL.indexOf(blackListedEnv) > -1 && blackListedEnv != "") {
+      $('head').append('<meta name="hashtag" content="PivotalMoment">');
+    }
+  });
+</script>
+
+<!-- CrazyEgg Tracking Script -->
+<script type="text/javascript">
+  setTimeout(function() {
+    var a = document.createElement("script");
+    var b = document.getElementsByTagName("script")[0];
+    a.src = document.location.protocol + "//script.crazyegg.com/pages/scripts/0020/8294.js?" + Math.floor(new Date().getTime() / 3600000);
+    a.async = true;
+    a.type = "text/javascript";
+    b.parentNode.insertBefore(a, b)
+  }, 1);
+</script>
+
+<script type="text/javascript">
+  (function() {
+    var didInit = false;
+
+    function initMunchkin() {
+      if (didInit === false) {
+        didInit = true;
+        Munchkin.init('625-IUJ-009');
+      }
+    }
+
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = document.location.protocol + '//munchkin.marketo.net/munchkin.js';
+    s.onreadystatechange = function() {
+      if (this.readyState == 'complete' || this.readyState == 'loaded') {
+        initMunchkin();
+      }
+    };
+    s.onload = initMunchkin;
+    document.getElementsByTagName('head')[0].appendChild(s);
+  })();
+</script>
+
+</head>
+
+<body class="a9s-mongodb a9s-mongodb_installing has-subnav">
+
+<div class="viewport">
+  <div class='wrap'>
+    <script type="text/javascript">
+      document.domain = "";
+    </script>
+
+       
+    <header class="header header-layout">
+      <h1 class="logo">
+        <a href="/">Default Book Title</a>
+      </h1>
+      
+      <div class="header-links js-bar-links">
+        <div class="btn-menu" data-behavior="MenuMobile"></div>
+        
+        <div class="header-item">
+          
+        </div>
+        <!--Default search-->
+<!--If book needs something different, add a book-search partial to the book's layouts folder-->
+<div class="header-item searchbar js-searchbar">
+  <a class="search-icon" data-behavior="Search"></a>
+  <div class="search-input">
+    <div class="search-input-inner" id="docs-search">
+        <gcse:searchbox></gcse:searchbox>
+    </div>
+  </div>
+</div>
+
+      </div>
+    </header>
+
+
+
+    <div class="container">
+
+      <!--googleoff: index-->
+      <div id="sub-nav" class="js-sidenav nav-container" role="navigation">
+  <a class="sidenav-title" data-behavior="SubMenuMobile">
+    Doc Index
+  </a>
+  <div class="nav-content">
+    <ul>
+      <li>
+        <a id='home-nav-link' href="/a9s-mongodb/index.html">a9s MongoDB for PCF</a>
+      </li>
+      <li>
+        <a href="/a9s-mongodb/installing.html">Installing and Configuring a9s MongoDB for PCF</a>
+      </li>
+
+      <li>
+        <a href="/a9s-mongodb/using.html">Using a9s MongoDB for PCF</a>
+      </li>
+
+      <li>
+        <a href="/a9s-mongodb/release-notes.html">a9s MongoDB for PCF Release Notes</a>
+      </li>
+    </ul>
+  </div>
+</div><!--end of sub-nav-->
+
+      <!--googleon: index-->
+
+      <main class="content content-layout" id="js-content" role="main">
+        <a id="top"></a>
+        
+          <h1 class="title-container" >
+    Installing and Configuring a9s MongoDB for PCF
+  </h1>
+
+          <div id="js-quick-links" >
+            <div class="quick-links"><ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#install">Install and Configure a9s MongoDB for PCF</a></li>
+<li><a href="#errands">Run BOSH Errands</a></li>
+</ul></div>
+          </div>
+        <div class="to-top" id="js-to-top">
+          <a href="#top" title="back to top"></a>
+        </div>
+        <p>This topic describes how to install and configure a9s MongoDB for PCF.</p>
+
+<h2><a id='prerequisites'></a> Prerequisites</h2>
+
+<p>Before installing a9s MongoDB for PCF, ensure that the following required tiles have been successfully installed:</p>
+
+<ul>
+<li>Elastic Runtime, v1.6 or greater</li>
+<li>a9s Consul DNS for PCF, v0.9.0 or greater</li>
+<li>a9s BOSH for PCF, v0.9.0 or greater</li>
+</ul>
+
+<h2><a id='install'></a> Install and Configure a9s MongoDB for PCF</h2>
+
+<p>To install a9s MongoDB for PCF, perform the following steps:</p>
+
+<ol>
+<li><p>Download the product file from the Pivotal Network.</p></li>
+<li><p>Navigate to the Ops Manager Installation Dashboard and click <strong>Import a Product</strong>
+to upload the product file.</p></li>
+<li><p>Click <strong>Add</strong> next to the uploaded a9s MongoDB for PCF tile in the Ops Manager
+<strong>Available Products</strong> view to add it to your staging area.</p></li>
+<li><p>Click the newly added tile to review configurable Setting.</p></li>
+<li><p>Click <strong>Apply Changes</strong> to deploy the service.</p></li>
+</ol>
+
+<p>After installing the a9s MongoDB for PCF and prerequisites, there are no additional configuration requirements. a9s MongoDB for PCF is available in the list of marketplace services. For more information, see <a href="/a9s-mongodb/using.html">Using a9s MongoDB for PCF</a></p>
+
+<h2><a id='errands'></a>Run BOSH Errands</h2>
+
+<p>The following BOSH errands are available, but should only be run when necessary.</p>
+
+<h3>Run BOSH Configurator</h3>
+
+<p>This errand configures <em>a9s BOSH for PCF</em> so that it can provision MongoDB
+service instances. In detail, this means uploading the required
+stemcells in the BOSH release. Deactivating this errand could speed up the
+deployment of all tiles.</p>
+
+<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
+
+<h3>Run Template Uploader</h3>
+
+<p>This errand is required to configure generic components
+that are included in a9s MongoDB for PCF with MongoDB specific configurations.
+Deactiviting this errand could speed up the deployment of all tiles.</p>
+
+<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
+
+<h3>Run Broker Registrar</h3>
+
+<p>This errand registers the a9s MongoDB for PCF service broker
+at the Elastic Runtime. This causes the service be available in the Elastic Runtime
+marketplace.</p>
+
+<h3>Run Broker Deregistrar</h3>
+
+<p>This will deregister the a9s MongoDB for PCF service broker at the Elastic Runtime and thus removes the a9s MongoDB service
+from the Elastic Runtime marketplace.</p>
+
+          <gcse:searchresults></gcse:searchresults>
+
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<div id="scrim"></div>
+
+<div class="container">
+  <footer class="site-footer-links">
+    <div class="copyright">
+  <a href='http://pivotal.io/privacy-policy'>Privacy Policy</a> | 
+  <a href='http://pivotal.io/terms-of-use'>Terms of Use</a><br/>
+  <a href='/'>Pivotal Documentation</a>
+  &copy; 2016 <a href='http://pivotal.io'>Pivotal Software</a>, Inc. All Rights Reserved.
+</div>
+<div class="support">
+  Need help? <a href="" target="_blank">Visit Support</a>
+</div>
+
+  </footer>
+</div><!--end of container-->
+
+</body>
+</html>
