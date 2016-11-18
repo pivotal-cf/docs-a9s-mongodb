@@ -16,7 +16,7 @@ When you run the  ```cf create-service a9s-mongodb ...``` command,
 PCF creates dedicated virtual machines for this service instance. This allows
 the best possible bad neighborhood protection.
 
-MongoDB service instance provisioning, including virtual machine orchestration, is entirely automated. 
+MongoDB service instance provisioning, including virtual machine orchestration, is entirely automated.
 This enables service instances to be highly isolated and shielded by infrastructure virtualization
 mechanisms.
 
@@ -34,10 +34,11 @@ failures of individual infrastructure hosts or entire availability zones.
 The current version of a9s MongoDB for PCF includes the following key features:
 
 | Feature | Benefit |
-|---|---|
+|---------|---------|
 | **On­-Demand Service Instance Provisioning** | a9s MongoDB for PCF deploys MongoDB instances automatically. Developers can provision a single-VM MongoDB server or a multi-VM MongoDB Replica Set using a single command. |
 | **Service Instance Isolation** | Each MongoDB server runs on a dedicated virtual machine to ensure bad neighborhood protection in order to be aligned with enterprise security requirements.<br/><br/>a9s MongoDB for PCF uses Cloud Foundry security groups to prevent network connections being established by unauthorized applications.
 | **High Availability** | a9s MongoDB for PCF ensures high-availability using <a href="https://docs.mongodb.com/manual/replication/" target="_blank">MongoDB **Replica Sets**</a>.<br/><br/>The Consul-based internal DNS system provided by a9s Consul DNS for PCF ensures that the connected application always connects to a working node. |
+| **Smoke Tests** | a9s MongoDB for PCF contains a post-deploy smoke tests errand that runs a series of basic test against your installation to ensure that it is configured properly. |
 
 
 ### <a></a>Upcoming Features

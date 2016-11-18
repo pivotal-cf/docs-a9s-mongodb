@@ -43,7 +43,7 @@ Use **Assign AZs and Networks** to configure the location of service instance jo
 
 Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. See [Understanding Lifecycle Errands](../partners/lifecycle-errands.html)
 
-<%= image_tag("a9s-mongodb-for-pcf-errands.png") %>
+<%= image_tag("a9s-mongodb-for-pcf-errands.jpg") %>
 
 ### Post-Deploy Errands
 
@@ -65,6 +65,11 @@ Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. See [
 	This errand registers the a9s MongoDB for PCF service broker
 	at the Elastic Runtime. This causes the service be available in the Elastic Runtime
 	marketplace.
+
+ * **Run Smoke Tests**
+ This errand runs a series of basic tests against your a9s MongoDB for PCF
+ installation to ensure that it is configured properly. Those tests may
+ take a certain amount of time, probably over 30 minutes.
 
 ### Pre-Delete Errands
 
