@@ -16,7 +16,7 @@ public_host: hello
 sections:
   - repository:
       name: docs-content
-    directory: a9s-mongodb
+    directory: a9s-mongodb-for-pcf
     subnav_template: a9s-mongodb-for-pcf_subnav.erb
 
 template_variables:                             # optional
