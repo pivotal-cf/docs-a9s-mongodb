@@ -144,7 +144,8 @@ Run the `cf services` command to check the deletion status.
 ##<a id='upgrade-service-plan'></a> Upgrade the Service Instace to another Service Plan
 
 Once created, you have the possibility to upgrade your service instance to
-another, bigger service plan. This goes as follows:
+another, bigger service plan; which means that you will get more CPU, RAM and
+storage. This is explained in the official <a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html#update_service" target="_blank">Cloud Foundry Documentation</a>
 
 <pre class="terminal">
 $ cf update-service my-mongodb-service -p a-bigger-plan
@@ -160,21 +161,23 @@ using:
 
 ##<a id='add-graphite-endpoint'></a>Add a Graphite Endpoint
 
-If you want to monitor your app with Graphite, you can set an endpoint and
-a prefix to tag the fed data. As with the service plan update, this is done with
-the *update-service* command:
+If you want to monitor your service with Graphite, you can set an endpoint to
+where to information will be sent. This is once again done with the
+*update-service* command. This one expect <a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-update" target="_blank">the -c option</a>
+and a JSON string containing the *graphite* and *metrics_prefix* keys.
 
 <pre class="terminal">
-$ cf update-service my-mongodb-service -c '{ "graphite": ["your-graphite-endpoint.com"], "metrics_prefix": "qwertyuiop.my-cluster-mongo" }'
+$ cf update-service my-mongodb-service -c '{ "graphite": ["yourspace.your-graphite-endpoint.com:12345"], "metrics_prefix": "your-api-key.my-cluster-mongo" }'
 </pre>
 
 
 ##<a id='add-syslog-endpoint'></a>Add a Syslog Endpoint
 
-With once again the *update-service* command, you can stream your syslog to an
-external service:
+The *update-service* command when it is used with <a hef="https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-update" target="_blank">the -c option</a>,
+can let you stream your syslog to a third-party service. For this, the option
+expects a JSON string containing the *syslog* key.
 
 <pre class="terminal">
-$ cf update-service my-mongodb-service -c '{ "syslog": ["logs3.papertrailapp.com:34894"] }'
+$ cf update-service my-mongodb-service -c '{ "syslog": ["logs4.your-syslog-endpoint.com:54321"] }'
 </pre>
 
