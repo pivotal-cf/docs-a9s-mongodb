@@ -22,7 +22,7 @@ to upload the product file.
 3. Click **Add** next to the uploaded a9s MongoDB for PCF tile in the Ops Manager
 **Available Products** view to add it to your staging area.
 
-4. Click the newly added tile, then click **Settings** to review the configuration settings for each tab. 
+4. Click the newly added tile, then click **Settings** to review the configuration settings for each tab.
 	See the following sections for more information on how to configure the properties on each side-tab:
 	* [Assign AZs and Networks](#azs)
 	* [Configure BOSH Errands](#errands)
@@ -70,6 +70,11 @@ Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. See [
  This errand runs a series of basic tests against your a9s MongoDB for PCF
  installation to ensure that it is configured properly. Those tests may
  take a certain amount of time, probably over 30 minutes.
+
+ * **Run Instance Updater**
+This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF
+service instances to their lastest version. It is recommended to run
+the smoke tests before running this errand.
 
 ### Pre-Delete Errands
 
