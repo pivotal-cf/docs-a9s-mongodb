@@ -95,7 +95,7 @@ Use **Configure Stemcells** enable another stemcell than the default one. Click 
 
 <%= image_tag("stemcell-tab.png") %>
 
-##<a id='deployment_updater'></a>Upgrade existing Service Instances after a Tile update
+##<a id='deployment_updater'></a>Upgrade Existing Service Instances After a Tile Update
 This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF service instances to their lastest version after updating the tile.
 <p class="note">It is recommended to run the <a href="./installing.html#errands" target="_blank">smoke tests</a> before running this errand.</p>
 
@@ -114,7 +114,7 @@ Your username: director
 Enter password: DIRECTOR\_CREDENTIAL
 Logged in as 'director'
 </pre>
-3. Locate the deployment name of the a9s MongoDB for PCF
+3. Locate the a9s MongoDB for PCF deployment name.
 <pre class="terminal">
 $ bosh deployments
 </pre>
@@ -144,7 +144,7 @@ $ bosh deployment /var/tempest/workspaces/default/deployments/a9s-mongodb-servic
 100   352  100   352    0     0  12014      0 --:--:-- --:--:-- --:--:-- 12137
 Deployment set to '/var/tempest/workspaces/default/deployments/a9s-mongodb-service-94443f82b52dcf333bbd.yml'
 </pre>
-5. Run `bosh run errand deployment-updater` to force a service instances update of all existing a9s MongoDB for PCF instances.
+5. Run `bosh run errand deployment-updater` to force a service instances update for all existing a9s MongoDB for PCF instances.
 <pre class="terminal">
 $ bosh run errand deployment-updater
 % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -160,4 +160,4 @@ Started preparing deployment > Preparing deployment. Done (00:00:01)
 &nbsp;
 Errand 'deployment-updater' completed successfully (exit code 0)
 </pre>
-<p class="note">Dependend on the number of service instances the Deployment Updater take some time. Until the errand runs BOSH shows no logging output from the errand.</p>
+<p class="note">Depending on the number of service instances the Deployment Updater takes some time. Until the errand runs BOSH shows no logging output from the errand.</p>
