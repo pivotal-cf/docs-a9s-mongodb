@@ -39,7 +39,9 @@ The current version of a9s MongoDB for PCF includes the following key features:
 | **Service Instance Isolation** | Each MongoDB server runs on a dedicated virtual machine to ensure bad neighborhood protection in order to be aligned with enterprise security requirements.<br/><br/>a9s MongoDB for PCF uses Cloud Foundry security groups to prevent network connections being established by unauthorized applications.
 | **High Availability** | a9s MongoDB for PCF ensures high-availability using <a href="https://docs.mongodb.com/manual/replication/" target="_blank">MongoDB **Replica Sets**</a>.<br/><br/>The Consul-based internal DNS system provided by a9s Consul DNS for PCF ensures that the connected application always connects to a working node. |
 | **Smoke Tests** | a9s MongoDB for PCF contains a post-deploy smoke tests errand that runs a series of basic test against your installation to ensure that it is configured properly. |
-
+| **Service Instance Capacity Upgrade** | Cloud Foundry Service Plan updates allow upgrades to the RAM, CPU and storage capacity for your MongoDB instances. |
+| **Logging and Monitoring** | Each MongoDB service instance provides log messages and MongoDB-specific metrics to one or more `syslog/graphite` endpoints. You can configure the `syslog/graphite` endpoint to receive logging and monitoring information. |
+| **Deployment Updater** | This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF service instances to their lastest version. |
 
 ### <a></a>Upcoming Features
 The following features have been developed and tested on <a href="https://paas.anynines.com/" target="_blank">paas.anynines.com</a>. These features will be included in an upcoming a9s MongoDB for PCF release:
@@ -47,18 +49,16 @@ The following features have been developed and tested on <a href="https://paas.a
 | Feature | Benefit |
 |---|---|
 | **On­-Demand Encrypted Remote Connectivity** | A public encrypted access can be established on demand. This connection can be used to perform manual backups. As soon as the public connection becomes obsolete, the tunnel can be terminated to prevent further access. This functionality is provided by additional components in the Service Jumper Module. |
-| **Service Instance Capacity Upgrade** | Cloud Foundry Service Plan updates allow upgrades to the RAM, CPU and storage capacity for your MongoDB instances. |
-| **Logging and Monitoring** | Each MongoDB service instance provides log messages and MongoDB-specific metrics to one or more `syslog/graphite` endpoints. You can configure the `syslog/graphite` endpoint to receive logging and monitoring information. |
 
 
 ## <a id="snapshot"></a>Product Snapshot
 
 <dl>
 <dt>a9s MongoDB for PCF Details:</dt>
-<dd><strong>Version</strong>: v0.9.2 </dd>
-<dd><strong>Release Date</strong>: November 18, 2016</dd>
+<dd><strong>Version</strong>: v0.10.0 </dd>
+<dd><strong>Release Date</strong>: December 5, 2016</dd>
 <dd><strong>Compatible Ops Manager Versions:</strong> 1.7.x, 1.8.x</dd>
-<dd><strong>Compatible Elastic Runtime Versions:</strong> 1.7.x, 1.8.x</dd>
+<dd><strong>Compatible Elastic Runtime Versions:</strong> 1.7.x. 1.8.x</dd>
 <dd><strong>vSphere support?</strong> Yes</dd>
 <dd><strong>AWS support?</strong> Yes</dd>
 <dd><strong>OpenStack support?</strong> Yes</dd>

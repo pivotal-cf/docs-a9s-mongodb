@@ -17,7 +17,7 @@ sections:
   - repository:
       name: docs-content
     directory: a9s-mongodb
-    subnav_template: a9s-mongodb-for-pcf_subnav.erb
+    subnav_template: a9s-mongodb_subnav.erb
 
 template_variables:                             # optional
 

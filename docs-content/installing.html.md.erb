@@ -22,7 +22,7 @@ to upload the product file.
 3. Click **Add** next to the uploaded a9s MongoDB for PCF tile in the Ops Manager
 **Available Products** view to add it to your staging area.
 
-4. Click the newly added tile, then click **Settings** to review the configuration settings for each tab. 
+4. Click the newly added tile, then click **Settings** to review the configuration settings for each tab.
 	See the following sections for more information on how to configure the properties on each side-tab:
 	* [Assign AZs and Networks](#azs)
 	* [Configure BOSH Errands](#errands)
@@ -78,12 +78,7 @@ Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. See [
 
 ##<a id="configure-service-instance"></a> Configure Service Plans
 
-Use **Resource Config** to configure the resources available for each job type provided by a9s MongoDB for PCF.
-
-The size and types of VMs used to provision service instances of a given service plan are specified in the **IaaS Settings** of the **a9s BOSH for PCF** tile. For more iformation, see the [a9s BOSH for PCF documentation](../a9s-bosh/installing.html).
-
-
-<%= image_tag("a9s-mongodb-for-pcf-ressource-config.png") %>
+The size and types of VMs used to provision service instances of a given service plan are specified in the **IaaS Settings** of the **a9s BOSH for PCF** tile. For more information, see the [a9s BOSH for PCF documentation](../a9s-bosh/installing.html).
 
 Each service plan is defined in the following fields:
 
@@ -99,3 +94,76 @@ Each service plan is defined in the following fields:
 Use **Configure Stemcells** enable another stemcell than the default one. Click **Import Stemcell** to upload a new stemcell.
 
 <%= image_tag("stemcell-tab.png") %>
+
+##<a id='deployment_updater'></a>Upgrade Existing Service Instances After a Tile Update
+This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF service instances to their lastest version after updating the tile.<br />
+The errand has to be run manually as explained below.
+
+<p class="note">It is recommended to run the <a href="./installing.html#errands" target="_blank">smoke tests</a> before running this errand.</p>
+
+<p class="note">To use the errand you need to know how to use the Ops Manager Director. See this the topic
+<a href="http://docs.pivotal.io/pivotalcf/1-9/customizing/trouble-advanced.html#prepare" target="_blank">Advanced Troubleshooting with the BOSH CLI</a> for more informations.</p>
+1. SSH into Ops Manager
+<pre class="terminal">
+$ ssh ubuntu@OPS-MANAGER-FQDN
+Password: ***********
+</pre>
+2. Target the BOSH Director
+<pre class="terminal">
+$ bosh --ca-cert /var/tempest/workspaces/default/root\_ca\_certificate target OPS-MANAGER-DIRECTOR-IP
+Target set to DIRECTOR\_UUID
+</pre>
+3. Log into BOSH Director
+<pre class="terminal">
+$ bosh login
+Your username: director
+Enter password: DIRECTOR\_CREDENTIAL
+Logged in as 'director'
+</pre>
+4. Locate the a9s MongoDB for PCF deployment name.
+<pre class="terminal">
+$ bosh deployments
+</pre>
+The ouput should look similar to this.
+<pre class="terminal">
+Acting as user 'director' on 'p-bosh'
+RSA 1024 bit CA certificates are loaded due to old openssl compatibility
++------------------------------------------+-------------------------------+-------------
+| Name                                     | Release(s)                    | Stemcell(s)
++------------------------------------------+-------------------------------+-------------
+| a9s-bosh-a40c3b10d101faca4fbc            | bosh-aws-cpi/53               | bosh-vsphere
+| ...
++------------------------------------------+-------------------------------+-------------
+| a9s-consul-dns-3f3a49fb941f8c0874cb      | consul/9                      | bosh-vsphere
+| ...
++------------------------------------------+-------------------------------+-------------
+| a9s-mongodb-service-94443f82b52dcf333bbd | bosh-configurator-mongodb/3   | bosh-vsphere
+| ...
++------------------------------------------+-------------------------------+-------------
+</pre>
+5. All deployment manifests are stored in the folder `/var/tempest/workspaces/default/deployments/` .
+Choose the `a9s-mongodb-service-...` deployment.
+<pre class="terminal">
+$ bosh deployment /var/tempest/workspaces/default/deployments/a9s-mongodb-service-94443f82b52dcf333bbd.yml
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                               Dload  Upload   Total   Spent    Left  Speed
+100   352  100   352    0     0  12014      0 --:--:-- --:--:-- --:--:-- 12137
+Deployment set to '/var/tempest/workspaces/default/deployments/a9s-mongodb-service-94443f82b52dcf333bbd.yml'
+</pre>
+6. Run `bosh run errand deployment-updater` to force a service instances update for all existing a9s MongoDB for PCF instances.
+<pre class="terminal">
+$ bosh run errand deployment-updater
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                               Dload  Upload   Total   Spent    Left  Speed
+100   352  100   352    0     0  26378      0 --:--:-- --:--:-- --:--:-- 27076
+Acting as user 'director' on deployment 'a9s-mongodb-service-94443f82b52dcf333bbd' on 'p-bosh'
+RSA 1024 bit CA certificates are loaded due to old openssl compatibility
+&nbsp;
+Director task 6533
+Started preparing deployment > Preparing deployment. Done (00:00:01)
+&nbsp;
+...
+&nbsp;
+Errand 'deployment-updater' completed successfully (exit code 0)
+</pre>
+<p class="note">Depending on the number of service instances the Deployment Updater takes some time. While the errand is running BOSH shows no logging output from the errand.</p>

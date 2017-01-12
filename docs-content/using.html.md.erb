@@ -19,9 +19,9 @@ $ cf marketplace
 Getting services from marketplace in org test / space test as admin...
 OK
 
-service      plans                                           description                                                                        
-a9s-mongodb  mongodb-single-small, mongodb-cluster-small,    This is the anynines mongodb 32 service. 
-             mongodb-single-big, mongodb-cluster-big         
+service      plans                                           description
+a9s-mongodb  mongodb-single-small, mongodb-cluster-small,    This is the anynines mongodb 32 service.
+             mongodb-single-big, mongodb-cluster-big
 </pre>
 
 For more information on available service plans, see [Configure Service Plans](./installing.html#configure-service-instance)
@@ -109,7 +109,7 @@ Before you can delete a service instance, it needs to be unbound from all applic
 Run `cf service` to list your available services.
 
 <pre class="terminal">
-$ cf service                                                                                                                                               
+$ cf service
 
 Getting services in org test / space test as admin...
 OK
@@ -140,4 +140,44 @@ $ cf delete-service my-mongodb-service
 It may take several minutes to delete the service. Deleting a service deprovisions the corresponding infrastructure resources.
 Run the `cf services` command to check the deletion status.
 
+
+##<a id='upgrade-service-plan'></a> Upgrade the Service Instace to another Service Plan
+
+Once created, you have the possibility to upgrade your service instance to
+another, bigger service plan; which means that you will get more CPU, RAM and
+storage. This is explained in the official <a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html#update_service" target="_blank">Cloud Foundry Documentation</a>
+
+<pre class="terminal">
+$ cf update-service my-mongodb-service -p a-bigger-plan
+</pre>
+
+Here are the plans you can upgrade to depending on the one you are currently
+using:
+
+**mongodb-single-small**: mongodb-single-big
+
+**mongodb-cluster-small**: mongodb-cluster-big
+
+
+##<a id='add-graphite-endpoint'></a>Add a Graphite Endpoint
+
+If you want to monitor your service with Graphite, you can set an endpoint to
+where to information will be sent. This is once again done with the
+*update-service* command. This one expect <a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-update" target="_blank">the -c option</a>
+and a JSON string containing the *graphite* and *metrics_prefix* keys.
+
+<pre class="terminal">
+$ cf update-service my-mongodb-service -c '{ "graphite": ["yourspace.your-graphite-endpoint.com:12345"], "metrics_prefix": "your-api-key.my-cluster-mongo" }'
+</pre>
+
+
+##<a id='add-syslog-endpoint'></a>Add a Syslog Endpoint
+
+The *update-service* command when it is used with <a hef="https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-update" target="_blank">the -c option</a>,
+can let you stream your syslog to a third-party service. For this, the option
+expects a JSON string containing the *syslog* key.
+
+<pre class="terminal">
+$ cf update-service my-mongodb-service -c '{ "syslog": ["logs4.your-syslog-endpoint.com:54321"] }'
+</pre>
 
