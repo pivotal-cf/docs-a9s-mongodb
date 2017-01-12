@@ -53,13 +53,13 @@ Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. See [
 	stemcells in the BOSH release. Disabling this errand may speed up the
 	deployment of all tiles.
 
-	<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
+	<p class="note"><strong>Note</strong>: To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
 
  * **Run Template Uploader**
 	This errand is required to configure generic components that are included in a9s MongoDB for PCF with MongoDB  configurations.
 	Disabling this errand may speed up the deployment of all tiles.
 
-	<p class="note">To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
+	<p class="note"><strong>Note</strong>: To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
 
  * **Run Broker Registrar**
 	This errand registers the a9s MongoDB for PCF service broker
@@ -99,9 +99,9 @@ Use **Configure Stemcells** enable another stemcell than the default one. Click 
 This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF service instances to their lastest version after updating the tile.<br />
 The errand has to be run manually as explained below.
 
-<p class="note">It is recommended to run the <a href="./installing.html#errands" target="_blank">smoke tests</a> before running this errand.</p>
+<p class="note"><strong>Note</strong>: It is recommended to run the <a href="./installing.html#errands" target="_blank">smoke tests</a> before running this errand.</p>
 
-<p class="note">To use the errand you need to know how to use the Ops Manager Director. See this the topic
+<p class="note"><strong>Note</strong>: To use the errand you need to know how to use the Ops Manager Director. See this the topic
 <a href="http://docs.pivotal.io/pivotalcf/1-9/customizing/trouble-advanced.html#prepare" target="_blank">Advanced Troubleshooting with the BOSH CLI</a> for more informations.</p>
 1. SSH into Ops Manager
 <pre class="terminal">
@@ -166,4 +166,4 @@ Started preparing deployment > Preparing deployment. Done (00:00:01)
 &nbsp;
 Errand 'deployment-updater' completed successfully (exit code 0)
 </pre>
-<p class="note">Depending on the number of service instances the Deployment Updater takes some time. While the errand is running BOSH shows no logging output from the errand.</p>
+<p class="note"><strong>Note</strong>: Depending on the number of service instances the Deployment Updater takes some time. While the errand is running BOSH shows no logging output from the errand.</p>
