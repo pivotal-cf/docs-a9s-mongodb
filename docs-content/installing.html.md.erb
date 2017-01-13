@@ -41,53 +41,53 @@ Use **Assign AZs and Networks** to configure the location of service instance jo
 
 ##<a id='errands'></a>Configure BOSH Errands
 
-Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. See [Understanding Lifecycle Errands](../partners/lifecycle-errands.html)
+Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. For more information, see the [Understanding Lifecycle Errands](../partners/lifecycle-errands.html) topic.
 
 <%= image_tag("a9s-mongodb-for-pcf-errands.png") %>
 
 ### Post-Deploy Errands
 
- * **Run BOSH Configurator**
-	This errand configures *a9s BOSH for PCF* so that it can provision MongoDB
+ * **Run BOSH Configurator**: 
+	This errand configures **a9s BOSH for PCF** so that it can provision MongoDB
 	service instances. When enabled, this errand uploads the required
 	stemcells in the BOSH release. Disabling this errand may speed up the
 	deployment of all tiles.
 
 	<p class="note"><strong>Note</strong>: To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
 
- * **Run Template Uploader**
+ * **Run Template Uploader**: 
 	This errand is required to configure generic components that are included in a9s MongoDB for PCF with MongoDB  configurations.
 	Disabling this errand may speed up the deployment of all tiles.
 
 	<p class="note"><strong>Note</strong>: To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
 
- * **Run Broker Registrar**
+ * **Run Broker Registrar**: 
 	This errand registers the a9s MongoDB for PCF service broker
 	at the Elastic Runtime. This causes the service be available in the Elastic Runtime
 	marketplace.
 
- * **Run Smoke Tests**
+ * **Run Smoke Tests**: 
  This errand runs a series of basic tests against your a9s MongoDB for PCF
  installation to ensure that it is configured properly. Those tests may
  take a certain amount of time, probably over 30 minutes.
 
 ### Pre-Delete Errands
 
- * **Run Broker Deregistrar**
+ * **Run Broker Deregistrar**: 
 	This will deregister the a9s MongoDB for PCF service broker in Elastic Runtime. This errand removes the a9s MongoDB service from the Elastic Runtime marketplace.
 
 ##<a id="configure-service-instance"></a> Configure Service Plans
 
-The size and types of VMs used to provision service instances of a given service plan are specified in the **IaaS Settings** of the **a9s BOSH for PCF** tile. For more information, see the [a9s BOSH for PCF documentation](../a9s-bosh/installing.html).
+The size and types of VMs used to provision service instances of a given service plan are specified in the **IaaS Settings** of the **a9s BOSH for PCF** tile. For more information, see the [a9s BOSH for PCF](../a9s-bosh/installing.html) documentation.
 
 Each service plan is defined in the following fields:
 
 | Plan | Specs for | Field |
 |------|-------|-------|
-|mongodb-single-small| Virtual Machine<br /> Persistent Disk | Cloud properties for the VM Type Small<br /> Cloud properties fo the Disk Type Small|
-|mongodb-cluster-small| Virtual Machines<br /> Persistent Disks | Cloud properties for the VM Type Small<br /> Cloud properties fo the Disk Type Small|
-|mongodb-single-big| Virtual Machine<br /> Persistent Disk | Cloud properties for the VM Type Large<br /> Cloud properties fo the Disk Type Big|
-|mongodb-cluster-big| Virtual Machines<br /> Persistent Disks | Cloud properties for the VM Type Large<br /> Cloud properties fo the Disk Type Big|
+|mongodb-single-small| Virtual Machine<br /> Persistent Disk | Cloud properties for the VM Type Small<br /> Cloud properties for the Disk Type Small|
+|mongodb-cluster-small| Virtual Machines<br /> Persistent Disks | Cloud properties for the VM Type Small<br /> Cloud properties for the Disk Type Small|
+|mongodb-single-big| Virtual Machine<br /> Persistent Disk | Cloud properties for the VM Type Large<br /> Cloud properties for the Disk Type Big|
+|mongodb-cluster-big| Virtual Machines<br /> Persistent Disks | Cloud properties for the VM Type Large<br /> Cloud properties for the Disk Type Big|
 
 ##<a id="stemcell"></a>Configure Stemcells
 
@@ -101,8 +101,8 @@ The errand has to be run manually as explained below.
 
 <p class="note"><strong>Note</strong>: It is recommended to run the <a href="./installing.html#errands" target="_blank">smoke tests</a> before running this errand.</p>
 
-<p class="note"><strong>Note</strong>: To use the errand you need to know how to use the Ops Manager Director. See this the topic
-<a href="http://docs.pivotal.io/pivotalcf/1-9/customizing/trouble-advanced.html#prepare" target="_blank">Advanced Troubleshooting with the BOSH CLI</a> for more informations.</p>
+<p class="note"><strong>Note</strong>: To use the errand must know how to use the Ops Manager Director. For more information, see the 
+<a href="http://docs.pivotal.io/pivotalcf/1-9/customizing/trouble-advanced.html#prepare" target="_blank">Advanced Troubleshooting with the BOSH CLI</a> topic.</p>
 1. SSH into Ops Manager
 <pre class="terminal">
 $ ssh ubuntu@OPS-MANAGER-FQDN
@@ -148,8 +148,7 @@ $ bosh deployment /var/tempest/workspaces/default/deployments/a9s-mongodb-servic
 % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                Dload  Upload   Total   Spent    Left  Speed
 100   352  100   352    0     0  12014      0 --:--:-- --:--:-- --:--:-- 12137
-Deployment set to '/var/tempest/workspaces/default/deployments/a9s-mongodb-service-94443f82b52dcf333bbd.yml'
-</pre>
+Deployment set to '/var/tempest/workspaces/default/deployments/a9s-mongodb-service-94443f82b52dcf333bbd.yml'</pre>
 6. Run `bosh run errand deployment-updater` to force a service instances update for all existing a9s MongoDB for PCF instances.
 <pre class="terminal">
 $ bosh run errand deployment-updater
@@ -166,4 +165,4 @@ Started preparing deployment > Preparing deployment. Done (00:00:01)
 &nbsp;
 Errand 'deployment-updater' completed successfully (exit code 0)
 </pre>
-<p class="note"><strong>Note</strong>: Depending on the number of service instances the Deployment Updater takes some time. While the errand is running BOSH shows no logging output from the errand.</p>
+<p class="note"><strong>Note</strong>: Depending on the number of service instances, the Deployment Updater may take a signification amount of time. While the errand runs, BOSH shows no logging output from the errand.</p>

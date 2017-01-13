@@ -3,13 +3,12 @@ title: Using a9s MongoDB for PCF
 owner: Partners
 ---
 
-This topic describes how to use a9s MongoDB for PCF after it has been successfully installed. For more information, see [Installing and Configuring a9s MongoDB for PCF](./installing.html)
+This topic describes how to use a9s MongoDB for PCF after it has been successfully installed. For more information, see the [Installing and Configuring a9s MongoDB for PCF](./installing.html) topic.
 
 ##<a id='using'></a>Use a a9s MongoDB for PCF with an Application
 
 To use a9s MongoDB for PCF with an application, create a service instance and bind the service instance
-to your application. For more information on managing service instances, see <a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html" target="_blank">Managing Service 
-Instances with the CLI</a>.
+to your application. For more information on managing service instances, see <a href="http://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html" target="_blank">Managing Service Instances with the cf CLI</a>.
 
 ### View the a9s MongoDB for PCF Service
 
@@ -27,7 +26,7 @@ For more information on available service plans, see the [Configure Service Plan
 
 ### Create a Service Instance
 
-To provision a MongoDB database, run `cf create-service`, for example:
+To provision a MongoDB database, run `cf create-service`. For example:
 
 <pre class="terminal">
 $ cf create-service a9s-mongodb mongodb-single-small my-mongodb-service
@@ -35,9 +34,7 @@ $ cf create-service a9s-mongodb mongodb-single-small my-mongodb-service
 
 Depending on your infrastructure and service broker utilization, it may take several minutes to create the service instance.
 
-Check the creation status using `cf services`. This displays a list of all your service instances. To check the status of a specific service instance, 
-run `cf service NAME-OF-YOUR-SERVICE`.
-
+Run the `cf services` command to view the creation status. This command displays a list of all your service instances. To view the status of a specific service instance, run `cf service NAME-OF-YOUR-SERVICE`.
 
 ### Bind an Application to a Service Instance
 
@@ -53,11 +50,9 @@ To enable your application to access the service instance, run `cf restage` or `
 
 ##<a id='credentials'></a> Obtain Service Instance Access Credentials
 
-After a service instance is bound to an application, the credentials of your MongoDB
-database is stored in the environment variables of the application. Run `cf env APP-NAME` to display the environment variables. 
+After a service instance is bound to an application, the credentials of your MongoDB database are stored in the environment variables of the application. Run `cf env APP-NAME` to display the environment variables. 
 
-The credentials can be found under
-the <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/environment-variable.html#VCAP-SERVICES" target="_blank">VCAP_SERVICES</a> key.
+You can find the credentials in the <a href="http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/environment-variable.html#VCAP-SERVICES" target="_blank">VCAP_SERVICES</a> key.
 
 <pre class="terminal">
 $ cf env a9s-mongodb-app
@@ -94,13 +89,13 @@ System-Provided:
 ...
 </pre>
 
-You can use the host, username and password values to connect to your database with a MongoDB client.
+You can use the host, username, and password values to connect to your database with a MongoDB client.
 
 ##<a id='deleting'></a> Delete an a9s MongoDB for PCF Service Instance
 
 <p class="note">Before deleting a service instance, you must backup data stored in your database. This operation cannot be undone and all the data is lost when the service is deleted.</p>
 
-Before you can delete a service instance, it needs to be unbound from all applications.
+Before you can delete a service instance, you must unbind it from all apps.
 
 ### List Available Services
 
@@ -136,14 +131,12 @@ $ cf delete-service my-mongodb-service
 </pre>
 
 It may take several minutes to delete the service. Deleting a service deprovisions the corresponding infrastructure resources.
-Run the `cf services` command to check the deletion status.
+Run the `cf services` command to view the deletion status.
 
 
 ##<a id='upgrade-service-plan'></a> Upgrade the Service Instance to another Service Plan
 
-Once created, you have the possibility to upgrade your service instance to
-another, bigger service plan; which means that you will get more CPU, RAM and
-storage. This is explained in the official <a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html#update_service" target="_blank">Cloud Foundry Documentation</a>
+Once created, you can upgrade your service instance to another, larger service plan. A larger service plan provides more CPU, RAM and storage. For more information, see the  <a href="http://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html#update_service" target="_blank">Update a Service Instance</a> of the _Managing Service Instances with the cf CLI_ topic.
 
 <pre class="terminal">
 $ cf update-service my-mongodb-service -p a-bigger-plan
@@ -152,15 +145,14 @@ $ cf update-service my-mongodb-service -p a-bigger-plan
 Here are the plans you can upgrade to depending on the one you are currently
 using:
 
-If you are currently using the `mongodb-single-small` plan, you can upgrade to the `mongodb-single-big` plan.
+* If you are currently using the `mongodb-single-small` plan, you can upgrade to the `mongodb-single-big` plan.
 
-If you are currently using the `mongodb-cluster-small` plan, you can upgrade to the `mongodb-cluster-big` plan.
+* If you are currently using the `mongodb-cluster-small` plan, you can upgrade to the `mongodb-cluster-big` plan.
 
 ##<a id='add-graphite-endpoint'></a>Add a Graphite Endpoint
 
 If you want to monitor your service with Graphite, you can set an endpoint to
-where to information will be sent. This is once again done with the
-`update-service` command. This one expect <a href="https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-update" target="_blank">the -c option</a>
+where to information will be sent with the `cf update-service` command. This command expects the <a href="http://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html#arbitrary-params-update" target="_blank">-c flag</a>
 and a JSON string containing the `graphite` and `metrics_prefix` keys.
 
 <pre class="terminal">
@@ -169,11 +161,8 @@ $ cf update-service my-mongodb-service -c '{ "graphite": ["yourspace.your-graphi
 
 ##<a id='add-syslog-endpoint'></a>Add a Syslog Endpoint
 
-The `update-service` command when it is used with <a hef="https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-update" target="_blank">the -c option</a>,
-can let you stream your syslog to a third-party service. For this, the option
-expects a JSON string containing the `syslog` key.
+The `cf update-service` command used with the <a href="http://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html#arbitrary-params-update" target="_blank">-c flag</a> can let you stream your syslog to a third-party service. In this case, the command expects a JSON string containing the `syslog` key.
 
 <pre class="terminal">
 $ cf update-service my-mongodb-service -c '{ "syslog": ["logs4.your-syslog-endpoint.com:54321"] }'
 </pre>
-
