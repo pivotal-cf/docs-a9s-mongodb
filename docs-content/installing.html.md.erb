@@ -73,6 +73,10 @@ Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. For m
 
 ### Pre-Delete Errands
 
+ * **Delete all a9s MongoDB instance**: 
+	This errand deletes all a9s PostgreSQL instances which were created with `cf create-service` by PCF end users.
+	<p class="note"><strong>Attention</strong>: This is a absolutly destructive task and can't be undone. All VMs of the service instances will be deleted irrecoverably.</p>
+
  * **Run Broker Deregistrar**: 
 	This will deregister the a9s MongoDB for PCF service broker in Elastic Runtime. This errand removes the a9s MongoDB service from the Elastic Runtime marketplace.
 
@@ -127,7 +131,6 @@ $ bosh deployments
 The output should look similar to this:
 <pre class="terminal">
 Acting as user 'director' on 'p-bosh'
-RSA 1024 bit CA certificates are loaded due to old openssl compatibility
 +------------------------------------------+-------------------------------+-------------
 | Name                                     | Release(s)                    | Stemcell(s)
 +------------------------------------------+-------------------------------+-------------
@@ -156,7 +159,6 @@ $ bosh run errand deployment-updater
                                Dload  Upload   Total   Spent    Left  Speed
 100   352  100   352    0     0  26378      0 --:--:-- --:--:-- --:--:-- 27076
 Acting as user 'director' on deployment 'a9s-mongodb-service-94443f82b52dcf333bbd' on 'p-bosh'
-RSA 1024 bit CA certificates are loaded due to old openssl compatibility
 &nbsp;
 Director task 6533
 Started preparing deployment > Preparing deployment. Done (00:00:01)
