@@ -73,9 +73,9 @@ Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. For m
 
 ### Pre-Delete Errands
 
- * **Delete all a9s MongoDB instance**: 
-	This errand deletes all a9s PostgreSQL instances which were created with `cf create-service` by PCF end users.
-	<p class="note"><strong>Attention</strong>: This is a absolutly destructive task and can't be undone. All VMs of the service instances will be deleted irrecoverably.</p>
+ * **Delete all a9s MongoDB instances**: 
+	This errand deletes all a9s MongoDB instances which were created with `cf create-service` by PCF end users.
+	<p class="note"><strong>Attention</strong>: This is an absolutly destructive task and can't be undone. All VMs of the service instances will be deleted irrecoverably. In the case a service instance is bound to an app or service keys are existing, the errand will fail.</p>
 
  * **Run Broker Deregistrar**: 
 	This will deregister the a9s MongoDB for PCF service broker in Elastic Runtime. This errand removes the a9s MongoDB service from the Elastic Runtime marketplace.
