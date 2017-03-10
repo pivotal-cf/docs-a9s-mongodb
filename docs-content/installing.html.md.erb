@@ -3,6 +3,17 @@ title: Installing and Configuring a9s MongoDB for PCF
 owner: Partners
 ---
 
+<style>
+    .note.warning {
+        background-color: #fdd;
+        border-color: #fbb
+    }
+
+    .note.warning:before {
+        color: #f99;
+     }
+</style>
+
 This topic describes how to install and configure a9s MongoDB for PCF.
 
 ##<a id='prerequisites'></a> Prerequisites
@@ -74,8 +85,8 @@ Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. For m
 ### Pre-Delete Errands
 
  * **Delete all a9s MongoDB instances**: 
-	This errand deletes all a9s MongoDB instances which were created with `cf create-service` by PCF end users.
-	<p class="note"><strong>Attention</strong>: This is an absolutly destructive task and can't be undone. All VMs of the service instances will be deleted irrecoverably. In the case a service instance is bound to an app or service keys are existing, the errand will fail.</p>
+	This errand deletes all a9s MongoDB instances created by PCF end users  with `cf create-service` .
+	<p class="note warning"><strong>WARNING</strong>: This is a destructive task that cannot be undone. It irrecoverably deletes all VMs of the service instances. If a service instance is bound to an app or service keys exist, the errand fails.</p>
 
  * **Run Broker Deregistrar**: 
 	This will deregister the a9s MongoDB for PCF service broker in Elastic Runtime. This errand removes the a9s MongoDB service from the Elastic Runtime marketplace.
