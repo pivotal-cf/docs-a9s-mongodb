@@ -58,37 +58,37 @@ Use **Errands** to configure the BOSH Errands used by a9s MongoDB for PCF. For m
 
 ### Post-Deploy Errands
 
- * **Run BOSH Configurator**: 
+ * **Run BOSH Configurator**:
 	This errand configures **a9s BOSH for PCF** so that it can provision MongoDB
-	service instances. When enabled, this errand uploads the required
-	stemcells in the BOSH release. Disabling this errand may speed up the
-	deployment of all tiles.
+  service instances. When enabled, this errand uploads the required releases in
+  the a9s BOSH Director. Disabling this errand may speed up the deployment of
+  all tiles.
 
 	<p class="note"><strong>Note</strong>: To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
 
- * **Run Template Uploader**: 
+ * **Run Template Uploader**:
 	This errand is required to configure generic components that are included in a9s MongoDB for PCF with MongoDB  configurations.
 	Disabling this errand may speed up the deployment of all tiles.
 
 	<p class="note"><strong>Note</strong>: To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
 
- * **Run Broker Registrar**: 
+ * **Run Broker Registrar**:
 	This errand registers the a9s MongoDB for PCF service broker
 	at the Elastic Runtime. This causes the service be available in the Elastic Runtime
 	marketplace.
 
- * **Run Smoke Tests**: 
+ * **Run Smoke Tests**:
  This errand runs a series of basic tests against your a9s MongoDB for PCF
  installation to ensure that it is configured properly. Those tests may
  take a certain amount of time, probably over 30 minutes.
 
 ### Pre-Delete Errands
 
- * **Delete all a9s MongoDB instances**: 
+ * **Delete all a9s MongoDB instances**:
 	This errand deletes all a9s MongoDB instances created by PCF end users  with `cf create-service` .
 	<p class="note warning"><strong>WARNING</strong>: This is a destructive task that cannot be undone. It irrecoverably deletes all VMs of the service instances. If a service instance is bound to an app or service keys exist, the errand fails.</p>
 
- * **Run Broker Deregistrar**: 
+ * **Run Broker Deregistrar**:
 	This will deregister the a9s MongoDB for PCF service broker in Elastic Runtime. This errand removes the a9s MongoDB service from the Elastic Runtime marketplace.
 
 ##<a id="configure-service-instance"></a> Configure Service Plans
