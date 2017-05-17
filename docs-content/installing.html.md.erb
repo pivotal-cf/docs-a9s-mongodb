@@ -3,17 +3,6 @@ title: Installing and Configuring a9s MongoDB for PCF
 owner: Partners
 ---
 
-<style>
-    .note.warning {
-        background-color: #fdd;
-        border-color: #fbb
-    }
-
-    .note.warning:before {
-        color: #f99;
-     }
-</style>
-
 This topic describes how to install and configure a9s MongoDB for PCF.
 
 
@@ -24,13 +13,15 @@ Before installing a9s MongoDB for PCF, ensure that you have installed and config
 This comprises the **a9s Consul DNS for PCF** tile and the **a9s BOSH for PCF**
 tile.
 
-In short, the a9s Consul DNS for PCF tile is required because it is responsible
+The a9s Consul DNS for PCF tile is required because it is responsible
 for providing an internal DNS system to the other a9s service tiles, the a9s
-MongoDB for PCF included. You can find further information about this tile in [its own documentation](https://docs.pivotal.io/partners/a9s-consul-dns/usecase.html).
+MongoDB for PCF included. 
+For more information about this tile, see [The Purpose of the a9s Consul DNS for PCF Tile](https://docs.pivotal.io/partners/a9s-consul-dns/usecase.html).
 
-As for the a9s BOSH for PCF tile, it is required because it is used by the a9s
+The a9s BOSH for PCF tile is required because it is used by the a9s
 service tiles, for the provisioning and lifecycle managment of their vitual
-machine. Further information on this tile can be found in [its own documentation](https://docs.pivotal.io/partners/a9s-bosh/usecase.html).
+machine. 
+For more information about this tile, see [a9s BOSH for PCF Use Case](https://docs.pivotal.io/partners/a9s-bosh/usecase.html).
 
 
 ##<a id='install'></a> Install and Configure a9s MongoDB for PCF

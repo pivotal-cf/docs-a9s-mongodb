@@ -3,11 +3,6 @@ title: a9s MongoDB for PCF
 owner: Partners
 ---
 
-<p>
-  <iframe src="http://www.youtube.com/embed/9zqLB__5qog"
-    width="656" height="372" frameborder="0" allowfullscreen></iframe>
-</p>
-
 This documentation describes the a9s MongoDB for Pivotal Cloud Foundry (PCF) tile. a9s MongoDB for PCF
 enables on-demand provisioning of VM-based, dedicated MongoDB servers and clusters. Developers can
 create instances of a MongoDB server or cluster using Apps Manager or the Cloud Foundry Command Line
@@ -36,7 +31,7 @@ Distributed across multiple infrastructure availability zones,  clustered data
 service plans enable short failover times and are resilient against
 failures of individual infrastructure hosts or entire availability zones.
 
-### <a></a>Current Features
+### <a id='currentfeatures'></a>Current Features
 
 The current version of a9s MongoDB for PCF includes the following key features:
 
@@ -50,13 +45,22 @@ The current version of a9s MongoDB for PCF includes the following key features:
 | **Logging and Monitoring** | Each MongoDB service instance provides log messages and MongoDB-specific metrics to one or more `syslog/graphite` endpoints. You can configure the `syslog/graphite` endpoint to receive logging and monitoring information. |
 | **Deployment Updater** | This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF service instances to their lastest version. |
 
-### <a></a>Upcoming Features
-The following features have been developed and tested on <a href="https://paas.anynines.com/" target="_blank">paas.anynines.com</a>. These features will be included in an upcoming a9s MongoDB for PCF release:
+[//]: # (### <a></a>Upcoming Features)
+[//]: # (The following features have been developed and tested on <a href="https://paas.anynines.com/" target="_blank">paas.anynines.com</a>. )
+[//]: # (These features will be included in an upcoming a9s MongoDB for PCF release:)
+[//]: # ( )
+[//]: # (| Feature | Benefit |)
+[//]: # (|---|---|)
+[//]: # (| **On­-Demand Encrypted Remote Connectivity** | A public encrypted access can be established on demand. This connection can be used to perform manual backups. As soon as the public connection becomes obsolete, the tunnel can be terminated to prevent further access. This functionality is provided by additional components in the Service Jumper Module. |)
 
-| Feature | Benefit |
-|---|---|
-| **On­-Demand Encrypted Remote Connectivity** | A public encrypted access can be established on demand. This connection can be used to perform manual backups. As soon as the public connection becomes obsolete, the tunnel can be terminated to prevent further access. This functionality is provided by additional components in the Service Jumper Module. |
+### <a id='video'></a>Video Overview of a9s MongoDB for PCF
 
+The following video provides an overview of how a9s MongoDB for PCF works.
+
+<p>
+  <iframe src="http://www.youtube.com/embed/9zqLB__5qog"
+    width="656" height="372" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## <a id="snapshot"></a>Product Snapshot
 
