@@ -8,15 +8,16 @@ This topic describes how to install and configure a9s MongoDB for PCF.
 
 ##<a id='prerequisites'></a> Prerequisites
 
-Before installing a9s MongoDB for PCF, ensure that you have installed and configured the products and tiles listed in [Requirements](./index.html#reqs).
+Before installing a9s MongoDB for PCF, 
+ensure that you have installed and configured the products and tiles listed in [Requirements](./index.html#reqs).
 
-This comprises the **a9s Consul DNS for PCF** tile and the **a9s BOSH for PCF**
-tile.
+This comprises the **a9s Consul DNS for PCF** tile and the **a9s BOSH for PCF** tile.
 
 The a9s Consul DNS for PCF tile is required because it is responsible
 for providing an internal DNS system to the other a9s service tiles, the a9s
 MongoDB for PCF included. 
-For more information about this tile, see [The Purpose of the a9s Consul DNS for PCF Tile](https://docs.pivotal.io/partners/a9s-consul-dns/usecase.html).
+For more information about this tile, 
+see [The Purpose of the a9s Consul DNS for PCF Tile](https://docs.pivotal.io/partners/a9s-consul-dns/usecase.html).
 
 The a9s BOSH for PCF tile is required because it is used by the a9s
 service tiles, for the provisioning and lifecycle managment of their vitual
@@ -45,19 +46,23 @@ to upload the product file.
 
 5. Click **Apply Changes** to deploy the service.
 
-After installing the a9s MongoDB for PCF, it is available in the list of marketplace services. For more information, see [Using a9s MongoDB for PCF](./using.html).
+After installing the a9s MongoDB for PCF, it is available in the list of marketplace services.
+For more information, see [Using a9s MongoDB for PCF](./using.html).
 
 
 ###<a id="azs"></a>Assign AZs and Networks
 
-Use **Assign AZs and Networks** to configure the location of service instance jobs. You should configure your network to balance cluster jobs between as many AZs as possible.
+Use **Assign AZs and Networks** to configure the location of service instance jobs.
+You should configure your network to balance cluster jobs between as many AZs as possible.
 
 <%= image_tag("az-and-networks.png") %>
 
 
 ###<a id='errands'></a>Configure Errands
 
-Use **Errands** to configure the lifecycle errands that run when you install or uninstall a9s MongoDB for PCF. The list below describes each errand. For more information, see [Understanding Lifecycle Errands](https://docs.pivotal.io/tiledev/tile-errands.html).
+Use **Errands** to configure the lifecycle errands that run when you install or uninstall a9s MongoDB for PCF.
+The list below describes each errand. 
+For more information, see [Understanding Lifecycle Errands](https://docs.pivotal.io/tiledev/tile-errands.html).
 
 <%= image_tag("a9s-mongodb-for-pcf-errands.png") %>
 
