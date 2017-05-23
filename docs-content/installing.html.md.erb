@@ -8,15 +8,15 @@ This topic describes how to install and configure a9s MongoDB for PCF.
 
 ##<a id='prerequisites'></a> Prerequisites
 
-Before installing a9s MongoDB for PCF, 
+Before installing a9s MongoDB for PCF,
 ensure that you have installed and configured the products and tiles listed in [Requirements](./index.html#reqs).
 
 This comprises the **a9s Consul DNS for PCF** tile and the **a9s BOSH for PCF** tile.
 
 The a9s Consul DNS for PCF tile is required because it is responsible
 for providing an internal DNS system to the other a9s service tiles, the a9s
-MongoDB for PCF included. 
-For more information about this tile, 
+MongoDB for PCF included.
+For more information about this tile,
 see [The Purpose of the a9s Consul DNS for PCF Tile](https://docs.pivotal.io/partners/a9s-consul-dns/usecase.html).
 
 The a9s BOSH for PCF tile is required because it is used by the a9s
@@ -39,6 +39,7 @@ to upload the product file.
 4. Click the newly added tile, then click **Settings** to review the configuration settings for each tab.
 	See the following sections for more information on how to configure the properties on each side-tab:
 	* [Assign AZs and Networks](#azs)
+	* [Configure the Backup Manager](#backup-manager)
 	* [Configure BOSH Errands](#errands)
 	* [Configure Resources](#resource-config)
 	* [Configure Stemcells](#stemcell)
@@ -56,11 +57,22 @@ You should configure your network to balance cluster jobs between as many AZs as
 
 <%= image_tag("az-and-networks.png") %>
 
+###<a id='backup-manager'></a>Configure the Backup Manager
+
+Use **Backup settings** to enter the crendentials of the AWS account where the
+backup will be uploaded – this feature only supports AWS S3 at the moment. Let
+those fields empty if you don't want to backup your data with the a9s MongoDB
+for PCF tile.
+
+You can also modify the default values for the backup task and the [Cron](https://en.wikipedia.org/wiki/Cron)
+job that is used to schedule the backups.
+
+<%= image_tag("backup-settings.png") %>
 
 ###<a id='errands'></a>Configure Errands
 
 Use **Errands** to configure the lifecycle errands that run when you install or uninstall a9s MongoDB for PCF.
-The list below describes each errand. 
+The list below describes each errand.
 For more information, see [Understanding Lifecycle Errands](https://docs.pivotal.io/tiledev/tile-errands.html).
 
 <%= image_tag("a9s-mongodb-for-pcf-errands.png") %>
@@ -203,3 +215,62 @@ Started preparing deployment > Preparing deployment. Done (00:00:01)
 Errand 'deployment-updater' completed successfully (exit code 0)
 </pre>
 <p class="note"><strong>Note</strong>: Depending on the number of service instances, the Deployment Updater may take significant time to finish running. BOSH shows no logging output while the errand runs.</p>
+
+##<a id='interacting-with-the-backup-manager'></a> Interacting with the Backup Manager
+
+For the moment, only PCF administrators can interact with the Backup Manager
+endpoints to trigger immediate backups and restore backups. We plan to extend this
+function to PCF users as well in the near future.
+
+To perform backups and restores, you need to go in the a9s MongoDB for PCF tile,
+find out the IP of the one of the Backup Manager instances in the **Status** tab and the
+credentials of the service in the **Credentials** under the *backup-manager* job
+and the name *Backup Manager Credentials*
+
+Once you have this information, you can trigger a backup by calling the **/backup\_agent/backup\_all**
+endpoint:
+
+```
+$ curl username:password@IP:3000/backup_agent/backup_all -d {}
+```
+
+Before performing a restore, you will need to find the ID of the Backup and the
+ID of the instance. You can do so by listing the instances:
+
+```
+$ curl username:password@IP:3000/instances
+```
+
+This command outputs an array composed of objects like this one:
+
+```
+{
+  "restores": [],
+  "backups": [
+    {
+      "backup_agent_task": {
+        "updated_at": "2017-05-19T09:01:31.389Z",
+        "created_at": "2017-05-19T09:01:16.064Z",
+        "status": "done",
+        "task_id": 5,
+        "id": 5
+      },
+      "instance_id": 1,
+      "id": 5
+    }
+  ],
+  "instance_id": "1c16933a-892f-4fe0-b968-ea0bf90246c9",
+  "id": 1
+}
+```
+
+You can see there backups and restores that have been performed in the past for
+the instance with the instance_id "1c16933a-892f-4fe0-b968-ea0bf90246c9". This
+ID corresponds to the instance GUID from Pivotal Cloud Foundry.
+
+Then you can restore your backup by calling the **/backup\_agent/restores**
+endpoint with the backup\_id and instance\_id as data.
+
+```
+$ curl username:password@IP:3000/backup_agent/restores -d "backup_id=5" -d "instance_id=1"
+```
