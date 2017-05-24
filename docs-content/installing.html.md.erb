@@ -230,18 +230,25 @@ and the name *Backup Manager Credentials*
 <%= image_tag("backup-manager-status-tab.png", width: 320) %>
 <%= image_tag("backup-manager-credentials.png", width: 320) %>
 
-Once you have this information, you can trigger a backup by calling the **/backup\_agent/backup\_all**
+Once you have this information, you can trigger a backup on all instances by
+calling the **/backup\_agent/backup\_all** endpoint:
+
+```
+$ curl backup:53cr3t@172.28.7.64:3000/backup_agent/backup_all -d {}
+```
+
+or on a given instance with its GUID by calling the **/backup\_agent/backup**
 endpoint:
 
 ```
-$ curl username:password@IP:3000/backup_agent/backup_all -d {}
+$ curl backup:53cr3t@172.28.7.64:3000/backup_agent/backup -d "instance_guid=1c16933a-892f-4fe0-b968-ea0bf90246c9"
 ```
 
 Before performing a restore, you will need to find the ID of the Backup and the
 ID of the instance. You can do so by listing the instances:
 
 ```
-$ curl username:password@IP:3000/instances
+$ curl backup:53cr3t@172.28.7.64:3000/instances
 ```
 
 This command outputs an array composed of objects like this one:
@@ -275,5 +282,5 @@ Then you can restore your backup by calling the **/backup\_agent/restores**
 endpoint with the backup\_id and instance\_id as data.
 
 ```
-$ curl username:password@IP:3000/backup_agent/restores -d "backup_id=5" -d "instance_id=1"
+$ curl backup:53cr3t@172.28.7.64:3000/backup_agent/restores -d "backup_id=5" -d "instance_id=1"
 ```
