@@ -1,0 +1,13 @@
+---
+title: Known Issues
+owner: Partners
+---
+
+##<a id="failed-backups"></a>Failed Backups with empty Configuration
+
+The Backup Manager schedules backups even when its settings are left empty and
+these backups will be displayed as "failed" in the Backup Manager API.
+
+The next version of the tile will fix this issue by ignoring backups if no S3
+credentials are provided.
+
