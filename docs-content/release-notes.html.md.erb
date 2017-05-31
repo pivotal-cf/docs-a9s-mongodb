@@ -13,8 +13,15 @@ owner: Partners
 
 **Release Date:** March 14, 2017
 
+Features included in this release:
+
 * Removed stemcell from tile to the a9s Bosh for PCF tile
 * Remove restriction to have three AZs configured in the a9s Bosh for PCF
+
+Known issues in this release:
+
+* Failed backups with empty configuration — The Backup Manager schedules backups
+even when its settings are left empty and these backups are displayed as “failed” in the Backup Manager API.
 
 ### v0.10.0
 
