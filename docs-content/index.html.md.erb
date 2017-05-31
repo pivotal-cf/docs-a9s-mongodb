@@ -44,6 +44,8 @@ The current version of a9s MongoDB for PCF includes the following key features:
 | **Service Instance Capacity Upgrade** | Cloud Foundry Service Plan updates allow upgrades to the RAM, CPU and storage capacity for your MongoDB instances. |
 | **Logging and Monitoring** | Each MongoDB service instance provides log messages and MongoDB-specific metrics to one or more `syslog/graphite` endpoints. You can configure the `syslog/graphite` endpoint to receive logging and monitoring information. |
 | **Deployment Updater** | This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF service instances to their lastest version. |
+| **Backup Manager** | The Backup Manager does regular backup of your instances and offers endpoints to backup instantly and restore backups. |
+| **Service Guard** | The Service Guard creates Cloud Foundry security groups for your service instance VMs.<br /><br /> When the IP address of a service instance changes, the guard will update the security group. The Service Guard will also restart the application instances bound to the affected service instance. **The instances of one application will be restarted one by one to avoid downtime.**|
 
 [//]: # (### <a></a>Upcoming Features)
 [//]: # (The following features have been developed and tested on <a href="https://paas.anynines.com/" target="_blank">paas.anynines.com</a>. )
