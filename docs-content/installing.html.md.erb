@@ -216,44 +216,37 @@ Errand 'deployment-updater' completed successfully (exit code 0)
 </pre>
 <p class="note"><strong>Note</strong>: Depending on the number of service instances, the Deployment Updater may take significant time to finish running. BOSH shows no logging output while the errand runs.</p>
 
-##<a id='interacting-with-the-backup-manager'></a> Interacting with the Backup Manager
+##<a id='interacting-with-the-backup-manager'></a> Trigger Backups and Restores on Demand
 
 For the moment, only PCF administrators can interact with the Backup Manager
-endpoints to trigger immediate backups and restore backups. We plan to extend this
-function to PCF users as well in the near future.
+endpoints to trigger immediate backups and restores of backups.
 
-To perform backups and restores, you need to go in the a9s MongoDB for PCF tile,
+1. To perform backups and restores, you need to go in the a9s MongoDB for PCF tile,
 find out the IP of the one of the Backup Manager instances in the **Status** tab and the
 credentials of the service in the **Credentials** under the *backup-manager* job
 and the name *Backup Manager Credentials*
+<div>
+<%= image_tag("backup-manager-status-tab.png", width: 300) %>
+<%= image_tag("backup-manager-credentials.png", width: 300) %>
+</div>
 
-<%= image_tag("backup-manager-status-tab.png", width: 320) %>
-<%= image_tag("backup-manager-credentials.png", width: 320) %>
-
-Once you have this information, you can trigger a backup on all instances by
+2. Once you have this information, you can trigger a backup on all MongoDB instances by
 calling the **/backup\_agent/backup\_all** endpoint:
-
-```
+<pre class="terminal">
 $ curl backup:53cr3t@172.28.7.64:3000/backup_agent/backup_all -d {}
-```
-
+</pre>
 or on a given instance with its GUID by calling the **/backup\_agent/backup**
 endpoint:
-
-```
+<pre class="terminal">
 $ curl backup:53cr3t@172.28.7.64:3000/backup_agent/backup -d "instance_guid=1c16933a-892f-4fe0-b968-ea0bf90246c9"
-```
-
-Before performing a restore, you will need to find the ID of the Backup and the
+</pre>
+3. Before performing a restore, you will need to find the ID of the Backup and the
 ID of the instance. You can do so by listing the instances:
-
-```
+<pre class="terminal">
 $ curl backup:53cr3t@172.28.7.64:3000/instances
-```
-
+</pre>
 This command outputs an array composed of objects like this one:
-
-```
+<pre class="terminal">
 {
   "restores": [],
   "backups": [
@@ -272,15 +265,12 @@ This command outputs an array composed of objects like this one:
   "instance_id": "1c16933a-892f-4fe0-b968-ea0bf90246c9",
   "id": 1
 }
-```
-
+</pre>
 You can see there backups and restores that have been performed in the past for
 the instance with the instance_id "1c16933a-892f-4fe0-b968-ea0bf90246c9". This
 ID corresponds to the instance GUID from Pivotal Cloud Foundry.
-
 Then you can restore your backup by calling the **/backup\_agent/restores**
 endpoint with the backup\_id and instance\_id as data.
-
-```
+<pre class="terminal">
 $ curl backup:53cr3t@172.28.7.64:3000/backup_agent/restores -d "backup_id=5" -d "instance_id=1"
-```
+</pre>
