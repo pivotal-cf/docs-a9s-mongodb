@@ -3,6 +3,7 @@ title: a9s MongoDB for PCF
 owner: Partners
 ---
 
+
 This documentation describes the a9s MongoDB for Pivotal Cloud Foundry (PCF) tile. a9s MongoDB for PCF
 enables on-demand provisioning of VM-based, dedicated MongoDB servers and clusters. Developers can
 create instances of a MongoDB server or cluster using Apps Manager or the Cloud Foundry Command Line
@@ -10,7 +11,7 @@ interface (cf CLI) and bind these instances to an application.
 Depending on your service plan, a service instance may be associated with a single, dedicated VM
 or a set of VMs consisting of multiple VMs containing a MongoDB replica set cluster.
 
-<%= image_tag("a9s-mongodb-tile.png") %>
+<%= image_tag("a9s-mongodb.png") %>
 
 ## <a id='overview'></a>Overview
 
@@ -46,21 +47,16 @@ The current version of a9s MongoDB for PCF includes the following key features:
 | **Deployment Updater** | This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF service instances to their lastest version. |
 | **Backup Manager** | The Backup Manager does regular backup of your instances and offers endpoints to backup instantly and restore backups. |
 | **Service Guard** | The Service Guard creates Cloud Foundry security groups for your service instance VMs.<br /><br /> When the IP address of a service instance changes, the guard updates the security group. The Service Guard also restarts the application instances bound to the affected service instance. **The instances of one application are restarted one by one to avoid downtime.**|
-
-[//]: # (### <a></a>Upcoming Features)
-[//]: # (The following features have been developed and tested on <a href="https://paas.anynines.com/" target="_blank">paas.anynines.com</a>. )
-[//]: # (These features will be included in an upcoming a9s MongoDB for PCF release:)
-[//]: # ( )
-[//]: # (| Feature | Benefit |)
-[//]: # (|---|---|)
-[//]: # (| **On­-Demand Encrypted Remote Connectivity** | A public encrypted access can be established on demand. This connection can be used to perform manual backups. As soon as the public connection becomes obsolete, the tunnel can be terminated to prevent further access. This functionality is provided by additional components in the Service Jumper Module. |)
+| **Single to Cluster Updates** | Allow plan updates from single to cluster plans |
+| **Service Dashboard** | The Service Dashboard provides single sign on and lets the user trigger easily backups. |
+| **New MongoDB versions** | Added a9s MongoDB 3.4 and 3.6 |
 
 ### <a id='video'></a>Video Overview of a9s MongoDB for PCF
 
 The following video provides an overview of how a9s MongoDB for PCF works.
 
 <p>
-  <iframe src="https://www.youtube.com/embed/9zqLB__5qog"
+  <iframe src="https://www.youtube.com/embed/va3bszUSfOQ"
     width="656" height="372" frameborder="0" allowfullscreen></iframe>
 </p>
 
@@ -73,35 +69,36 @@ The following table provides version and version-support information about a9s M
     <th>Details</th>
     <tr>
         <td>Version</td>
-        <td>v1.1.0</td>
+        <td>v2.0.1</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>June 1, 2017</td>
+        <td>July 6, 2018</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
-        <td>v1.7.x, v1.8.x, v1.9.x, v1.10.x</td>
+        <td>v1.12.x, v2.0.x, and v2.1.x</td>
     </tr>
     <tr>
-        <td>Compatible Elastic Runtime version(s)</td>
-        <td>v1.7.x, v1.8.x, v1.9.x, v1.10.x</td>
+        <td>Compatible Pivotal Application Service version(s):</td>
+        <td>v1.12.x, v2.0.x, and v2.1.x</td>
     </tr>
     <tr>
         <td>IaaS support</td>
-        <td>AWS, OpenStack, and vSphere</td>
+        <td>AWS, Azure, GCP, OpenStack, and Vsphere</td>
     </tr>
 </table>
+\* As of PCF v2.0, <em>Elastic Runtime</em> is renamed <em>Pivotal Application Service (PAS)</em>.
+
+* This is a major release. Upgrades from a9s MongoDB for PCF v1.x are not supported. If you previously installed a9s MongoDB for PCF v1.x, uninstall it and install the latest version
 
 ## <a id="reqs"></a>Requirements
 
 To install and use a9s MongoDB for PCF, you must install the following products and tiles:
 
-* Elastic Runtime, v1.7 or later
-* [a9s Consul DNS](https://network.pivotal.io/products/a9s-consul) for PCF, v1.0.0 or later
-* [a9s BOSH](https://network.pivotal.io/products/a9s-bosh) for PCF, v1.0.0 or later
+* Pivotal Application Service (formerly Elastic Runtime) v1.12 or later
 
-For more information, see [Installing and Configuring a9s MongoDB for PCF](./installing.html).
+For more information, see [Installing and Configuring a9s PostgreSQL for PCF](./installing.html).
 
 ## <a id="feedback"></a>Feedback and Support
 
