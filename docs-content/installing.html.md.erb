@@ -237,9 +237,9 @@ $ curl backup:53cr3t&commat;172.28.7.64:3000/backup\_agent/restores -d "backup\_
 
 a9s MongoDB for PCF comes with its own highly available Consul cluster for service discovery and service failover procedures.
 
-Consul is a highly available (HA) service discovery and configuration tool, which includes features such as failure detection, an HA key/value store, and an HA DNS service that you can control through a HTTP-based REST interface.
+Consul is a HA service discovery and configuration tool, which includes features such as failure detection, an HA key/value store, and an HA DNS service that you can control through a HTTP-based REST interface.
 
-To make use of this feature you must talk to your administrator of your corporates nameservers to setup a delegation of a9s MongoDB hostnames. The hostnames of these queries end with ` a9s-mongodb-consul` by default and must be delegated to the IP addresses of the consul server within the a9s MongoDB tile. To figure out the IP addresses check the status tab of the tile and look for `a9s Consul Cluster`.
+To make use of this feature you must talk to your administrator of your company's nameservers to setup a delegation of a9s MongoDB hostnames. The hostnames of these queries end with ` a9s-mongodb-consul` by default and must be delegated to the IP addresses of the consul server within the a9s MongoDB tile. To figure out the IP addresses check the status tab of the tile and look for `a9s Consul Cluster`.
 
 <%= image_tag("status_tab.png") %>
 
