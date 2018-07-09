@@ -2,42 +2,11 @@
 
 This topic describes how to use a9s MongoDB .
 
-- [Use a9s MongoDB with an Application](#use-a9s-mongodb-with-an-application)
-  - [View the a9s MongoDB Service](#view-the-a9s-mongodb-service)
-  - [Create a Service Instance](#create-a-service-instance)
-  - [Bind an Application to a Service Instance](#bind-an-application-to-a-service-instance)
-  - [Restage or Restart Your Application](#restage-or-restart-your-application)
-  - [Obtain Service Instance Access Credentials](#obtain-service-instance-access-credentials)
-- [Delete an a9s MongoDB Service Instance](#delete-an-a9s-mongodb-service-instance)
-  - [List Available Services](#list-available-services)
-  - [Unbind a Service Instance](#unbind-a-service-instance)
-  - [Delete a Service Instance](#delete-a-service-instance)
-- [Upgrade the Service Instance to another Service Plan](#upgrade-the-service-instance-to-another-service-plan)
-- [Add a Graphite Endpoint](#add-a-graphite-endpoint)
-- [Add a Syslog Endpoint](#add-a-syslog-endpoint)
-- [Cloud Foundry Application Security Groups](#cloud-foundry-application-security-groups)
-  - [Get Service Instance GUID](#get-service-instance-guid)
-  - [Check available Security Groups](#check-available-security-groups)
-- [Backup and Restore Service Instances](#backup-and-restore-service-instances)
-  - [Get Dashboard Address, Login and Authorize](#get-dashboard-address-login-and-authorize)
-  - [Perform a Backup](#perform-a-backup)
-  - [Restore a Backup](#restore-a-backup)
-- [Make a Service Instance Locally Available](#make-a-service-instance-locally-available)
-  - [Get The Service Url and Credentials](#get-the-service-url-and-credentials)
-  - [Create a Tunnel to The Service](#create-a-tunnel-to-the-service)
-- [Service keys](#service-keys)
-  - [Creating a service key](#creating-a-service-key)
-  - [Listing service keys](#listing-service-keys)
-  - [Accessing service keys](#accessing-service-keys)
-  - [Deleting service keys](#deleting-service-keys)
-- [Creating a Fork of a Service Instance](#creating-a-fork-of-a-service-instance)
+##  <a id='use-a9s-redis-with-an-application'></a> Use a9s MongoDB with an Application
 
-## Use a9s MongoDB with an Application
+To use a9s MongoDB with an application, create a service instance and bind the service instance to your app. For more information about managing service instances, see [Managing Service Instances with the cf CLI](https://docs.cloudfoundry.org/devguide/services/managing-services.html).
 
-To use a9s MongoDB with an application, create a service instance and bind the service instance
-to your application. For more information on managing service instances, see [Managing Service Instances with the cf CLI](https://docs.cloudfoundry.org/devguide/services/managing-services.html).
-
-### View the a9s MongoDB Service
+### <a id='view-the-a9s-redis-service'></a>  View the a9s MongoDB Service
 
 After the service is installed, you can see the `a9s-mongodb` and its service plans appear in your CF marketplace. Run `cf marketplace` to see the service listing:
 ```bash
@@ -49,9 +18,9 @@ a9s-mongodb  mongodb-single-small, mongodb-cluster-small,    This is the anynine
              mongodb-single-big, mongodb-cluster-big
 ```
 
-### Create a Service Instance
+### <a id='create-a-service-instance'></a> Create a Service Instance
 
-To provision a MongoDB database, run `cf create-service`. For example:
+To provision a MongoDB database, run `cf create-service`.
 
 ```bash
 $ cf create-service a9s-mongodb mongodb-single-small my-mongodb-service
@@ -59,9 +28,9 @@ $ cf create-service a9s-mongodb mongodb-single-small my-mongodb-service
 
 Depending on your infrastructure and service broker utilization, it may take several minutes to create the service instance.
 
-Run the `cf services` command to view the creation status. This command displays a list of all your service instances. To view the status of a specific service instance, run `cf service NAME-OF-YOUR-SERVICE`.
+Run `cf services` to view the creation status. This command displays a list of all your service instances. To view the status of a specific service instance, run `cf service NAME-OF-YOUR-SERVICE`.
 
-### Bind an Application to a Service Instance
+### <a id='bind-an-application-to-a-service-instance'></a> Bind an Application to a Service Instance
 
 After your database is created, run `cf bind-service` to bind the service to your application:
 
@@ -69,11 +38,11 @@ After your database is created, run `cf bind-service` to bind the service to you
 $ cf bind-service a9s-mongodb-app my-mongodb-service
 ```
 
-### Restage or Restart Your Application
+### <a id='restage-or-restart-your-application'></a> Restage or Restart Your Application
 
 To enable your application to access the service instance, run `cf restage` or `cf restart` to restage or restart your application.
 
-## Obtain Service Instance Access Credentials
+## <a id='obtain-service-instance-access-credentials'></a> Obtain Service Instance Access Credentials
 
 After a service instance is bound to an application, the credentials of your MongoDB database are stored in the environment variables of the application. Run `cf env APP-NAME` to display the environment variables.
 
@@ -127,13 +96,13 @@ You can use the host_ips, username and password values to connect to your databa
 a9s MongoDB for PCF comes with its own Consul cluster to provide hostname resolving. When your DNS is configured to resolve the a9s MongoDB for PCF service instance domains you can make use of `hosts` or `uri`.
 For more information see <a href="./installing.html#name-resolving-with-consul" target="_blank">Name Resolving With Consul</a>.
 
-## Delete an a9s MongoDB Service Instance
+## <a id='delete-an-a9s-redis-service-instance'></a> Delete an a9s Redis Service Instance
 
-*WARNING: Before deleting a service instance, you must backup data stored in your database. This operation cannot be undone and all the data is lost when the service is deleted.*
+<p class='note warning'><strong>WARNING:</strong> Before deleting a service instance, you must back up data stored in your database. This operation cannot be undone and all the data is lost when the service is deleted.</p>
 
 Before you can delete a service instance, you must unbind it from all apps.
 
-### List Available Services
+### <a id='list-available-services'></a> List Available Services
 
 Run `cf services` to list your available services.
 
@@ -149,7 +118,7 @@ my-mongodb-service   a9s-mongodb   mongodb-single-small   a9s-mongodb-app   crea
 
 This example shows that `my-mongodb-service` is bound to the `a9s-mongodb-app` application.
 
-### Unbind a Service Instance
+### <a id='unbind-a-service-instance'></a>Unbind a Service Instance
 
 Run `cf unbind-service` to unbind the service from your application.
 
@@ -158,7 +127,7 @@ $ cf unbind-service a9s-mongodb-app my-mongodb-service
 ```
 
 
-### Delete a Service Instance
+### <a id='delete-a-service-instance'></a>Delete a Service Instance
 
 After unbinding the service, it is no longer bound to an application. Run `cf delete-service` to delete the service:
 
@@ -170,7 +139,7 @@ It may take several minutes to delete the service. Deleting a service deprovisio
 Run the `cf services` command to view the deletion status.
 
 
-## Upgrade the Service Instance to another Service Plan
+## <a id='upgrade-the-service-instance-to-another-service-plan'></a> Upgrade the Service Instance to Another Service Plan
 
 Once created, you can upgrade your service instance to another, larger service plan. A larger service plan provides more CPU, RAM and storage. For more information, see the  [Update a Service Instance](https://docs.cloudfoundry.org/devguide/services/managing-services.html#update_service) of the _Managing Service Instances with the cf CLI_ topic.
 
@@ -178,25 +147,33 @@ Once created, you can upgrade your service instance to another, larger service p
 $ cf update-service my-mongodb-service -p a-bigger-plan
 ```
 
-Here are the plans you can upgrade to depending on the one you are currently
-using:
+Here are the plans you can upgrade to, depending on the one you are currently using:
 
-* If you are currently using the `mongodb-single-small` plan, you can upgrade to the `mongodb-single-big` plan.
+| Base Plan | Target Plan |
+|------|-----------|
+| mongodb-single-nano | mongodb-single-small <br> mongodb-single-medium <br> mongodb-single-big <br> mongodb-replica-small <br> mongodb-replica-medium <br> mongodb-replica-big |
+| mongodb-single-small | mongodb-single-medium <br> mongodb-single-big <br> mongodb-replica-small <br> mongodb-replica-medium <br> mongodb-replica-big |
+| mongodb-single-medium | mongodb-single-big <br> mongodb-replica-medium <br> mongodb-replica-big |
+| mongodb-single-big | mongodb-replica-big |
+| mongodb-replica-small | mongodb-replica-medium <br> mongodb-replica-big |
+| mongodb-replica-medium | mongodb-replica-big |
+| mongodb-single-nano-ssl | mongodb-single-small-ssl <br> mongodb-single-medium-ssl <br> mongodb-single-big-ssl <br> mongodb-replica-small-ssl <br> mongodb-replica-medium-ssl <br> mongodb-replica-big-ssl |
+| mongodb-single-small-ssl | mongodb-single-medium-ssl <br> mongodb-single-big-ssl <br> mongodb-replica-small-ssl <br> mongodb-replica-medium-ssl <br> mongodb-replica-big-ssl |
+| mongodb-single-medium-ssl | mongodb-single-big-ssl <br> mongodb-replica-medium-ssl <br> mongodb-replica-big-ssl |
+| mongodb-single-big-ssl | mongodb-replica-big-ssl |
+| mongodb-replica-small-ssl | mongodb-replica-medium-ssl <br> mongodb-replica-big-ssl |
+| mongodb-replica-medium-ssl | mongodb-replica-big-ssl |
 
-* If you are currently using the `mongodb-cluster-small` plan, you can upgrade to the `mongodb-cluster-big` plan.
+## <a id='add-a-graphite-endpoint'></a> Add a Graphite Endpoint
 
-## Add a Graphite Endpoint
-
-If you want to monitor your service with Graphite, you can set an endpoint to
-where to information will be sent with the `cf update-service` command. This command expects the [-c flag](https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-binding)
-and a JSON string containing the `graphite` and `metrics_prefix` keys.
-Depending on your graphite provider  the `metrics_prefix` might require that each metrics must start with an API key in their name. You can also change the interval within the data is send to the endpoint. Do to this modify `interval` the default is 10s.
+If you want to monitor your service with Graphite, you can set an endpoint to where to information will be sent with the `cf update-service` command. This command expects the [-c flag](https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-binding) and a JSON string containing the `graphite` and `metrics_prefix` keys.
+Depending on your graphite provider, the `metrics_prefix` might require that each metric must start with an API key in their name. You can also change the interval within the data is send to the endpoint. To do this, modify `interval`; the default is 10s.
 
 ```bash
 $ cf update-service my-mongodb-service -c '{ "graphite": ["yourspace.your-graphite-endpoint.com:12345"], "metrics_prefix": "your-api-key.my-cluster-mongodb", "interval": "5"}'
 ```
 
-## Add a Syslog Endpoint
+## <a id='add-a-syslog-endpoint'></a> Add a Syslog Endpoint
 
 The `cf update-service` command used with the [-c flag](https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-binding) can let you stream your syslog to a third-party service. In this case, the command expects a JSON string containing the `syslog` key. You can also change the interval for the syslog with the same key than for the graphite endpoint `interval`.
 
@@ -204,7 +181,7 @@ The `cf update-service` command used with the [-c flag](https://docs.cloudfoundr
 $ cf update-service my-mongodb-service -c '{ "syslog": ["logs4.your-syslog-endpoint.com:54321"], "interval": "5" }'
 ```
 
-## Cloud Foundry Application Security Groups
+## <a id='cloud-foundry-application-security-groups'></a> Cloud Foundry Application Security Groups
 
 This topic describes how to check whether a security group was created.
 
@@ -212,7 +189,7 @@ Each a9s Data Service will automatically create and update Cloud Foundry securit
 To get a better understanding about Security Groups you can have a look on the
 [Understanding Application Security Groups](https://docs.cloudfoundry.org/concepts/asg.html) topic.
 
-### Get Service Instance GUID
+### <a id='get-service-instance-guid'></a> Get Service Instance GUID
 
 Run `cf service INSTANCE_NAME --guid` to get the guid of the service instance.
 
@@ -221,9 +198,9 @@ $ cf service my-mongodb --guid
 ca16f111-5073-40b7-973a-156c75dd3028
 ```
 
-### Check available Security Groups
+### <a id='check-available-security-groups'></a> Check Available Security Groups
 
-To see all available security groups use `cf security-groups`.
+To see all available security groups, run `cf security-groups`.
 
 ```
 $cf security-groups
@@ -241,13 +218,13 @@ OK
 There we can see a security group with the named `guard_ca16f111-5073-40b7-973a-156c75dd3028`
 was successfully created.
 
-*NOTE: in some circumstances the connection between the application and the service instance is not possible, in this case check if a security group was created.*
+<p class='note'><strong>Note:</strong> In some circumstances, the connection between the application and the service instance is not possible. In this case, check to see if a security group was created.</p>
 
-## Backup and Restore Service Instances
+## <a id='backup-and-restore-service-instances'></a> Backup and Restore Service Instances
 
 a9s MongoDB provides an easy way to create backups and restore if needed.
 
-### Get Dashboard Address, Login and Authorize
+### <a id='get-dashboard-address-login-and-authorize'></a> Get Dashboard Address, Log In and Authorize
 
 1. Grap the dashboard URL with `cf service SERVICE-NAME`.
   ```bash
@@ -269,48 +246,48 @@ a9s MongoDB provides an easy way to create backups and restore if needed.
   Updated: 2017-10-26T08:28:38Z
   ```
 
-2. Browse to the dashboard URL and authenticate on the redirected page with your Cloud Foundry credentials:
+1. Browse to the dashboard URL and authenticate on the redirected page with your Cloud Foundry credentials:
 ![authentication-page](images/authentication-page.png)
 
-3. Click **Authorize** to approve the authorization request:
+1. Click **Authorize** to approve the authorization request:
 ![authorization-page](images/authorization-page.png)
 
-### Perform a Backup
+### <a id='perform-a-backup'></a> Perform a Backup
 
-On the dashboard as shown above you can trigger a backup by clicking **Trigger backup**
+On the dashboard, you can trigger a backup by clicking **Trigger backup**
 
 ![service-dashboard](images/service-dashboard.png)
 
-After a short period of time the backup will be queued. The backup process will start soon.
+After a short period of time the backup will be queued and the backup process will soon start.
 
 ![service-dashboard](images/service-dashboard-bkp-triggered.png)
 
-*NOTE: Depending on the size of the data the backup will take some time.*
+<p class='note'><strong>Note:</strong> Depending on the size of the data, the backup will take some time.</p>
 
-### Restore a Backup
+### <a id='restore-a-backup'></a> Restore a Backup
 
-Open the dashboard again and select the backup you would like to restore.
-Click the **Restore** button of the backup. After a short period of time the restore will be triggered.
+1. Open the dashboard again and select the backup you would like to restore.
+1. Click **Restore** and wait for the restore to trigger.
 
 ![service-dashboard](images/service-dashboard-restore-triggered.png)
 
-*NOTE: Same as the backup, depending on the size of the data, the restore will take some time.*
+<p class='note'><strong>Note:</strong> Depending on the size of the data, the restore will take some time.</p>
 
 ![service-dashboard](images/service-dashboard-final.png)
 
-## Make a Service Instance Locally Available
+## <a id='make-a-service-instance-locally-available'></a> Make a Service Instance Locally Available
 
-It is possible to access any of the a9s Data Services locally. That means you can connect with a local client to the service for any purpose such as debugging.
-CF provides a smart way to create SSH forward tunnels via a pushed application.
-For more information about this feature see the [Accessing Apps with SSH](https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-apps.html) section of the CF documentation.
+It is possible to access any of the a9s Data Services locally. You can connect with a local client to the service for any purpose, such as debugging.
+CF provides a smart way to create SSH forward tunnels through a pushed application.
+For more information about this feature, see the [Accessing Apps with SSH](https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-apps.html) section of the CF documentation.
 
-First of all you must have an application bound to the service. How to do this see [Bind an Application to a Service Instance](#bind-an-application-to-a-service-instance).
+First, you must have an application bound to the service. To do this, see [Bind an Application to a Service Instance](#bind-an-application-to-a-service-instance).
 
-*NOTE: `cf ssh` support must be enabled in the platform. Ask your administrator if you are not sure.*
+<p class='note'><strong>Note:</strong> `cf ssh` support must be enabled in the platform. Your administrator can tell you whether it is enabled.</p>
 
-### Get The Service Url and Credentials
+### <a id='get-the-service-url-and-credentials'></a> Get the Service URL and Credentials
 
-When you follow this instructions [Obtain Service Instance Access Credentials](#obtain-service-instance-access-credentials) you will get the hostname of the service and the user credentials.
+You must first follow the procedure in [Obtain Service Instance Access Credentials](#obtain-service-instance-access-credentials) to get the hostname of the service and the user credentials.
 
 ```bash
 $ cf env a9s-mongodb-app
@@ -349,28 +326,28 @@ System-Provided:
 ...
 ```
 
-Notice the host `d67901c.service.dc1.a9svs`, the username `a9s-brk-usr` and the password `a9s-password`. You will need this in the next step.
+Note the host `d67901c.service.dc1.a9svs`, the username `a9s-brk-usr`, and the password `a9s-password`. You will need these in the next step.
 
-### Create a Tunnel to The Service
+### <a id='create-a-tunnel-to-the-service'></a> Create a Tunnel to The Service
 
-With the `cf ssh` as mentioned before you can create a ssh forward tunnel to the management dashboard.
-Use port 27017 to connect to the a9s MongoDB Instance.
+With `cf ssh`,  you can create am SSH forward tunnel to the management dashboard.
+Use port `27017` to connect to the a9s Redis Instance.
 
 ```bash
 $ cf ssh a9s-mongodb-app -L 27017:d67901c.service.dc1.a9svs:27017
 vcap@956aaf4e-6da9-4f69-4b1d-8e631a403312:~$
 ```
 
-When the ssh tunnel is open you can access the instance over the address `localhost:27017`.
+When the SSH tunnel is open, you can access the instance using the address `localhost:27017`.
 
-*NOTE: Don't forget to close the session with `exit`.*
+<p class='note'><strong>Note:</strong> Be sure to close the session by running <code>exit</code>.</p>
 
-## Service keys
+## <a id="service-keys"></a> Service keys
 
 To gain access to the service manually rather than binding apps to it you can
 use service keys.
 
-### Creating a service key
+### <a id="create-a-service-key"></a> Creating a Service Key
 
 To create a key to the service instance `mongodb1` call `nykey` run:
 
@@ -378,7 +355,7 @@ To create a key to the service instance `mongodb1` call `nykey` run:
 cf create-service-key mongodb1 mykey
 ```
 
-### Listing service keys
+### <a id="listing-service-keys"></a> Listing Service Keys
 
 To list all the keys for the `mongodb1` service instance run this:
 
@@ -386,7 +363,7 @@ To list all the keys for the `mongodb1` service instance run this:
 cf service-keys mongodb1
 ```
 
-### Accessing service keys
+### <a id="accessing-service-keys"></a> Accessing Service Keys
 
 To obtain the key `mykey` from the `mongodb1` service instance run:
 
@@ -394,7 +371,7 @@ To obtain the key `mykey` from the `mongodb1` service instance run:
 cf service-key mongodb1 mykey
 ```
 
-### Deleting service keys
+### <a id="deleting-service-keys"></a> Deleting Service Keys
 
 To delete a service key `mykey` from the service instance `mongodb1` run:
 
@@ -402,7 +379,7 @@ To delete a service key `mykey` from the service instance `mongodb1` run:
 cf delete-service-key mongodb1 mykey
 ```
 
-## Creating a Fork of a Service Instance
+## <a id="creating-a-fork-of-a-service-instance"></a> Creating a Fork of a Service Instance
 
 The procedure of forking a service instance involves creating a backup of a
 service instance, modifying the backup a bit, and restoring it to a different
