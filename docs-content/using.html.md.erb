@@ -2,11 +2,11 @@
 
 This topic describes how to use a9s MongoDB .
 
-##  <a id='use-a9s-redis-with-an-application'></a> Use a9s MongoDB with an Application
+##  <a id='use-a9s-mongodb-with-an-application'></a> Use a9s MongoDB with an Application
 
 To use a9s MongoDB with an application, create a service instance and bind the service instance to your app. For more information about managing service instances, see [Managing Service Instances with the cf CLI](https://docs.cloudfoundry.org/devguide/services/managing-services.html).
 
-### <a id='view-the-a9s-redis-service'></a>  View the a9s MongoDB Service
+### <a id='view-the-a9s-mongodb-service'></a>  View the a9s MongoDB Service
 
 After the service is installed, you can see the `a9s-mongodb` and its service plans appear in your CF marketplace. Run `cf marketplace` to see the service listing:
 ```bash
@@ -96,7 +96,7 @@ You can use the host_ips, username and password values to connect to your databa
 a9s MongoDB for PCF comes with its own Consul cluster to provide hostname resolving. When your DNS is configured to resolve the a9s MongoDB for PCF service instance domains you can make use of `hosts` or `uri`.
 For more information see <a href="./installing.html#name-resolving-with-consul" target="_blank">Name Resolving With Consul</a>.
 
-## <a id='delete-an-a9s-redis-service-instance'></a> Delete an a9s Redis Service Instance
+## <a id='delete-an-a9s-mongodb-service-instance'></a> Delete an a9s MongoDB Service Instance
 
 <p class='note warning'><strong>WARNING:</strong> Before deleting a service instance, you must back up data stored in your database. This operation cannot be undone and all the data is lost when the service is deleted.</p>
 
@@ -331,7 +331,7 @@ Note the host `d67901c.service.dc1.a9svs`, the username `a9s-brk-usr`, and the p
 ### <a id='create-a-tunnel-to-the-service'></a> Create a Tunnel to The Service
 
 With `cf ssh`,  you can create am SSH forward tunnel to the management dashboard.
-Use port `27017` to connect to the a9s Redis Instance.
+Use port `27017` to connect to the a9s MongoDB Instance.
 
 ```bash
 $ cf ssh a9s-mongodb-app -L 27017:d67901c.service.dc1.a9svs:27017
