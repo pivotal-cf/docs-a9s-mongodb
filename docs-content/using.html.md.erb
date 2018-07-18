@@ -3,14 +3,13 @@ title: Using a9s MongoDB for PCF
 owner: Partners
 ---
 
-
-This topic describes how to use a9s MongoDB .
+This topic describes how to use a9s MongoDB.
 
 ##  <a id='use-a9s-mongodb-with-an-application'></a> Use a9s MongoDB with an Application
 
 To use a9s MongoDB with an application, create a service instance and bind the service instance to your app. For more information about managing service instances, see [Managing Service Instances with the cf CLI](https://docs.cloudfoundry.org/devguide/services/managing-services.html).
 
-### <a id='view-the-a9s-mongodb-service'></a>  View the a9s MongoDB Service
+### <a id='view-the-a9s-mongodb-service'></a> View the a9s MongoDB Service
 
 After the service is installed, you can see the `a9s-mongodb` and its service plans appear in your CF marketplace. Run `cf marketplace` to see the service listing:
 ```bash
@@ -45,6 +44,7 @@ $ cf bind-service a9s-mongodb-app my-mongodb-service
 ### <a id='restage-or-restart-your-application'></a> Restage or Restart Your Application
 
 To enable your application to access the service instance, run `cf restage` or `cf restart` to restage or restart your application.
+
 
 ## <a id='obtain-service-instance-access-credentials'></a> Obtain Service Instance Access Credentials
 
@@ -95,10 +95,11 @@ System-Provided:
 ...
 ```
 
-You can use the host_ips, username and password values to connect to your database with a MongoDB client.
+You can use the host_ips, username, and password values to connect to your database with a MongoDB client.
 
 a9s MongoDB for PCF comes with its own Consul cluster to provide hostname resolving. When your DNS is configured to resolve the a9s MongoDB for PCF service instance domains you can make use of `hosts` or `uri`.
-For more information see <a href="./installing.html#name-resolving-with-consul" target="_blank">Name Resolving With Consul</a>.
+For more information, see [Name Resolving With Consul](./installing.html#name-resolving-with-consul).
+
 
 ## <a id='delete-an-a9s-mongodb-service-instance'></a> Delete an a9s MongoDB Service Instance
 
@@ -122,7 +123,7 @@ my-mongodb-service   a9s-mongodb   mongodb-single-small   a9s-mongodb-app   crea
 
 This example shows that `my-mongodb-service` is bound to the `a9s-mongodb-app` application.
 
-### <a id='unbind-a-service-instance'></a>Unbind a Service Instance
+### <a id='unbind-a-service-instance'></a> Unbind a Service Instance
 
 Run `cf unbind-service` to unbind the service from your application.
 
@@ -130,8 +131,7 @@ Run `cf unbind-service` to unbind the service from your application.
 $ cf unbind-service a9s-mongodb-app my-mongodb-service
 ```
 
-
-### <a id='delete-a-service-instance'></a>Delete a Service Instance
+### <a id='delete-a-service-instance'></a> Delete a Service Instance
 
 After unbinding the service, it is no longer bound to an application. Run `cf delete-service` to delete the service:
 
@@ -139,8 +139,7 @@ After unbinding the service, it is no longer bound to an application. Run `cf de
 $ cf delete-service my-mongodb-service
 ```
 
-It may take several minutes to delete the service. Deleting a service deprovisions the corresponding infrastructure resources.
-Run the `cf services` command to view the deletion status.
+It may take several minutes to delete the service. Deleting a service deprovisions the corresponding infrastructure resources. Run the `cf services` command to view the deletion status.
 
 
 ## <a id='upgrade-the-service-instance-to-another-service-plan'></a> Upgrade the Service Instance to Another Service Plan
@@ -168,6 +167,7 @@ Here are the plans you can upgrade to, depending on the one you are currently us
 | mongodb-replica-small-ssl | mongodb-replica-medium-ssl <br> mongodb-replica-big-ssl |
 | mongodb-replica-medium-ssl | mongodb-replica-big-ssl |
 
+
 ## <a id='add-a-graphite-endpoint'></a> Add a Graphite Endpoint
 
 If you want to monitor your service with Graphite, you can set an endpoint to where to information will be sent with the `cf update-service` command. This command expects the [-c flag](https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-binding) and a JSON string containing the `graphite` and `metrics_prefix` keys.
@@ -177,6 +177,7 @@ Depending on your graphite provider, the `metrics_prefix` might require that eac
 $ cf update-service my-mongodb-service -c '{ "graphite": ["yourspace.your-graphite-endpoint.com:12345"], "metrics_prefix": "your-api-key.my-cluster-mongodb", "interval": "5"}'
 ```
 
+
 ## <a id='add-a-syslog-endpoint'></a> Add a Syslog Endpoint
 
 The `cf update-service` command used with the [-c flag](https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-binding) can let you stream your syslog to a third-party service. In this case, the command expects a JSON string containing the `syslog` key. You can also change the interval for the syslog with the same key than for the graphite endpoint `interval`.
@@ -185,13 +186,12 @@ The `cf update-service` command used with the [-c flag](https://docs.cloudfoundr
 $ cf update-service my-mongodb-service -c '{ "syslog": ["logs4.your-syslog-endpoint.com:54321"], "interval": "5" }'
 ```
 
+
 ## <a id='cloud-foundry-application-security-groups'></a> Cloud Foundry Application Security Groups
 
 This topic describes how to check whether a security group was created.
 
-Each a9s Data Service will automatically create and update Cloud Foundry security groups in order to protected service instances to be accessed by applications not running in the same Cloud Foundry applications space.
-To get a better understanding about Security Groups you can have a look on the
-[Understanding Application Security Groups](https://docs.cloudfoundry.org/concepts/asg.html) topic.
+Each a9s Data Service will automatically create and update Cloud Foundry security groups in order to protected service instances to be accessed by applications not running in the same Cloud Foundry applications space. To understand Security Groups, see [Understanding Application Security Groups](https://docs.cloudfoundry.org/concepts/asg.html).
 
 ### <a id='get-service-instance-guid'></a> Get Service Instance GUID
 
@@ -219,10 +219,10 @@ OK
 #4   guard_ca16f111-5073-40b7-973a-156c75dd3028   demonstrations   demo
 ```
 
-There we can see a security group with the named `guard_ca16f111-5073-40b7-973a-156c75dd3028`
-was successfully created.
+In the above example, `guard_ca16f111-5073-40b7-973a-156c75dd3028` was successfully created.
 
 <p class='note'><strong>Note:</strong> In some circumstances, the connection between the application and the service instance is not possible. In this case, check to see if a security group was created.</p>
+
 
 ## <a id='backup-and-restore-service-instances'></a> Backup and Restore Service Instances
 
@@ -258,11 +258,11 @@ a9s MongoDB provides an easy way to create backups and restore if needed.
 
 ### <a id='perform-a-backup'></a> Perform a Backup
 
-On the dashboard, you can trigger a backup by clicking **Trigger backup**
+On the dashboard, you can trigger a backup by clicking **Trigger backup**.
 
 ![service-dashboard](images/service-dashboard.png)
 
-After a short period of time the backup will be queued and the backup process will soon start.
+After a short period of time, the backup is queued.
 
 ![service-dashboard](images/service-dashboard-bkp-triggered.png)
 
@@ -271,6 +271,7 @@ After a short period of time the backup will be queued and the backup process wi
 ### <a id='restore-a-backup'></a> Restore a Backup
 
 1. Open the dashboard again and select the backup you would like to restore.
+
 1. Click **Restore** and wait for the restore to trigger.
 
 ![service-dashboard](images/service-dashboard-restore-triggered.png)
@@ -278,6 +279,7 @@ After a short period of time the backup will be queued and the backup process wi
 <p class='note'><strong>Note:</strong> Depending on the size of the data, the restore will take some time.</p>
 
 ![service-dashboard](images/service-dashboard-final.png)
+
 
 ## <a id='make-a-service-instance-locally-available'></a> Make a Service Instance Locally Available
 
@@ -334,8 +336,7 @@ Note the host `d67901c.service.dc1.a9svs`, the username `a9s-brk-usr`, and the p
 
 ### <a id='create-a-tunnel-to-the-service'></a> Create a Tunnel to The Service
 
-With `cf ssh`,  you can create am SSH forward tunnel to the management dashboard.
-Use port `27017` to connect to the a9s MongoDB Instance.
+With `cf ssh`,  you can create am SSH forward tunnel to the management dashboard. Use port `27017` to connect to the a9s MongoDB Instance.
 
 ```bash
 $ cf ssh a9s-mongodb-app -L 27017:d67901c.service.dc1.a9svs:27017
@@ -346,14 +347,14 @@ When the SSH tunnel is open, you can access the instance using the address `loca
 
 <p class='note'><strong>Note:</strong> Be sure to close the session by running <code>exit</code>.</p>
 
+
 ## <a id="service-keys"></a> Service keys
 
-To gain access to the service manually rather than binding apps to it you can
-use service keys.
+To gain access to the service manually rather than binding apps to it, you can use service keys.
 
 ### <a id="create-a-service-key"></a> Creating a Service Key
 
-To create a key to the service instance `mongodb1` call `nykey` run:
+To create a key to the service instance `mongodb1` called `mykey`, run the following command:
 
 ```bash
 cf create-service-key mongodb1 mykey
@@ -361,7 +362,7 @@ cf create-service-key mongodb1 mykey
 
 ### <a id="listing-service-keys"></a> Listing Service Keys
 
-To list all the keys for the `mongodb1` service instance run this:
+To list all the keys for the `mongodb1` service instance, run the following command:
 
 ```bash
 cf service-keys mongodb1
@@ -369,7 +370,7 @@ cf service-keys mongodb1
 
 ### <a id="accessing-service-keys"></a> Accessing Service Keys
 
-To obtain the key `mykey` from the `mongodb1` service instance run:
+To obtain the key `mykey` from the `mongodb1` service instance, run the following command:
 
 ```bash
 cf service-key mongodb1 mykey
@@ -377,7 +378,7 @@ cf service-key mongodb1 mykey
 
 ### <a id="deleting-service-keys"></a> Deleting Service Keys
 
-To delete a service key `mykey` from the service instance `mongodb1` run:
+To delete the key `mykey` from the service instance `mongodb1`, run the following command:
 
 ```bash
 cf delete-service-key mongodb1 mykey
@@ -385,15 +386,9 @@ cf delete-service-key mongodb1 mykey
 
 ## <a id="creating-a-fork-of-a-service-instance"></a> Creating a Fork of a Service Instance
 
-The procedure of forking a service instance involves creating a backup of a
-service instance, modifying the backup a bit, and restoring it to a different
-service instance.
+The procedure of forking a service instance involves creating a backup of a service instance, modifying the backup, and restoring it to a different service instance.
 
-For this process you will need a service instance you want to fork, and a new
-service instance(s) you want to fork to. For help creating new service instances
-look at the [Create a Service Instance](#create-a-service-instance) section. You
-can get a list of all of your `a9s-mongodb` service instances by running the
-following:
+For this process, you will need a service instance you want to fork, and a new service instance(s) you want to fork to. For help creating new service instances, see [Create a Service Instance](#create-a-service-instance). You can get a list of all of your `a9s-mongodb` service instances by running the following command:
 
 ```bash
 cf s | grep a9s-mongodb
@@ -407,69 +402,52 @@ mongodb2   a9s-mongodb34   mongodb-nano                create succeeded
 
 In this guide we will be forking from `mongodb1` to `mongodb2`.
 
-Now, you have established which service instances you will be operating on, you
-will need service keys. For information on creating, obtaining and managing
-service keys see the [Service keys](#service-keys) section.
+Now that you have established which service instances you will be operating on, you will need service keys. For information on creating, obtaining, and managing service keys, see [Service Keys](#service-keys).
 
-The next thing to do is to log into the service instance dashboard to set the
-encryption password (if it hasn't already been set and create a backup. To find
-your dashboard URL, for the instance you want to fork from (`mongodb1` in this
-example), run this:
+Log in to the service instance dashboard to set the encryption password, if it has not already been set, and create a backup. Do the following:
 
+1. To find the dashboard URL for the instance you want to fork from (`mongodb1` in this example), run the following command:
 ```bash
 cf service mongodb1 | grep -E '^|dashboard:.*' --color='always'
 ```
 
-Then log into the dashboard using your Cloud Foundry credentials.
+1. Log in to the dashboard using your Cloud Foundry credentials.
 
-Make sure you set a encryption password for the backups using the service
-instance dashboard (`Change Backup Settings`). Create a backup using the
-dashboard. Download the backup to your local machine. The filename will be
-something like `racsd92baee-1522222422893`.
-Decrypt the backup and write its contents to a file:
+1. Set a encryption password for the backups using **Change Backup Settings** in the service instance dashboard.
 
+1. Create a backup using the dashboard.
+
+1. Download the backup to your local machine. The filename will be something like `racsd92baee-1522222422893`.
+
+1. Decrypt the backup and write its contents to a file:
 ```shell
 $ cat racsd92baee-1522222422893 | openssl enc -aes256 -d -pass 'pass:mytopsecretpassword' > backup.tar
 ```
 
-For the next steps you will need the mongodb tools. You can install them by
-following the [official mongoDB installation manual](https://docs.mongodb.com/manual/installation/).
+For the next steps, you will need the MongoDB tools. You can install them by following the [official mongoDB installation manual](https://docs.mongodb.com/manual/installation/).
 
-To upload the backup to the new fork service instance you will need to create a
-tunnel, for port 27017, using and app bound to the new service instance. As you
-are creating a new instance, that you likely don't want connected to
-production until it has the data, its advisable to deploy a small demo app for
-tunneling through (you can dispose of it later). A small app can be found here
-[https://github.com/anynines/simple_node_mongo_example](https://github.com/anynines/simple_node_mongo_example)
-, you will need to edit the manifest, then follow the section [Make a Service Instance Locally Available](#make-a-service-instance-locally-available).
+To upload the backup to the new fork service instance, you must create a tunnel for port `27017`, using an app bound to the new service instance. As you are creating a new instance that you likely do not want connected to production until it has the data, it is advisable to deploy a small demo app for tunneling through (you can dispose of it later). A small app can be found at [https://github.com/anynines/simple_node_mongo_example](https://github.com/anynines/simple_node_mongo_example). You will need to edit the manifest, then follow the section [Make a Service Instance Locally Available](#make-a-service-instance-locally-available).
 
-Before the backup data can be restored you must extract it.
+Before the backup data can be restored, you must extract it.
+
 ```bash
 tar -vxf backup.tar
 ```
 
-Extracting the backup will create a folder that contains the files needed for
-the restore. You will see the folder name with the output from the tar command.
-The folder name will look something like `racsd92baee-1522222422893`.
+Extracting the backup will create a folder that contains the files needed for the restore. You will see the folder name with the output from the tar command, named something like `racsd92baee-1522222422893`.
 
-To run the restore you will need the credentials for the service instance that
-will become a fork. In this example the credentials can be found like this:
+To run the restore, you will need the credentials for the service instance that will become a fork. In this example, the credentials can be found by running the following command:
 
 ```bash
 cf service-key mongodb2 mykey
 ```
 
-Then carry out the restore:
+Carry out the restore by running the following command:
 
 ```bash
 mongorestore -h localhost:27017 -u mongodb2-mykey-username -p mongodbd2-mykey-password extracted-backup-folder/mongodb1-database/ -d mongodb2-mykey-default_database
 ```
 
-`mongorestore` will report that it is ignoring files these files concern users
-and roles. You can restore users and roles for specific databases in which case
-the bson files will not be ignored. For information on restoration commands see
-the [Official mongoDB documentation](https://docs.mongodb.com/manual/reference/program/mongorestore/).
+`mongorestore` will report that it is ignoring files these files concern users and roles. You can restore users and roles for specific databases in which case the bson files will not be ignored. For information on restoration commands, see the [Official mongoDB documentation](https://docs.mongodb.com/manual/reference/program/mongorestore/).
 
-Your data has now been restored from one service instance to another. Down
-forget to close your ssh tunnel and clean up any temporary app instances, no
-longer required keys...
+Your data has now been restored from one service instance to another. Close your SSH tunnel and clean up any temporary app instances.
