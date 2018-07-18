@@ -6,19 +6,17 @@ owner: Partners
 This topic describes how to install and configure a9s MongoDB for Pivotal Cloud Foundry (PCF).
 
 
-##<a id='install'></a> Install a9s MongoDB for PCF
+## <a id='install'></a> Install a9s MongoDB for PCF
 
-To install a9s MongoDB for PCF, perform the following steps:
+To install a9s MongoDB for PCF, do the following:
 
 1. Download the product file from the [Pivotal Network](https://network.pivotal.io/products/a9s-mongodb).
 
 2. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
 
-3. Click **Add** or **+** (depending on the PCF version) next to the uploaded a9s MongoDB for PCF tile in the Ops Manager
-**Available Products** view to add it to your staging area.
+3. Click **Add** or **+** (depending on the PCF version) next to the uploaded a9s MongoDB for PCF tile in the Ops Manager **Available Products** view to add it to your staging area.
 
-4. Click the new tile, then click **Settings** to review the configuration settings for each tab.
-  For more information on how to configure the properties on each side-tab, see the following:
+4. Click the new tile, then click **Settings** to review the configuration settings for each tab. For more information on how to configure the properties on each side-tab, see the following:
   * [Assign AZs and Networks](#azs)
   * [Plan Configuration](#plan_configuration)
   * [Backup Configuration](#backup_configuration)
@@ -31,97 +29,83 @@ To install a9s MongoDB for PCF, perform the following steps:
 
 After you install the a9s MongoDB for PCF, it is available in the list of Marketplace services. For more information, see [Using a9s MongoDB for PCF](./using.html).
 
-
-###<a id="azs"></a>Assign AZs and Networks
+### <a id="azs"></a> Assign AZs and Networks
 
 Use **Assign AZs and Networks** to configure the location of service component and service instance jobs. Configure your network to balance cluster jobs between as many AZs as possible.
 
 <%= image_tag("assign_azs_and_networks.png") %>
 
-###<a id="plan_configuration"></a>Plan Configuration
+### <a id="plan_configuration"></a> Plan Configuration
 
-Define the AZ placement where the service instances will be deployed.
-Define the VM and persistent disk types.
-VM and persistent disk types will be used in the service instance deployments. Disk size and VM size (CPUs and memory) can be configured independently, to create your desired plans, however you must consider that moving from a lager disk to a smaller disk is likely to fail.
+1. Define the AZ placement where the service instances will be deployed.
 
-####Minimum system requirements
+1. Define the VM and persistent disk types.
 
-Disk nano: 2 GB
-Disk small: 4 GB
-Disk medium: 10 GB
-Disk large: 30 GB
-VM nano: 1 CPU, 1 GB RAM, 4 GB Disk
-VM small: 1 CPU, 2 GB RAM, 4 GB Disk
-VM medium: 2 CPU, 4 GB RAM, 8 GB Disk
-VM large: 4 CPU, 8 GB RAM, 30 GB Disk
+VM and persistent disk types will be used in the service instance deployments. Disk size and VM size (CPUs and memory) can be configured independently, to create your desired plans. However, consider that moving from a larger disk to a smaller disk is likely to fail.
+
+#### <a id='min-sys-reqs'></a> Minimum System Requirements
+
+Disk nano: 2&nbsp;GB
+Disk small: 4&nbsp;GB
+Disk medium: 10&nbsp;GB
+Disk large: 30&nbsp;GB
+VM nano: 1 CPU, 1&nbsp;GB RAM, 4&nbsp;GB Disk
+VM small: 1 CPU, 2&nbsp;GB RAM, 4&nbsp;GB Disk
+VM medium: 2 CPU, 4&nbsp;GB RAM, 8&nbsp;GB Disk
+VM large: 4 CPU, 8&nbsp;GB RAM, 30&nbsp;GB Disk
 
 <%= image_tag("plan_configuration.png") %>
 
-###<a id="backup_configuration"></a>Backup Configuration
+### <a id="backup_configuration"></a> Backup Configuration
 
 Use **Backup Configuration** to configure the backup endpoints. You can choose between a S3 compliant endpoint or an Azure blob store.
 
 <%= image_tag("backup_configuration.png") %>
 
-###<a id="syslog"></a>Syslog
+### <a id="syslog"></a> Syslog
 
-a9s MongoDB provides the possibility to stream the logs of the service components to a syslog endpoint.
-This has no effect on the service instances itself.
+a9s MongoDB can stream the logs of the service components to a syslog endpoint. This has no effect on the service instances itself.
 
 <%= image_tag("syslog.png") %>
 
-###<a id='errands'></a>Configure Errands
+### <a id='errands'></a> Configure Errands
 
 Use **Errands** to configure the lifecycle errands that run when you install or uninstall a9s MongoDB for PCF. The list below describes each errand. For more information, see [Understanding Lifecycle Errands](https://docs.pivotal.io/tiledev/tile-errands.html).
 
 <%= image_tag("errands.png") %>
 
+#### <a id='post-deploy'></a> Post-Deploy Errands
 
-#### Post-Deploy Errands
+* **Run Template Uploader**: This errand is required to configure generic components that are included in a9s MongoDB for PCF with MongoDB configurations. Disabling this errand may speed up the deployment of all tiles.
+<p class="note"><strong>Note:</strong> To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
 
- * **Run Template Uploader**:
-  This errand is required to configure generic components that are included in a9s MongoDB for PCF with MongoDB  configurations.
-  Disabling this errand may speed up the deployment of all tiles.
+* **Run Broker Registrar**: This errand registers the a9s MongoDB for PCF service broker at the Elastic Runtime. This makes the service available in the Marketplace.
 
-  <p class="note"><strong>Note</strong>: To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
+* **Run Smoke Tests**: This errand runs a series of basic tests against your a9s MongoDB for PCF installation to ensure that it is configured properly. Those tests may take a while, probably over 30 minutes.
 
- * **Run Broker Registrar**:
-  This errand registers the a9s MongoDB for PCF service broker
-  at the Elastic Runtime. This makes the service available in the Marketplace.
+#### <a id='pre-delete'></a> Pre-Delete Errands
 
- * **Run Smoke Tests**:
- This errand runs a series of basic tests against your a9s MongoDB for PCF
- installation to ensure that it is configured properly. Those tests may
- take a while, probably over 30 minutes.
+* **Delete all a9s MongoDB instances**: This errand deletes all a9s MongoDB instances which were created with `cf create-service` by PCF end users.
+<p class="note warning"><strong>WARNING:</strong> This is an absolutly destructive task and cannot be undone. All VMs of the service instances will be deleted irrecoverably. In the case a service instance is bound to an app or service keys are existing, the errand will fail.</p>
 
+* **Run Broker Deregistrar**: This will deregister the a9s MongoDB for PCF service broker in Elastic Runtime. This errand removes the a9s MongoDB service from the Marketplace.
 
-#### Pre-Delete Errands
+### <a id='resource-config'></a> Configure Resources
 
- * **Delete all a9s MongoDB instances**:
-  This errand deletes all a9s MongoDB instances which were created with `cf create-service` by PCF end users.
-  <p class="note warning"><strong>WARNING</strong>: This is an absolutly destructive task and can't be undone. All VMs of the service instances will be deleted irrecoverably. In the case a service instance is bound to an app or service keys are existing, the errand will fail.</p>
+You can configure the dimensions of the VMs that host the a9s MongoDB for PCF components. This configuration does not cover the dedicated MongoDB instances that run on VMs provided by the a9s BOSH tile for PCF. For more information, see [Configure Service Plan VMs](#configure-service-instance).
 
- * **Run Broker Deregistrar**:
-  This will deregister the a9s MongoDB for PCF service broker in Elastic Runtime. This errand removes the a9s MongoDB service from the Marketplace.
-
-
-###<a id='resource-config'></a> Configure Resources
-
-You can configure the dimensions of the VMs that host the a9s MongoDB for PCF components.
-This configuration does not cover the dedicated MongoDB instances that run on VMs provided by the a9s BOSH tile for PCF.
-For more information, see [Configure Service Plan VMs](#configure-service-instance).
-
-<p class="note"><strong>Note</strong>: anynines recommends using a VM type of large or greater to support the tile compilation.</p>
+<p class="note"><strong>Note<:/strong> anynines recommends using a VM type of large or greater to support the tile compilation.</p>
 
 <%= image_tag("resource_config.png") %>
 
-##<a id='deployment_updater'></a>Update Existing Service Instances
+
+## <a id='deployment_updater'></a> Update Existing Service Instances
 
 After updating the a9s MongoDB for PCF tile, run the Deployment Updater errand to update all provisioned service instances to the new service and stemcell versions.
 
-<p class="note"><strong>Note</strong>: anynines recommends running the <a href="./installing.html#errands" target="_blank">smoke tests</a> before running this errand.</p>
+<p class="note"><strong>Note:</strong> anynines recommends running the <a href="./installing.html#errands" target="_blank">smoke tests</a> before running this errand.</p>
 
-<p class="note"><strong>Note</strong>: To run the errand, you must know how to use the BOSH Director. For more information, see <a href="http://docs.pivotal.io/pivotalcf/1-9/customizing/trouble-advanced.html#prepare" target="_blank">Advanced Troubleshooting with the BOSH CLI</a>.</p>
+<p class="note"><strong>Note:</strong> To run the errand, you must know how to use the BOSH Director. For more information, see <a href="http://docs.pivotal.io/pivotalcf/1-9/customizing/trouble-advanced.html#prepare" target="_blank">Advanced Troubleshooting with the BOSH CLI</a>.</p>
 
 1. SSH into the Ops Manager VM:
 <pre class="terminal">
@@ -129,7 +113,7 @@ $ ssh ubuntu@OPS-MANAGER-FQDN
 Password: ***********
 </pre>
 
-2. Log in to the BOSH Director:
+1. Log in to the BOSH Director:
 <pre class="terminal">
 $ bosh login
 Your username: director
@@ -137,7 +121,7 @@ Enter password: DIRECTOR\_CREDENTIAL
 Logged in as 'director'
 </pre>
 
-3. Run `bosh deployments` and record the name of the a9s MongoDB for PCF deployment from the **Name** column:
+1. Run `bosh deployments` and record the name of the a9s MongoDB for PCF deployment from the **Name** column:
 <pre class="terminal">
 $ bosh deployments
 Using environment '172.28.10.11' as client 'ops_manager'
@@ -151,7 +135,7 @@ cf-7fcd1f89150a96b381d0              backup-and-restore-sdk/1.2.1          bosh-
                                      uaa/52.7
 </pre>
 
-4. Run `bosh -d a9s-mongodb-service-94443f82b52dcf333bbd run errand deployment-updater` to force the update for all existing a9s MongoDB for PCF instances:
+1. Run `bosh -d a9s-mongodb-service-94443f82b52dcf333bbd run errand deployment-updater` to force the update for all existing a9s MongoDB for PCF instances:
 <pre class="terminal">
 $ bosh -d a9s-mongodb-0476d61a219a39bf0e1b run-errand deployment-updater
 Using environment '172.28.10.11' as client 'ops_manager'
@@ -171,22 +155,22 @@ Task 14855 done
 
 Succeeded
 </pre>
-<p class="note"><strong>Note</strong>: Depending on the number of service instances, the Deployment Updater may take significant time to finish running. BOSH shows no logging output while the errand runs.</p>
+<p class="note"><strong>Note:</strong> Depending on the number of service instances, the Deployment Updater may take significant time to finish running. BOSH shows no logging output while the errand runs.</p>
 
-##<a id='interacting-with-the-backup-manager'></a> Trigger Backups and Restores on Demand
 
-PCF administrators can interact with the Backup Manager
-endpoints to trigger immediate backups and restore backups.
+## <a id='interacting-with-the-backup-manager'></a> Trigger Backups and Restores on Demand
 
-To backup, perform the following steps:
+PCF administrators can interact with the Backup Manager endpoints to trigger immediate backups and restore backups.
+
+To backup, do the following:
 
 1. Navigate to the **Status** tab of the tile and record the IP address of one of the a9s Ancillary Service instances.
 
     <%= image_tag("status_tab.png", width: 300) %>
 
-2. On the **Credentials** tab, find the credentials of the service under **Backup Manager Password**.
+1. On the **Credentials** tab, find the credentials of the service under **Backup Manager Password**.
 
-2. Trigger a backup on all instances by calling the **/backup\_agent/backup\_all** endpoint:
+1. Trigger a backup on all instances by calling the **/backup\_agent/backup\_all** endpoint:
 <pre class="terminal">
 $ curl backup:53cr3t&commat;172.28.7.64:3000/backup\_agent/backup\_all -d {}
 </pre>
@@ -196,9 +180,9 @@ endpoint:
 $ curl backup:53cr3t&commat;172.28.7.64:3000/backup\_agent/backup -d "instance\_guid=1c16933a-892f-4fe0-b968-ea0bf90246c9"
 </pre>
 
-To restore, perform the following steps:
+To restore, do the following:
 
-3. Find the ID of the Backup and the ID of the instance by listing the instances:
+1. Find the ID of the Backup and the ID of the instance by listing the instances:
 <pre class="terminal">
 $ curl backup:53cr3t&commat;172.28.7.64:3000/instances
 </pre>
@@ -223,24 +207,23 @@ This command outputs an array composed of objects like this one:
   "id": 1
 }
 </pre>
-In the example above, backups and restores that have been performed for
-the instance with the instance\_id `1c16933a-892f-4fe0-b968-ea0bf90246c9`.
-This ID corresponds to the instance GUID from PCF.
+In the example above, backups and restores have been performed for the instance with the instance\_id `1c16933a-892f-4fe0-b968-ea0bf90246c9`. This ID corresponds to the instance GUID from PCF.
 
-4. Restore the backup by calling the **/backup\_agent/restores**
+1. Restore the backup by calling the **/backup\_agent/restores**
 endpoint with the backup\_id and instance\_id as data:
 <pre class="terminal">
 $ curl backup:53cr3t&commat;172.28.7.64:3000/backup\_agent/restores -d "backup\_id=5" -d "instance\_id=1"
 </pre>
 
-##<a id='name-resolving-with-consul'></a>Name Resolving With Consul
+
+## <a id='name-resolving-with-consul'></a> Name Resolving With Consul
 
 a9s MongoDB for PCF comes with its own highly available Consul cluster for service discovery and service failover procedures.
 
-Consul is a HA service discovery and configuration tool, which includes features such as failure detection, an HA key/value store, and an HA DNS service that you can control through a HTTP-based REST interface.
+Consul is an HA service discovery and configuration tool, which includes features such as failure detection, an HA key/value store, and an HA DNS service that you can control through a HTTP-based REST interface.
 
-To make use of this feature you must talk to your administrator of your company's nameservers to setup a delegation of a9s MongoDB hostnames. The hostnames of these queries end with ` a9s-mongodb-consul` by default and must be delegated to the IP addresses of the consul server within the a9s MongoDB tile. To figure out the IP addresses check the status tab of the tile and look for `a9s Consul Cluster`.
+To make use of this feature you must talk to your administrator of your company's nameservers to setup a delegation of a9s MongoDB hostnames. The hostnames of these queries end with ` a9s-mongodb-consul` by default and must be delegated to the IP addresses of the consul server within the a9s MongoDB tile. To figure out the IP addresses, check the status tab of the tile and look for `a9s Consul Cluster`.
 
 <%= image_tag("status_tab.png") %>
 
-For general information about Consul, see <a href="https://www.consul.io/" target="_blank">Consul by HashiCorp</a>.
+For general information about Consul, see [Consul by HashiCorp](https://www.consul.io/).
