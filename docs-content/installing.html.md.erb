@@ -68,6 +68,13 @@ a9s MongoDB can stream the logs of the service components to a syslog endpoint. 
 
 <%= image_tag("syslog.png") %>
 
+###<a id="service_configuration"></a>Service Configuration
+
+At this page a default endpoint for graphite and syslog can be configured. This endpoints can not be deleted or updated by the user.
+F.e. `logs.papertrail.com:44456` for syslog.
+
+<%= image_tag("service_configuration.png") %>
+
 ### <a id='errands'></a> Configure Errands
 
 Use **Errands** to configure the lifecycle errands that run when you install or uninstall a9s MongoDB for PCF. The list below describes each errand. For more information, see [Understanding Lifecycle Errands](https://docs.pivotal.io/tiledev/tile-errands.html).
