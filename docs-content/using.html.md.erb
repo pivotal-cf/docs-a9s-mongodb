@@ -170,8 +170,13 @@ Here are the plans you can upgrade to, depending on the one you are currently us
 
 ## <a id='add-a-graphite-endpoint'></a> Add a Graphite Endpoint
 
-If you want to monitor your service with Graphite, you can set an endpoint to where to information will be sent with the `cf update-service` command. This command expects the [-c flag](https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-binding) and a JSON string containing the `graphite` and `metrics_prefix` keys.
-Depending on your graphite provider, the `metrics_prefix` might require that each metric must start with an API key in their name. You can also change the interval within the data is send to the endpoint. To do this, modify `interval`; the default is 10s.
+If you want to monitor your service with Graphite,
+you can set an endpoint to where to information will be sent with the `cf update-service` command.
+This command expects the [-c flag](https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-binding)
+and a JSON string containing the `graphite` and `metrics_prefix` keys.
+Depending on your Graphite provider, the `metrics_prefix` might require that each metric must start with an API key in their name.
+You can also change the interval within the data is send to the endpoint.
+To do this, modify `interval`; the default is 10s.
 
 ```bash
 $ cf update-service my-mongodb-service -c '{ "graphite": ["yourspace.your-graphite-endpoint.com:12345"], "metrics_prefix": "your-api-key.my-cluster-mongodb", "interval": "5"}'
@@ -180,7 +185,11 @@ $ cf update-service my-mongodb-service -c '{ "graphite": ["yourspace.your-graphi
 
 ## <a id='add-a-syslog-endpoint'></a> Add a Syslog Endpoint
 
-The `cf update-service` command used with the [-c flag](https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-binding) can let you stream your syslog to a third-party service. In this case, the command expects a JSON string containing the `syslog` key. You can also change the interval for the syslog with the same key than for the graphite endpoint `interval`.
+The `cf update-service` command used with the
+[-c flag](https://docs.cloudfoundry.org/devguide/services/managing-services.html#arbitrary-params-binding)
+can let you stream your syslog to a third-party service.
+In this case, the command expects a JSON string containing the `syslog` key.
+You can also change the interval for the syslog with the same key than for the Graphite endpoint `interval`.
 
 ```bash
 $ cf update-service my-mongodb-service -c '{ "syslog": ["logs4.your-syslog-endpoint.com:54321"], "interval": "5" }'
