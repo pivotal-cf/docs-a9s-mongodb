@@ -1,0 +1,348 @@
+---
+title: a9s Service Dashboard
+owner: Partners
+---
+
+This topic describes how to use the a9s Service Dashboard.
+
+## <a id='login'></a> Login
+
+1. To get the a9s Service Dashboard URL use `cf service SERVICE-NAME`.
+
+  ```bash
+  $ cf service my-mongodb
+  Showing info of service my-mongodb in org demo / space demo as admin...
+
+  name:            my-mongodb
+  service:         a9s-mongodb
+  tags:
+  plan:            mongodb-single-small
+  description:     This is a service creating and managing dedicated MongoDB service instances, powered by the anynines Service Framework
+  documentation:
+  dashboard:       https://a9s-mongodb-dashboard.system.172.28.32.25.xip.io/service-instances/96aaef1d-be67-45fc-a121-25160bf83ab2
+
+  This service is not currently shared.
+
+  Showing status of last operation from service my-mongodb...
+
+  status:    create succeeded
+  message:
+  started:   2018-10-17T11:25:04Z
+  updated:   2018-10-17T11:29:10Z
+
+  There are no bound apps for this service.
+  ```
+
+1. Browse to the dashboard URL and authenticate on the redirected page with your
+  Cloud Foundry credentials:
+  <%= image_tag("authentication-page.png") %>
+
+1. Click **Authorize** to approve the authorization request.
+  <%= image_tag("authorization-page.png") %>
+
+## <a id='perform-a-backup'></a> Perform a Backup
+
+1. Open the service dashboard for the service instance you want to backup, as shown
+  above.
+
+1. Navigate to the **Backups** page. There you find a panel with
+  **Available Backups** and a **Trigger Backup** button.
+
+1. Click this button to perform a new backup of the service instance.
+  <%= image_tag("service-dashboard-backups.png") %>
+
+1. After a short period of time the backup is queued. The backup process starts soon.
+  <%= image_tag("service-dashboard-backups-backup-triggered.png") %>
+
+<p class="note"><strong>Note:</strong> Depending on the size of the data the backup
+takes some time.</p>
+
+<%= image_tag("service-dashboard-backups-backup-final.png") %>
+
+## <a id='restore-a-backup'></a> Restore a Backup
+
+1. Open the Service Dashboard for the service instance, as shown above.
+
+1. Navigate to the **Backups** page.
+
+1. There you find a panel with **Available Backups** and a **Restore** button next
+  to each backup.
+
+1. Click this button to trigger a restore of the backup to restore.
+  <%= image_tag("service-dashboard-backups-backup-final.png") %>
+
+1. A dialog opens and ask for confirmation. Press the **Restore** button to
+  continue or the **Cancel** button to abort the restore.
+  <%= image_tag("service-dashboard-backups-restore-dialog.png") %>
+
+1. After a short period of time the restore is queued. The restore process starts soon.
+  <%= image_tag("service-dashboard-backups-restore-triggered.png") %>
+
+<p class="note"><strong>Note:</strong>  Depending on the size of the data the
+restore takes some time.</p>
+
+<%= image_tag("service-dashboard-backups-restore-final.png") %>
+
+## <a id="set-encryption-key"></a> Set an Encryption Key
+
+<p class="note"><strong>Note:</strong> To be able to download a backup first you
+have to set an encryption key. Otherwise you can't download backups.</p>
+
+1. Open the Service Dashboard for the appropriate service instance.
+
+1. Navigate to the **Backups** page.
+
+1. Open the **Backup Settings** by clicking the **Edit** button on that panel.
+  <%= image_tag("service-dashboard-backups-restore-final.png") %>
+
+1. Enter your personal encryption key in the field **Encryption Key** and click the
+  **Save** button. The default minimum length for your personal encryption key is 8.
+  <%= image_tag("service-dashboard-backups-settings.png") %>
+
+## <a id='download-a-backup'></a> Download a Backup
+
+1. Perform a backup as described [here](./a9s-service-dashboard.html#perform-a-backup).
+
+1. If the backup is successfully finished an additional button **Download** appears
+  beside the backup.
+
+1. Click this button to download the corresponding backup.
+  <%= image_tag("service-dashboard-backups-download.png") %>
+
+<p class="note"><strong>Note:</strong>  If you change your personal encryption
+key again you are not longer able to download performed backups encrypted with
+your old personal encryption key.</p>
+
+## <a id='update-the-service-instance'></a> Update the Service Instance
+
+<%= image_tag("service-dashboard-updates.png") %>
+
+## <a id='dashboard-api'></a> Dashboard API
+
+This topic describes how to use the a9s Service Dashboard API, in order to enable
+and disable features in the frontend, get information about the service instance
+or start or restore backups.
+
+### <a id='how-to-access-the-dashboard-api-using-curl'></a> How to access the Dashboard API using curl
+
+We run the Dashboard API protected by a SSO proxy. This means that in order to
+access this API, we need first to be authenticated and authorised to access it.
+
+#### <a id='authentication'></a> Authentication
+
+To authorise the access using curl, the user must first get a token from Cloud Foundry:
+
+```bash
+$ oauth_token=$(cf oauth-token)
+$ bearer_token=$(echo ${oauth_token} | grep bearer)
+```
+
+Then get the dashboard url using `cf service`:
+
+```bash
+$ cf service <service>
+```
+
+This should give you an output like:
+
+```
+Showing info of service my-mongodb in org a9s-smoke-tests / space mongodb-smoke-tests as admin...
+
+name:            my-mongodb
+service:         a9s-mongodb
+...
+dashboard:       https://a9s-mongodb-dashboard.[your-domain.com]/service-instances/db8d8ad3-3d72-4f5a-b84a-47aa9df70a7d
+
+Showing status of last operation from service my-mongodb...
+
+status:    create succeeded
+...
+```
+
+In the example above the url is:
+
+```bash
+$ url="https://a9s-mongodb-dashboard.[your-domain.com]/service-instances/db8d8ad3-3d72-4f5a-b84a-47aa9df70a7d"
+```
+
+#### <a id='authorization'></a> Authorization
+
+Then execute the request with the given token:
+
+```bash
+$ curl --cookie test.cookie --cookie-jar test.cookie --location --insecure \
+  --header "Authorization: ${bearer_token}" "${url}"
+```
+
+Remember to use `--location` since the SSO proxy redirects to the real endpoint.
+Use `--insecure` only if running with self generated certificates.
+
+You should also use cookies. When you have a valid token you are authenticated.
+With this token the SSO proxy checks if you are authorized to access the dashboard
+for the given instance.
+
+Once the user is authorized, this information is stored in the session, which is
+then stored in the cookie. After this the requests can be redirected to the
+dashboard-api and the user can access the provided endpoints as described below.
+
+### <a id='dashboard-api-endpoints'></a> Dashboard API Endpoints
+
+#### <a id='api-get-backups'></a> GET /service-instances/:guid/backups
+
+List all available backups as well as the restores that have been applied.
+
+##### Request
+
+###### Route
+
+```bash
+GET /service-instances/db8d8ad3-3d72-4f5a-b84a-47aa9df70a7d/backups
+```
+
+###### Body
+
+| Name | Type | Description |
+|-----------|------|-------------|
+| guid | string | The GUID from the service instance. |
+
+###### Headers
+
+```bash
+Authorization: bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImtleSIsI ... nR5cCI6IkpXVCJ9.eyJqdGkiO ... _YwDVve7co77BoYAvhFrbnVgWMp5A
+
+```
+
+##### cURL
+
+```bash
+curl --cookie test.cookie --cookie-jar test.cookie --location --insecure --header "Authorization: ${bearer_token}" "${url}/backups"
+```
+
+##### Response
+
+###### Status
+
+```bash
+  200 OK
+```
+
+###### Body
+
+```json
+{
+  "id": 85,
+  "instance_id": "f131e47d-c88b-4a86-ad0f-93cbb55e2885",
+  "backups": [
+    {
+      "id": 2811,
+      "instance_id": 85,
+      "backup_agent_task": {
+        "id": 2901,
+        "task_id": 2811,
+        "status": "done",
+        "created_at": "2017-06-29T00:30:03.857Z",
+        "updated_at": "2017-06-29T00:30:18.091Z"
+      }
+    }
+  ],
+  "restores": [
+    {
+      "id": 84,
+      "instance_id": 85,
+      "backup_agent_tasks": [
+        {
+          "id": 843,
+          "task_id": 84,
+          "status": "done",
+          "created_at": "2017-06-20T14:51:08.661Z",
+          "updated_at": "2017-06-20T14:51:19.856Z"
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### <a id=''>api-trigger-backup</a> POST /service-instances/:guid/backups
+
+Trigger a backup process on a given service instance.
+
+##### Request
+
+###### Route
+
+```bash
+POST /service-instances/db8d8ad3-3d72-4f5a-b84a-47aa9df70a7d/backups
+```
+
+###### Body
+
+| Name | Type | Description |
+|-----------|------|-------------|
+| guid | string | The GUID from the service instance. |
+
+###### Headers
+
+```bash
+Authorization: bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImtleSIsI ... nR5cCI6IkpXVCJ9.eyJqdGkiO ... _YwDVve7co77BoYAvhFrbnVgWMp5A
+```
+
+##### cURL
+
+```bash
+curl --cookie test.cookie --cookie-jar test.cookie --location --insecure --header "Authorization: ${bearer_token}" -X POST "${url}/backups"
+```
+
+##### Response
+
+###### Status
+
+```bash
+  201 Created
+```
+
+#### <a id='api-restore-instance'></a> POST /service-instances/:guid/backups/restore
+
+Trigger a restore process on a backup to a given service instance.
+
+##### Request
+
+###### Route
+
+```bash
+POST /service-instances/db8d8ad3-3d72-4f5a-b84a-47aa9df70a7d/backups/restore
+```
+
+###### Parameters
+
+| Name | Type | Description |
+|-----------|------|-------------|
+| instance_id | string | Backup manager internal ID of the service instance. |
+| backup_id | string | The backup ID from the service instance backup. |
+
+###### Body
+
+| Name | Type | Description |
+|-----------|------|-------------|
+| guid | string | The GUID from the service instance. |
+
+###### Headers
+
+```
+Authorization: bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImtleSIsI ... nR5cCI6IkpXVCJ9.eyJqdGkiO ... _YwDVve7co77BoYAvhFrbnVgWMp5A
+
+```
+
+##### cURL
+
+```bash
+curl --cookie test.cookie --cookie-jar test.cookie --location --insecure --header "Authorization: ${bearer_token}" -X POST "${url}/backups/restore" --data "instance_id=db8d8ad3-3d72-4f5a-b84a-47aa9df70a7d" --data "backup_id=1"
+```
+
+##### Response
+
+###### Status
+
+```bash
+  200 OK
+```

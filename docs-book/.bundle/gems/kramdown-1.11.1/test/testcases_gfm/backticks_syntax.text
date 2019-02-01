@@ -2,18 +2,18 @@
 Three backticks
 ```
 
-````
+```
 Four backticks
-````
+```
 
 ```
 Unbalanced bottom heavy
-``````
+`````
 
-````ruby
+```ruby
 language no space
-````
+```
 
-```` ruby
+``` ruby
 language with space
-````
+```

@@ -3,20 +3,34 @@ title: a9s MongoDB for PCF
 owner: Partners
 ---
 
-This documentation describes the a9s MongoDB for Pivotal Cloud Foundry (PCF) tile. a9s MongoDB for PCF enables on-demand provisioning of VM-based, dedicated MongoDB servers and clusters. Developers can create instances of a MongoDB server or cluster using Apps Manager or the Cloud Foundry Command Line interface (cf CLI) and bind these instances to an application. Depending on your service plan, a service instance may be associated with a single, dedicated VM or a set of VMs consisting of multiple VMs containing a MongoDB replica set cluster.
+This documentation describes the a9s MongoDB for Pivotal Cloud Foundry (PCF) tile.
+a9s MongoDB for PCF enables on-demand provisioning of VM-based, dedicated MongoDB
+servers and clusters. Developers can create instances of a MongoDB server or cluster
+using Apps Manager or the Cloud Foundry Command Line interface (cf CLI) and bind
+these instances to an application. Depending on your service plan, a service
+instance may be associated with a single, dedicated VM or a set of VMs consisting
+of multiple VMs containing a MongoDB replica set cluster.
 
 <%= image_tag("a9s-mongodb.png") %>
 
 
 ## <a id='overview'></a> Overview
 
-When you run the cf CLI `create-service a9s-mongodb` command, PCF creates dedicated VMs for this service instance. This allows the best possible bad neighborhood protection.
+When you run the cf CLI `create-service a9s-mongodb` command, PCF creates dedicated
+VMs for this service instance. This allows the best possible bad neighborhood protection.
 
-MongoDB service instance provisioning, including VM orchestration, is entirely automated. This enables service instances to be highly isolated and shielded by infrastructure virtualization mechanisms.
+MongoDB service instance provisioning, including VM orchestration, is entirely
+automated. This enables service instances to be highly isolated and shielded by
+infrastructure virtualization mechanisms.
 
-Due to the on-demand provisioning on VMs, only existing service instances allocate infrastructure resources. These resources are released when service instances are destroyed. Using on-demand provisioning the number of service instances is not limited by design.
+Due to the on-demand provisioning on VMs, only existing service instances allocate
+infrastructure resources. These resources are released when service instances are
+destroyed. Using on-demand provisioning the number of service instances is not
+limited by design.
 
-Distributed across multiple infrastructure availability zones, clustered data service plans enable short failover times and are resilient against failures of individual infrastructure hosts or entire availability zones.
+Distributed across multiple infrastructure availability zones, clustered data service
+plans enable short failover times and are resilient against failures of individual
+infrastructure hosts or entire availability zones.
 
 ### <a id='currentfeatures'></a> Current Features
 
@@ -24,7 +38,7 @@ The current version of a9s MongoDB for PCF includes the following key features:
 
 | Feature | Benefit |
 |---------|---------|
-| **On­-Demand Service Instance Provisioning** | a9s MongoDB for PCF deploys MongoDB instances automatically. Developers can provision a single-VM MongoDB server or a multi-VM MongoDB Replica Set using a single command. |
+| **On­-Demand Service Instance Provisioning** | a9s MongoDB for PCF deploys MongoDB instances automatically. Developers can provision a single VM MongoDB server or a multi VM MongoDB Replica Set using a single command. |
 | **Service Instance Isolation** | Each MongoDB server runs on a dedicated VM to ensure bad neighborhood protection in order to be aligned with enterprise security requirements.<br/><br/>a9s MongoDB for PCF uses Cloud Foundry security groups to prevent network connections being established by unauthorized applications.
 | **High Availability** | a9s MongoDB for PCF ensures high-availability using <a href="https://docs.mongodb.com/manual/replication/" target="_blank">MongoDB **Replica Sets**</a>.<br/><br/>The Consul-based internal DNS system provided by a9s Consul DNS for PCF ensures that the connected application always connects to a working node. |
 | **Smoke Tests** | a9s MongoDB for PCF contains a post-deploy smoke tests errand that runs a series of basic test against your installation to ensure that it is configured properly. |
@@ -32,11 +46,16 @@ The current version of a9s MongoDB for PCF includes the following key features:
 | **Logging and Monitoring** | Each MongoDB service instance provides log messages and MongoDB-specific metrics to one or more `syslog/graphite` endpoints. You can configure the `syslog/graphite` endpoint to receive logging and monitoring information. |
 | **Deployment Updater** | This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF service instances to their lastest version. |
 | **Backup Manager** | The Backup Manager does regular backup of your instances and offers endpoints to backup instantly and restore backups. |
-| **Service Guard** | The Service Guard creates Cloud Foundry security groups for your service instance VMs.<br /><br /> When the IP address of a service instance changes, the guard updates the security group. The Service Guard also restarts the application instances bound to the affected service instance. **The instances of one application are restarted one by one to avoid downtime.**|
+| **Service Guard** | The Service Guard creates Cloud Foundry security groups for your service instance VMs.<br /><br /> When the IP address of a service instance changes, the guard updates the security group. |
 | **Single to Cluster Updates** | Allow plan updates from single to cluster plans |
 | **Service Dashboard** | The Service Dashboard provides single sign on and lets the user trigger easily backups. |
 | **New MongoDB versions** | Added a9s MongoDB v3.4 and v3.6 |
 | **Default Syslog Endpoints for Instances** | In the tile, a default endpoint for syslog and Graphite can be configured for each service instance created by the user. |
+| **Consul Domain configurable** | The consul domain can now be configured. |
+| **BOSH DNS Handler** | a9s BOSH DNS handler added to make a9s service instances accessible from Diego cells. |
+| **a9s-pg Backup** | Added backup option for a9s-pg. |
+| **Instance Sharing** | a9s MongoDB now supports instance sharing between orgs an spaces, see [documentation](https://docs.pivotal.io/pivotalcf/2-4/devguide/services/sharing-instances.html). |
+| **Update Xenial** | Update to Ubuntu Xenial stemcells. |
 
 ### <a id='video'></a> Video Overview of a9s MongoDB for PCF
 
@@ -50,8 +69,6 @@ The following video provides an overview of how a9s MongoDB for PCF works.
 
 ## <a id="snapshot"></a> Product Snapshot
 
-<p class='note'><strong>Note:</strong> As of PCF v2.0, Elastic Runtime is renamed Pivotal Application Service (PAS).</p>
-
 The following table provides version and version-support information about a9s MongoDB for PCF:
 
 <table class="nice">
@@ -59,47 +76,60 @@ The following table provides version and version-support information about a9s M
     <th>Details</th>
     <tr>
         <td>Version</td>
-        <td>v2.0.2</td>
+        <td>v2.1.0</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>September 4, 2018</td>
+        <td>February 14, 2019</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
-        <td>v1.12.x, v2.0.x, v2.1.x, and v2.2.x</td>
+        <td>v2.1.x, v2.2.x, v2.3.x, and v2.4.x</td>
     </tr>
     <tr>
         <td>Compatible Pivotal Application Service version(s):</td>
-        <td>v1.12.x, v2.0.x, v2.1.x, and v2.2.x</td>
+        <td>v2.1.x, v2.2.x, v2.3.x, and v2.4.x</td>
     </tr>
     <tr>
         <td>IaaS support</td>
-        <td>AWS, Azure, GCP, OpenStack, and Vsphere</td>
+        <td>AWS, Azure, GCP, OpenStack, and vSphere</td>
     </tr>
 </table>
 
-<p class='note'><strong>Note:</strong> This is a major release. Upgrades from a9s MongoDB for PCF v1.x are not supported. If you previously installed a9s MongoDB for PCF v1.x, uninstall it and install the latest version.</p>
+<p class="note warning"><strong> WARNING:</strong>
+a9s MongoDB for PCF v2.0.2
+and earlier require a Ubuntu Trusty stemcell.
+The end-of-life date for Ubuntu Trusty is April 2019.
+If a security vulnerability is found on this stemcell after April, it will not be fixed.</p>
 
+<p class='note'><strong>Note:</strong> This is a major release. Upgrades from a9s
+MongoDB for PCF v1.x are not supported. If you previously installed a9s
+MongoDB for PCF v1.x, uninstall it and install the latest version.</p>
 
 ## <a id="reqs"></a> Requirements
 
 To install and use a9s MongoDB for PCF, you must install the following products and tiles:
 
-* Pivotal Application Service (formerly Elastic Runtime) v1.12 or later
+* Pivotal Application Service (formerly Elastic Runtime) v2.1 or later
 
 For more information, see [Installing and Configuring a9s MongoDB for PCF](./installing.html).
 
 
 ## <a id="feedback"></a> Feedback and Support
 
-a9s MongoDB for PCF is an automation toolset for open source MongoDB. The entire anynines team can help your team get started and be successful. Technical support, including a service level agreement, is available with a commercial license.
+a9s MongoDB for PCF is an automation toolset for open source MongoDB. The entire
+anynines team can help your team get started and be successful. Technical support,
+including a service level agreement, is available with a commercial license.
 
-If your company has specific MongoDB administration policies or configuration best practices, the anynines team is happy to incorporate them, if applicable. Third-party MongoDB support organizations are also welcome to assist.
+If your company has specific MongoDB administration policies or configuration best
+practices, the anynines team is happy to incorporate them, if applicable. Third-party
+MongoDB support organizations are also welcome to assist.
 
-The anynines team welcomes all contributions. Send any bugs, feature requests, or questions to [dssupport@anynines.com](mailto:dssupport@anynines.com).
+The anynines team welcomes all contributions. Send any bugs, feature requests, or
+questions to [dssupport@anynines.com](mailto:dssupport@anynines.com).
 
 
 ## <a id='license'></a> License
 
-Contact our [sales team](mailto:dssupport@anynines.com) to learn more about commercial licenses and support.
+Contact our [sales team](mailto:dssupport@anynines.com) to learn more about
+commercial licenses and support.

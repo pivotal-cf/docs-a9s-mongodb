@@ -1,0 +1,192 @@
+---
+title: Backup and Restore
+owner: Partners
+---
+
+This topic describes the backup of service instance and the management cluster
+database **a9s-pg** from an operators perspective.
+
+## <a id='trigger-backups-and-restore'></a> Trigger Backups and Restores on Demand for Service Instances
+
+PCF administrators can interact with the Backup Manager endpoints to trigger
+immediate backups and restore backups.
+
+### <a id='trigger-a-backup-procedure'></a> Trigger a Backup Procedure
+
+1. Navigate to the **Status** tab of the tile and record the IP address of one
+  of the a9s Ancillary Service instances.
+  <%= image_tag("status_tab.png", width: 300) %>
+
+2. On the **Credentials** tab, find the credentials of the service under **Backup Manager Password**.
+  The username is `admin`.
+
+3. Trigger a backup on all instances by calling the **/backup\_agent/backup\_all** endpoint.
+
+  ```bash
+  $ curl admin:53cr3t&commat;172.28.7.64:3000/backup\_agent/backup\_all -d {}
+  ```
+
+  or on a given instance with its GUID by calling the **/backup\_agent/backup**
+  endpoint:
+
+  ```bash
+  $ curl admin:53cr3t&commat;172.28.7.64:3000/backup\_agent/backup -d "instance\_guid=1c16933a-892f-4fe0-b968-ea0bf90246c9"
+  ```
+
+### <a id='trigger-a-restore-procedure'></a> Trigger a Restore Procedure
+
+1. Find the ID of the Backup and the ID of the instance by listing the instances:
+
+  ```bash
+  $ curl admin:53cr3t&commat;172.28.7.64:3000/instances
+
+  {
+    "restores": [],
+    "backups": [
+      {
+        "backup\_agent\_task": {
+          "updated\_at": "2017-05-19T09:01:31.389Z",
+          "created\_at": "2017-05-19T09:01:16.064Z",
+          "status": "done",
+          "task\_id": 5,
+          "id": 5
+        },
+        "instance\_id": 1,
+        "id": 5
+      }
+    ],
+    "instance\_id": "1c16933a-892f-4fe0-b968-ea0bf90246c9",
+    "id": 1
+  }
+  ```
+
+  In the example backups and restores that have been performed for
+  the instance with the instance_id `1c16933a-892f-4fe0-b968-ea0bf90246c9`.
+  This ID corresponds to the service instance GUID from PAS.
+
+2. Restore the backup by calling the **/backup\_agent/restores**
+  endpoint with the backup\_id and instance\_id as data:
+
+  ```bash
+  $ curl admin:53cr3t&commat;172.28.7.64:3000/backup\_agent/restores -d "backup\_id=5" -d "instance\_id=1"
+  ```
+
+## <a id='a9s-pg-backup'></a> a9s-pg Backup
+
+The a9s-pg backup can be handled with the a9s Backup Manager in the same way
+the backup of service instances can be handled.
+
+### <a id='a9s-pg-backup-limitations'></a> Limitations
+
+Because of the reason that `a9s-pg` is the main database for the a9s Backup
+Manager and all services around a9s Elasticsearch for PCF the consistency of
+the backup information of a9s-pg is not guaranteed:
+
+- Restores of a9s-pg can not be stored in the database because at the time the
+  restore is running the database where the restore information is stored is gone
+  and was restored to a previous point in time.
+- All backups that have been triggered after the backup which is restored are
+  not longer known in the database.
+
+<p class="note"><strong>Note:</strong> Be aware that restoring the a9s-pg to a
+previous point in time means you possibly loose information about deployed
+instances which results in ghost instances that can't not any longer be handled
+by the a9s Service Broker and a9s Deployer.</p>
+
+### <a id='a9s-pg-backup-trigger-a-backup'></a> Trigger a Backup
+
+1. Curl the `backup_agent/backup` API endpoint of the a9s Backup Manager.
+
+  ```bash
+  $ curl http://backup:53cr3t&commat;172.28.7.64:3000/backup_agent/backup -d "instance_guid=a9s-pg"
+  {"message":"job to backup is queued"}
+  ```
+
+2. Get the state of the backup by curling the `instances/a9s-pg` endpoint
+of the backup manager.
+
+  ```bash
+  $ curl admin:53cr3t&commat;172.28.7.64:3000/instances/a9s-pg
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                   Dload  Upload   Total   Spent    Left  Speed
+  100  9906    0  9906    0     0   3691      0 --:--:--  0:00:02 --:--:--  3690
+  {
+    "restores": [],
+    "backups": [
+      {
+        "backup_agent_task": {
+          "msg": null,
+          "updated_at": "2018-11-22T04:01:28.853Z",
+          "created_at": "2018-11-22T04:00:15.718Z",
+          "status": "done",
+          "task_id": 148,
+          "id": 156
+        },
+        "is_downloadable": false,
+        "size": 44985152,
+        "backup_id": "a9s-pg-1542859215559",
+        "instance_id": 38,
+        "id": 148
+      }
+    ],
+    "instance_id": "a9s-pg",
+    "id": 38
+  }
+  ```
+
+The status flag `"backups.backup_agent_task.status"` can have the following values:
+
+* `"done"` when the backup is finished
+* `"running"` when the backup is running
+* `"queued"` while the backup is only queued
+* `"failed"` once the backup failed
+* `"deleted"` when the backup has been deleted.
+
+### <a id='a9s-pg-backup-restore-a-backup'></a> Restore a backup
+
+Use the `backup_agent/restores` endpoint to restore a backup.
+You need the `instance_id` and the `backup_id` (given as id) from the backup you
+want to restore. To get this information you need to curl the `instances/a9s-pg`
+endpoint before, see [Trigger a backup](backup.html#a9s-pg-backup-trigger-a-backup).
+
+```json
+{
+  "restores": [],
+  "backups": [
+    {
+...
+      "instance_id": 38,
+      "id": 148
+...
+    }
+  ]
+}
+```
+
+Then trigger the restore:
+
+```bash
+$curl admin:53cr3t&commat;172.28.7.64:3000/backup_agent/restores -d "backup_id=148" -d "instance_id=38"
+{"restore_id":5}
+```
+
+During the restore of the a9s-pg the a9s Backup Manager is not available and
+can't be used to see the state of the restore process, see also
+[Limitations](backup.html#limitations).
+You can watch the backup-agent logs of the a9s-pg master node to see the state.
+On the VM itself you can use the following command:
+
+```bash
+$ tail -f /var/vcap/sys/log/backup-agent/production.log
+```
+
+**Sample output:**
+
+```bash
+172.28.19.56 - oy6Xh45byt4IMhMmlLSV9s_WCdKx9-gT [20/Nov/2018:12:12:30 +0000] "POST /v1/restore HTTP/1.1" 200 21 0.0023
+172.28.19.51 - oy6Xh45byt4IMhMmlLSV9s_WCdKx9-gT [20/Nov/2018:12:12:31 +0000] "POST /v1/order HTTP/1.1" 200 13 0.7541
+172.28.19.51 - oy6Xh45byt4IMhMmlLSV9s_WCdKx9-gT [20/Nov/2018:12:12:45 +0000] "POST /v1/order HTTP/1.1" 200 19 0.6944
+I, [2018-11-20T12:13:00.939338 #31554]  INFO -- : success
+172.28.19.51 - oy6Xh45byt4IMhMmlLSV9s_WCdKx9-gT [20/Nov/2018:12:13:02 +0000] "POST /v1/order HTTP/1.1" 200 13 0.7154
+```
+

@@ -1,0 +1,73 @@
+---
+title: Update Instances
+owner: Partners
+---
+
+After updating the a9s MongoDB for PCF tile, run the Deployment Updater errand
+to update all provisioned service instances to the new service and stemcell versions.
+
+<p class="note"><strong>Note:</strong> anynines recommends running the
+<a href="./installing.html#errands" target="_blank">smoke tests</a> before running
+this errand.</p>
+
+<p class="note"><strong>Note:</strong> To run the errand, you must know how to use the
+BOSH Director. For more information, see <a href="http://docs.pivotal.io/pivotalcf/1-9/customizing/trouble-advanced.html#prepare"
+target="_blank">Advanced Troubleshooting with the BOSH CLI</a>.</p>
+
+1. SSH into the Ops Manager VM:
+
+  ```bash
+  $ ssh ubuntu@OPS-MANAGER-FQDN
+  Password: ***********
+  ```
+
+2. Log in to the BOSH Director.
+
+  ```bash
+  $ bosh login
+  Your username: director
+  Enter password: DIRECTOR\_CREDENTIAL
+  Logged in as 'director'
+  ```
+
+3. Run `bosh deployments` and record the name of the a9s MongoDB for PCF
+  deployment from the **Name** column:
+
+  ```bash
+  $ bosh deployments
+  Using environment '172.28.10.11' as client 'ops_manager'
+
+  Name                                    Release(s)                            Stemcell(s)                                       Team(s)                              Cloud Config
+  a9s-mongodb-94443f82b52dcf333bbd        a9s-consul/18                         bosh-vsphere-esxi-ubuntu-trusty-go_agent/3468.25  -                                    latest
+                                          ...
+                                          template-uploader-errand/120
+  cf-7fcd1f89150a96b381d0                 backup-and-restore-sdk/1.2.1          bosh-vsphere-esxi-ubuntu-trusty-go_agent/3468.25  -                                    latest
+                                          ...
+                                          uaa/52.7
+  ```
+
+4. Force the update for all existing a9s MongoDB for PCF instances.
+
+  ```bash
+  $ bosh -d a9s-mongodb-0476d61a219a39bf0e1b run-errand deployment-updater
+  Using environment '172.28.10.11' as client 'ops_manager'
+
+  Using deployment 'a9s-mongodb-0476d61a219a39bf0e1b'
+
+  Task 14855
+
+  Task 14855 | 12:02:00 | Preparing deployment: Preparing deployment (00:00:00)
+
+  ...
+
+  Task 14855 Started  Tue May 29 12:06:13 UTC 2018
+  Task 14855 Finished Tue May 29 12:26:22 UTC 2018
+  Task 14855 Duration 00:01:09
+  Task 14855 done
+
+  Succeeded
+  ```
+  &nbsp;
+<p class="note"><strong>Note:</strong> Depending on the number of service instances,
+the Deployment Updater might take significant time to finish running.
+BOSH shows no logging output while the errand runs.</p>

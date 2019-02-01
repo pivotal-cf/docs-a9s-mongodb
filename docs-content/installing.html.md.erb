@@ -10,228 +10,340 @@ This topic describes how to install and configure a9s MongoDB for Pivotal Cloud 
 
 To install a9s MongoDB for PCF, do the following:
 
-1. Download the product file from the [Pivotal Network](https://network.pivotal.io/products/a9s-mongodb).
+1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/a9s-mongodb).
 
-2. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
+2. Navigate to the Ops Manager Installation Dashboard and click **Import a Product**
+  to upload the product file.
 
-3. Click **Add** or **+** (depending on the PCF version) next to the uploaded a9s MongoDB for PCF tile in the Ops Manager **Available Products** view to add it to your staging area.
+3. Click **Add** or **+** (depending on the PCF version) next to the uploaded
+  a9s MongoDB for PCF tile in the Ops Manager **Available Products** view to add
+  it to your staging area.
 
-4. Click the new tile, then click **Settings** to review the configuration settings for each tab. For more information on how to configure the properties on each side-tab, see the following:
-  * [Assign AZs and Networks](#azs)
-  * [Plan Configuration](#plan_configuration)
-  * [Backup Configuration](#backup_configuration)
-  * [Syslog](#syslog)
-  * [Configure BOSH Errands](#errands)
-  * [Configure Resources](#resource-config)
-  * [Name Resolving With Consul](#name-resolving-with-consul)
+4. Click the new tile, then click **Settings** to review the configuration settings
+  for each tab. For more information on how to configure the properties on each
+  side-tab, see the following:
+* [Assign AZs and Networks](installing.html#azs)
+* [Plan Configuration](installing.html#plan-configuration)
+* [Backup Configuration](installing.html#backup_configuration)
+* [Service Configuration](installing.html#service_configuration)
+* [Management Cluster](installing.html#management)
+* [Configure BOSH Errands](installing.html#errands)
+* [Configure Resources](installing.html#resource-config)
 
 5. Click **Apply Changes** to deploy the service.
 
-After you install the a9s MongoDB for PCF, it is available in the list of Marketplace services. For more information, see [Using a9s MongoDB for PCF](./using.html).
+After you install the a9s MongoDB for PCF, it is available in the list of Marketplace
+services. For more information, see [Using a9s MongoDB for PCF](./using.html).
 
 ### <a id="azs"></a> Assign AZs and Networks
 
-Use **Assign AZs and Networks** to configure the location of service component and service instance jobs. Configure your network to balance cluster jobs between as many AZs as possible.
+Use **Assign AZs and Networks** to configure the location of service component
+and service instance jobs. Configure your network to balance cluster jobs between
+as many AZs as possible.
 
 <%= image_tag("assign_azs_and_networks.png") %>
 
-### <a id="plan_configuration"></a> Plan Configuration
+### <a id="plan-configuration"></a> Plan Configuration
 
-1. Define the AZ placement where the service instances will be deployed.
+1. Define the AZ placement where the service instances are deployed into.
 
 1. Define the VM and persistent disk types.
 
-VM and persistent disk types will be used in the service instance deployments. Disk size and VM size (CPUs and memory) can be configured independently, to create your desired plans. However, consider that moving from a larger disk to a smaller disk is likely to fail.
+<p class="note"><strong>Note:</strong> VM and persistent disk types are used
+in the service instance deployments. Disk size and VM size (CPUs and memory) can
+be configured independently, to create your desired plans. However, consider that
+moving from a larger disk to a smaller disk is likely to fail.</p>
 
 #### <a id='min-sys-reqs'></a> Minimum System Requirements
 
-Disk nano: 2&nbsp;GB
-Disk small: 4&nbsp;GB
-Disk medium: 10&nbsp;GB
-Disk large: 30&nbsp;GB
-VM nano: 1 CPU, 1&nbsp;GB RAM, 4&nbsp;GB Disk
-VM small: 1 CPU, 2&nbsp;GB RAM, 4&nbsp;GB Disk
-VM medium: 2 CPU, 4&nbsp;GB RAM, 8&nbsp;GB Disk
-VM large: 4 CPU, 8&nbsp;GB RAM, 30&nbsp;GB Disk
+| Resource | Size |
+|----------|------|
+| Disk nano | 2&nbsp;GB |
+| Disk small | 4&nbsp;GB |
+| Disk medium | 10&nbsp;GB |
+| Disk large | 30&nbsp;GB |
+| VM nano | 1 CPU, 1&nbsp;GB RAM, 4&nbsp;GB Disk |
+| VM small | 1 CPU, 2&nbsp;GB RAM, 4&nbsp;GB Disk |
+| VM medium | 2 CPU, 4&nbsp;GB RAM, 8&nbsp;GB Disk |
+| VM large | 4 CPU, 8&nbsp;GB RAM, 30&nbsp;GB Disk |
 
 <%= image_tag("plan_configuration.png") %>
 
 ### <a id="backup_configuration"></a> Backup Configuration
 
-Use **Backup Configuration** to configure the backup endpoints. You can choose between a S3 compliant endpoint or an Azure blob store.
+Use **Backup Configuration** to configure the backup endpoints. You can choose
+between a S3 compliant endpoint and an Azure blob store.
 
-<%= image_tag("backup_configuration.png") %>
+#### Configure S3 Compliant Backup Storage
 
-### <a id="syslog"></a> Syslog
+<%= image_tag("backup_configuration_s3.png") %>
 
-a9s MongoDB can stream the logs of the service components to a syslog endpoint. This has no effect on the service instances itself.
+<table class="nice">
+  <th>Field</th>
+  <th>Description</th>
+  <tr>
+    <td>Minimum backups per Instance</td>
+    <td>The minimum number of backups for any instance before the oldest backup is deleted.</td>
+  </tr>
+  <tr>
+    <td>Minimum Backup Age</td>
+    <td>The number of days a backup must be stored before it can be deleted.</td>
+  </tr>
+  <tr>
+    <td>Number of workers</td>
+    <td>The amount of worker the rails puma server uses to operate. This is necessary
+        because a download of a backup blocks one worker.</td>
+  </tr>
+  <tr>
+    <td>Full Backup Repeat</td>
+    <td>Set the time for a full backup. Use cronjob formatting. Only asterisks and
+        numbers are allowed.<br>
+        Format: (Minute) (Hour) (Day of the month) (Month) (Day of the week).<br>
+        For example, <code>30 0 * * *</code> </td>
+  </tr>
+  <tr>
+    <td>Delete Backup Repeat</td>
+    <td>Set the time to delete backups. Use cronjob formatting. Only asterisks and
+        numbers are allowed.<br>
+        Format: (Minute) (Hour) (Day of the month) (Month) (Day of the week).<br>
+        For example, <code> 30 0 * * *</code> </td>
+  </tr>
+  <tr>
+    <td>AWS Endpoint</td>
+    <td>You can define an alternative S3 endpoint than AWS. I.e. 'http://10.0.4.121:9000/'
+        Keep it empty to use AWS S3 endpoint.</td>
+  </tr>
+  <tr>
+    <td>AWS Access Key Id</td>
+    <td>AWS access key ID.</td>
+  </tr>
+  <tr>
+    <td>AWS Secret Access Key</td>
+    <td>AWS access access key.</td>
+  </tr>
+  <tr>
+    <td>AWS Region</td>
+    <td>AWS region of the bucket.</td>
+  </tr>
+  <tr>
+    <td>AWS Bucket</td>
+    <td>AWS bucket name.</td>
+  </tr>
+</table>
 
-<%= image_tag("syslog.png") %>
+#### Configure Azure Backup Storage
 
-###<a id="service_configuration"></a>Service Configuration
+<%= image_tag("backup_configuration_azure.png") %>
+
+<table class="nice">
+  <th>Field</th>
+  <th>Description</th>
+  <tr>
+    <td>Minimum backups per Instance</td>
+    <td>The minimum number of backups for any instance before the oldest backup
+        is deleted.</td>
+  </tr>
+  <tr>
+    <td>Minimum Backup Age</td>
+    <td>The number of days a backup must be stored before it can be deleted.</td>
+  </tr>
+  <tr>
+    <td>Number of workers</td>
+    <td>The amount of worker the rails puma server uses to operate. This is necessary
+        because a download of a backup blocks one worker.</td>
+  </tr>
+  <tr>
+    <td>Full Backup Repeat</td>
+    <td>Set the time for a full backup. Use cronjob formatting. Only asterisks
+        and numbers are allowed.<br>
+        Format: (Minute) (Hour) (Day of the month) (Month) (Day of the week).<br>
+        For example, <code>30 0 * * *</code> </td>
+  </tr>
+  <tr>
+    <td>Delete Backup Repeat</td>
+    <td>Set the time to delete backups. Use cronjob formatting. Only asterisks
+        and numbers are allowed.<br>
+        Format: (Minute) (Hour) (Day of the month) (Month) (Day of the week).<br>
+        For example, <code> 30 0 * * *</code> </td>
+  </tr>
+  <tr>
+    <td>Azure Storage Account Name</td>
+    <td>The Azure storage account name.</td>
+  </tr>
+  <tr>
+    <td>Azure Storage Access Key</td>
+    <td>The Azure storage access key.</td>
+  </tr>
+  <tr>
+    <td>Azure Container</td>
+    <td>The name of the azure container.</td>
+  </tr>
+</table>
+
+### <a id="service_configuration"></a>Service Configuration
 
 On the Service Configuration page, you can set default endpoints for Graphite and syslog.
 For example, you might use `logs.papertrail.com:44456` for the syslog endpoint.
- <p class="note"><strong>Note:</strong> These endpoints cannot be deleted or updated by the user.</p>
 
 <%= image_tag("service_configuration.png") %>
 
+<table class="nice">
+  <th>Field</th>
+  <th>Description</th>
+  </tr>
+  <tr>
+    <td>Allow block automatic updates.</td>
+    <td>Allow or forbid the Service Instance user to block automatic updates.
+        If it`s not allowed the dashboard doesn't show this information.</td>
+  </tr>
+  <tr>
+    <td>Allow backup download</td>
+    <td>Allow the service instance user to download backups in the service dashboard.</td>
+  </tr>
+  <tr>
+    <td>Allow instance re-create</td>
+    <td>Allow the service instance user to recreate the service instance in the
+        service dashboard.</td>
+  </tr>
+  <tr>
+    <td>Allow instance restart</td>
+    <td>Allow the service instance user to restart the service instance in the
+        service dashboard.</td>
+  </tr>
+  <tr>
+    <td>Minimum encryption key length</td>
+    <td>Minimum key length for the backup encryption keys defined by the application
+        developer.</td>
+  </tr>
+  <tr>
+    <td>Service Instance Sharing</td>
+    <td>Allow service instance sharing in CF </td>
+  </tr>
+  <tr>
+    <td>Internal Syslog Endpoint</td>
+    <td>Define an internal syslog endpoint for all service instances created by
+        the user.</td>
+  </tr>
+  <tr>
+    <td>Internal Graphite Endpoint</td>
+    <td>Define an internal Graphite endpoint for all service instances created by
+        the user.</td>
+  </tr>
+</table>
+
+<p class="note"><strong>Note:</strong> The syslog and Graphite endpoints cannot
+  be deleted or updated by the end user.</p>
+
+### <a id='management'></a> Management Cluster
+
+All settings on this page are related to the components of the service offering
+and not to the service instances.
+
+<%= image_tag("management_cluster.png") %>
+
+#### <a id='dns-domain'></a> DNS Domain
+<table class="nice">
+  <th>Field</th>
+  <th>Description</th>
+  </tr>
+  <tr>
+    <td>Configure DNS Domain</td>
+    <td>The DNS domain for this installation. All instances are created under
+        this name. See <a href="name-resolving.html">Name resolving with consul</a>
+        for more information.</td>
+  <tr>
+</table>
+
+#### <a id='syslog-forwarding'></a> Syslog Forwarding
+When syslog forwarding is enabled all logs are forwarded to the syslog endpoint
+you configure here.
+
+<table class="nice">
+  <th>Field</th>
+  <th>Description</th>
+  <tr>
+  <td>Syslog Address</td>
+  <td>The syslog endpoint.</td>
+  </tr>
+  <tr>
+  <td>Syslog Port</td>
+  <td>The port of the syslog endpoint.</td>
+  </tr>
+  <tr>
+  <td>Transport Protocol</td>
+  <td>UDP or TCP</td>
+  </tr>
+  <tr>
+  <td>Format For Logs</td>
+  <td>RFC 5424 or Legacy Format</td>
+  </tr>
+  <tr>
+  <td>Enable TLS</td>
+  <td>You can enable TLS.</td>
+  </tr>
+  <tr>
+  <td>Permitted Peer</td>
+  <td>When TLS is enabled enter the name of remote host, for example,
+      <code>*.syslogserver.com</code></td>
+  </tr>
+  <tr>
+  <td>Custom CA Certificate</td>
+  <td>Only needed when TLS is enabled and the syslog server requires it.</td>
+  </tr>
+</table>
+
+#### <a id='enable_bosh_dns_handler'></a> Enable BOSH DNS Handler
+
+Enable BOSH DNS Handler for name resolving a9s services within the diego cells.
+Read the installation instructions carefully before you enable the feature you
+can find <a href="name-resolving.html#name-resolving-with-a9s-bosh-dns-handler">here</a>.
+
 ### <a id='errands'></a> Configure Errands
 
-Use **Errands** to configure the lifecycle errands that run when you install or uninstall a9s MongoDB for PCF. The list below describes each errand. For more information, see [Understanding Lifecycle Errands](https://docs.pivotal.io/tiledev/tile-errands.html).
+Use **Errands** to configure the lifecycle errands that run when you install or
+uninstall a9s MongoDB for PCF. The list below describes each errand. For more
+information, see [Understanding Lifecycle Errands](https://docs.pivotal.io/tiledev/tile-errands.html).
 
 <%= image_tag("errands.png") %>
 
 #### <a id='post-deploy'></a> Post-Deploy Errands
 
-* **Run Template Uploader**: This errand is required to configure generic components that are included in a9s MongoDB for PCF with MongoDB configurations. Disabling this errand may speed up the deployment of all tiles.
-<p class="note"><strong>Note:</strong> To ensure your configuration remains up-to-date, disable this errand only when necessary.</p>
+* **Run Template Uploader**: This errand is required to configure generic components
+  that are included in a9s MongoDB for PCF with MongoDB configurations. Disabling
+  this errand may speed up the deployment of all tiles.
+  &nbsp;
+  <p class="note"><strong>Note:</strong> To ensure your configuration remains up-to-date,
+  disable this errand only when necessary.</p>
+  &nbsp;
+* **Run Broker Registrar**: This errand registers the a9s MongoDB for PCF service
+  broker at the Elastic Runtime. This makes the service available in the Marketplace.
 
-* **Run Broker Registrar**: This errand registers the a9s MongoDB for PCF service broker at the Elastic Runtime. This makes the service available in the Marketplace.
-
-* **Run Smoke Tests**: This errand runs a series of basic tests against your a9s MongoDB for PCF installation to ensure that it is configured properly. Those tests may take a while, probably over 30 minutes.
+* **Run Smoke Tests**: This errand runs a series of basic tests against your a9s
+  MongoDB for PCF installation to ensure that it is configured properly. Those
+  tests may take a while, probably over 30 minutes.
 
 #### <a id='pre-delete'></a> Pre-Delete Errands
 
-* **Delete all a9s MongoDB instances**: This errand deletes all a9s MongoDB instances which were created with `cf create-service` by PCF end users.
-<p class="note warning"><strong>WARNING:</strong> This is an absolutly destructive task and cannot be undone. All VMs of the service instances will be deleted irrecoverably. In the case a service instance is bound to an app or service keys are existing, the errand will fail.</p>
-
-* **Run Broker Deregistrar**: This will deregister the a9s MongoDB for PCF service broker in Elastic Runtime. This errand removes the a9s MongoDB service from the Marketplace.
+* **Delete all a9s MongoDB instances**: This errand deletes all a9s MongoDB
+  instances which were created with `cf create-service` by PCF end users.
+  &nbsp;
+  <p class="note warning"><strong>WARNING:</strong> This is an absolutely destructive
+  task and cannot be undone. All VMs of the service instances are deleted irrecoverably.
+  In the case a service instance is bound to an app or service keys are existing,
+  The errand fails.</p>
+  &nbsp;
+* **Run Broker Deregistrar**: This deregisters the a9s MongoDB for PCF service
+  broker in Elastic Runtime. This errand removes the a9s MongoDB service from the
+  Marketplace.
 
 ### <a id='resource-config'></a> Configure Resources
 
-You can configure the dimensions of the VMs that host the a9s MongoDB for PCF components. This configuration does not cover the dedicated MongoDB instances that run on VMs provided by the a9s BOSH tile for PCF. For more information, see [Configure Service Plan VMs](#configure-service-instance).
+You can configure the dimensions of the VMs that host the a9s MongoDB for PCF
+components. This configuration does not cover the dedicated MongoDB instances that
+run on VMs provided by the a9s BOSH tile for PCF. For more information, see
+[Configure Service Plan VMs](installing.html#plan-configuration).
 
-<p class="note"><strong>Note<:/strong> anynines recommends using a VM type of large or greater to support the tile compilation.</p>
+<p class="note"><strong>Note:</strong> anynines recommends using a VM type of large
+or greater to support the tile compilation.</p>
 
 <%= image_tag("resource_config.png") %>
-
-
-## <a id='deployment_updater'></a> Update Existing Service Instances
-
-After updating the a9s MongoDB for PCF tile, run the Deployment Updater errand to update all provisioned service instances to the new service and stemcell versions.
-
-<p class="note"><strong>Note:</strong> anynines recommends running the <a href="./installing.html#errands" target="_blank">smoke tests</a> before running this errand.</p>
-
-<p class="note"><strong>Note:</strong> To run the errand, you must know how to use the BOSH Director. For more information, see <a href="http://docs.pivotal.io/pivotalcf/1-9/customizing/trouble-advanced.html#prepare" target="_blank">Advanced Troubleshooting with the BOSH CLI</a>.</p>
-
-1. SSH into the Ops Manager VM:
-<pre class="terminal">
-$ ssh ubuntu@OPS-MANAGER-FQDN
-Password: ***********
-</pre>
-
-1. Log in to the BOSH Director:
-<pre class="terminal">
-$ bosh login
-Your username: director
-Enter password: DIRECTOR\_CREDENTIAL
-Logged in as 'director'
-</pre>
-
-1. Run `bosh deployments` and record the name of the a9s MongoDB for PCF deployment from the **Name** column:
-<pre class="terminal">
-$ bosh deployments
-Using environment '172.28.10.11' as client 'ops_manager'
-
-Name                                 Release(s)                            Stemcell(s)                                       Team(s)                              Cloud Config
-a9s-mongodb-94443f82b52dcf333bbd  a9s-consul/18                         bosh-vsphere-esxi-ubuntu-trusty-go_agent/3468.25  -                                    latest
-                                     ...
-                                     template-uploader-errand/120
-cf-7fcd1f89150a96b381d0              backup-and-restore-sdk/1.2.1          bosh-vsphere-esxi-ubuntu-trusty-go_agent/3468.25  -                                    latest
-                                     ...
-                                     uaa/52.7
-</pre>
-
-1. Run `bosh -d a9s-mongodb-service-94443f82b52dcf333bbd run errand deployment-updater` to force the update for all existing a9s MongoDB for PCF instances:
-<pre class="terminal">
-$ bosh -d a9s-mongodb-0476d61a219a39bf0e1b run-errand deployment-updater
-Using environment '172.28.10.11' as client 'ops_manager'
-
-Using deployment 'a9s-mongodb-0476d61a219a39bf0e1b'
-
-Task 14855
-
-Task 14855 | 12:02:00 | Preparing deployment: Preparing deployment (00:00:00)
-&nbsp;
-...
-&nbsp;
-Task 14855 Started  Tue May 29 12:06:13 UTC 2018
-Task 14855 Finished Tue May 29 12:26:22 UTC 2018
-Task 14855 Duration 00:01:09
-Task 14855 done
-
-Succeeded
-</pre>
-<p class="note"><strong>Note:</strong> Depending on the number of service instances, the Deployment Updater may take significant time to finish running. BOSH shows no logging output while the errand runs.</p>
-
-
-## <a id='interacting-with-the-backup-manager'></a> Trigger Backups and Restores on Demand
-
-PCF administrators can interact with the Backup Manager endpoints to trigger immediate backups and restore backups.
-
-To backup, do the following:
-
-1. Navigate to the **Status** tab of the tile and record the IP address of one of the a9s Ancillary Service instances.
-
-    <%= image_tag("status_tab.png", width: 300) %>
-
-1. On the **Credentials** tab, find the credentials of the service under **Backup Manager Password**.
-
-1. Trigger a backup on all instances by calling the **/backup\_agent/backup\_all** endpoint:
-<pre class="terminal">
-$ curl backup:53cr3t&commat;172.28.7.64:3000/backup\_agent/backup\_all -d {}
-</pre>
-or on a given instance with its GUID by calling the **/backup\_agent/backup**
-endpoint:
-<pre class="terminal">
-$ curl backup:53cr3t&commat;172.28.7.64:3000/backup\_agent/backup -d "instance\_guid=1c16933a-892f-4fe0-b968-ea0bf90246c9"
-</pre>
-
-To restore, do the following:
-
-1. Find the ID of the Backup and the ID of the instance by listing the instances:
-<pre class="terminal">
-$ curl backup:53cr3t&commat;172.28.7.64:3000/instances
-</pre>
-This command outputs an array composed of objects like this one:
-<pre class="terminal">
-{
-  "restores": [],
-  "backups": [
-    {
-      "backup\_agent\_task": {
-        "updated\_at": "2017-05-19T09:01:31.389Z",
-        "created\_at": "2017-05-19T09:01:16.064Z",
-        "status": "done",
-        "task\_id": 5,
-        "id": 5
-      },
-      "instance\_id": 1,
-      "id": 5
-    }
-  ],
-  "instance\_id": "1c16933a-892f-4fe0-b968-ea0bf90246c9",
-  "id": 1
-}
-</pre>
-In the example above, backups and restores have been performed for the instance with the instance\_id `1c16933a-892f-4fe0-b968-ea0bf90246c9`. This ID corresponds to the instance GUID from PCF.
-
-1. Restore the backup by calling the **/backup\_agent/restores**
-endpoint with the backup\_id and instance\_id as data:
-<pre class="terminal">
-$ curl backup:53cr3t&commat;172.28.7.64:3000/backup\_agent/restores -d "backup\_id=5" -d "instance\_id=1"
-</pre>
-
-
-## <a id='name-resolving-with-consul'></a> Name Resolving With Consul
-
-a9s MongoDB for PCF comes with its own highly available Consul cluster for service discovery and service failover procedures.
-
-Consul is an HA service discovery and configuration tool, which includes features such as failure detection, an HA key/value store, and an HA DNS service that you can control through a HTTP-based REST interface.
-
-To make use of this feature you must talk to your administrator of your company's nameservers to setup a delegation of a9s MongoDB hostnames. The hostnames of these queries end with ` a9s-mongodb-consul` by default and must be delegated to the IP addresses of the consul server within the a9s MongoDB tile. To figure out the IP addresses, check the status tab of the tile and look for `a9s Consul Cluster`.
-
-<%= image_tag("status_tab.png") %>
-
-For general information about Consul, see [Consul by HashiCorp](https://www.consul.io/).

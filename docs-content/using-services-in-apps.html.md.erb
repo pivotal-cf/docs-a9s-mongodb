@@ -1,0 +1,72 @@
+---
+title: Using Services in Apps
+owner: Partners
+---
+
+This topic provides an usage guide for binding a9s Data Services to Cloud Foundry apps.
+
+## <a id='binding-information'></a> Binding Information
+
+Binding information is delivered to apps through the `VCAP_SERVICES` environment
+variable. This variable is a JSON object string.
+
+### <a id="structure"></a> Structure
+
+- hash of services (e.g a9s-redis40, a9s-postgresql94...)
+  - array of service instances
+    - name
+      - string
+    - tags
+      - array of tag strings
+    - credentials
+      - service specific credentials
+
+### <a id="vcap-services-example"></a> VCAP_SERVICES Example
+
+```json
+{
+  "a9s-rabbitmq36": [
+    {
+      "name": "example-rabbitdb",
+      "tags": [ "rabbitmq" ],
+      "credentials": {
+        "host": "localhost",
+        "password": "quest",
+        "port": 5672,
+        "uri": "amqp://guest:guest@localhost:5672",
+        "username": "guest"
+      }
+    }
+  ]
+}
+```
+
+## <a id='best-practices'></a> Best Practices
+
+1. Do not rely on order in `VCAP_SERVICES`.
+
+1. Do not rely on service versions.
+
+1. Do not hard code service instance names.
+
+## <a id='suggested-practices'></a> Suggested Practices
+
+### <a id="option-a"></a> Option A
+
+Specify the service name through an environment variable with your app manifest.
+This is trivial to implement in an app and follows the [best practices](using-services-in-apps.html#best-practices)
+to make it easy to rebind an app without changing code.
+
+### <a id="option-b"></a> Option B
+
+Look for a service instance with a tag. That can be hard coded in an app,
+without compromising the [best practices](using-services-in-apps.html#best-practices).
+This is trivial to implement too, but you must clearly document the tag you have
+hard-coded. The advantage of this option is not having to update a variable in an
+app manifest when rebinding.
+
+## <a id='rabbitmq-go-example'></a> RabbitMQ Go example
+
+Here you can find a [RabbitMQ example](https://github.com/anynines/a9s-rabbitmq-app/blob/44b336e8c217e91fe4730b09ad102e97734fa8df/main.go#L90)
+how to implement both [suggested practices](using-services-in-apps.html#suggested-practices) A
+and B in an app.
