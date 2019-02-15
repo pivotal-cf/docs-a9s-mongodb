@@ -1,0 +1,68 @@
+---
+title: SSL/TLS Service Plans
+owner: Partners
+---
+
+This topic provides usage guidance for SSL/TLS plans of a9s Data Services.
+
+## <a id='providing-your-own-key'></a> Providing your own key
+
+By default a self signed certificate is created, however when creating and
+updating a data service instance it is possible to provide your own key,
+certificate and CA certificate. The certificate must be a wildcard certificate
+for subdomains under the service domain & node domain.
+
+### Example node domain
+
+```
+*.node.dc1.a9s-mongodb-consul
+```
+
+### Example service domain
+
+```
+*.service.dc1.a9s-mongodb-consul
+```
+
+### Parameters to provide
+
+The following should be provided via the `-c` of a `cf create-service` or `cf
+update-service` command an escaped JSON string:
+
+| Key | Description |
+|-----|-------------|
+| cacrt | The CA certificate with which your certificate is signed |
+| wildcrt | The certificate for your service instance |
+| wildkey | The private key to use with the certificate |
+
+## <a id='using-ssl-in-your-apps'></a> Using SSL in your apps
+
+To use an a9s Data Service via SSL you will need to trust the certificate. One
+way to achieve this is to add the CA Certificate to the trusted CAs of your app.
+You will find a variable called `cacrt` in the `credentials` hash provided to
+your app via the `VCAP_SERVICES` environment variable.
+
+For some organisations, such as those already operating internal CAs, it might
+be best to distribute a CA via a custom buildpack in conjunction with [providing
+your own key](ssl-plans.html#providing-your-own-key).
+
+### RabbitMQ Go example
+
+Here is a [RabbitMQ example](https://github.com/anynines/a9s-rabbitmq-app/blob/44b336e8c217e91fe4730b09ad102e97734fa8df/main.go#L156)
+of how you might use `cacrt` in your apps.
+
+### RabbitMQ Ruby example
+
+```ruby
+require 'json'
+require 'bunny'
+
+vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
+credentials = vcap_services['a9s-rabbitmq37'][0]['credentials']
+conn = Bunny.new(
+  credentials['uri'],
+  tls_ca_certificates: [credentials['cacrt']],
+  tls: true)
+
+conn.start
+```

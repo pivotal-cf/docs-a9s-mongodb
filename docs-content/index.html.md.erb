@@ -32,11 +32,16 @@ The current version of a9s MongoDB for PCF includes the following key features:
 | **Logging and Monitoring** | Each MongoDB service instance provides log messages and MongoDB-specific metrics to one or more `syslog/graphite` endpoints. You can configure the `syslog/graphite` endpoint to receive logging and monitoring information. |
 | **Deployment Updater** | This errand automatically updates the stemcell and all provisioned a9s MongoDB for PCF service instances to their lastest version. |
 | **Backup Manager** | The Backup Manager does regular backup of your instances and offers endpoints to backup instantly and restore backups. |
-| **Service Guard** | The Service Guard creates Cloud Foundry security groups for your service instance VMs.<br /><br /> When the IP address of a service instance changes, the guard updates the security group. The Service Guard also restarts the application instances bound to the affected service instance. **The instances of one application are restarted one by one to avoid downtime.**|
+| **Service Guard** | The Service Guard creates Cloud Foundry security groups for your service instance VMs.<br /><br /> When the IP address of a service instance changes, the guard updates the security group. |
 | **Single to Cluster Updates** | Allow plan updates from single to cluster plans |
 | **Service Dashboard** | The Service Dashboard provides single sign on and lets the user trigger easily backups. |
 | **New MongoDB versions** | Added a9s MongoDB v3.4 and v3.6 |
 | **Default Syslog Endpoints for Instances** | In the tile, a default endpoint for syslog and Graphite can be configured for each service instance created by the user. |
+| **Consul Domain configurable** | The consul domain can now be configured. |
+| **BOSH DNS Handler** | a9s BOSH DNS handler added to make a9s service instances accessible from diego cells. |
+| **a9s-pg Backup** | Added backup option for a9s-pg. |
+| **Instance Sharing** | a9s MySQL no supports instance sharing between orgs an spaces, see [documentation](https://docs.pivotal.io/pivotalcf/2-4/devguide/services/sharing-instances.html). |
+| **Update Xenial** | Update to ubuntu xenial stemcells. |
 
 ### <a id='video'></a> Video Overview of a9s MongoDB for PCF
 
@@ -59,19 +64,19 @@ The following table provides version and version-support information about a9s M
     <th>Details</th>
     <tr>
         <td>Version</td>
-        <td>v2.0.2</td>
+        <td>v2.1.0</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>September 4, 2018</td>
+        <td>February 14, 2019</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
-        <td>v1.12.x, v2.0.x, v2.1.x, and v2.2.x</td>
+        <td>v2.1.x, v2.2.x, v2.3.x, and v2.4.x</td>
     </tr>
     <tr>
         <td>Compatible Pivotal Application Service version(s):</td>
-        <td>v1.12.x, v2.0.x, v2.1.x, and v2.2.x</td>
+        <td>v2.1.x, v2.2.x, v2.3.x, and v2.4.x</td>
     </tr>
     <tr>
         <td>IaaS support</td>
@@ -86,7 +91,7 @@ The following table provides version and version-support information about a9s M
 
 To install and use a9s MongoDB for PCF, you must install the following products and tiles:
 
-* Pivotal Application Service (formerly Elastic Runtime) v1.12 or later
+* Pivotal Application Service (formerly Elastic Runtime) v2.1 or later
 
 For more information, see [Installing and Configuring a9s MongoDB for PCF](./installing.html).
 
