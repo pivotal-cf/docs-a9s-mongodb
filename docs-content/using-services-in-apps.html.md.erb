@@ -3,15 +3,14 @@ title: Using Services in Apps
 owner: Partners
 ---
 
-This topic provides usage guidance for binding all a9s Data Services to cloud
-foundry apps.
+This topic provides an usage guide for binding a9s Data Services to Cloud Foundry apps.
 
-## <a id='binding-information'></a> Binding information
+## <a id='binding-information'></a> Binding Information
 
-Binding information is  delivered to apps via the `VCAP_SERVICES` environment
+Binding information is delivered to apps through the `VCAP_SERVICES` environment
 variable. This variable is a JSON object string.
 
-### Structure
+### <a id="structure"></a> Structure
 
 - hash of services (e.g a9s-redis40, a9s-postgresql94...)
   - array of service instances
@@ -22,7 +21,7 @@ variable. This variable is a JSON object string.
     - credentials
       - service specific credentials
 
-### `VCAP_SERVICES` example
+### <a id="vcap-services-example"></a> VCAP_SERVICES Example
 
 ```json
 {
@@ -42,32 +41,32 @@ variable. This variable is a JSON object string.
 }
 ```
 
-## <a id='best-practices'></a> Best practices
+## <a id='best-practices'></a> Best Practices
 
-1. Do not rely on order in `VCAP_SERVICES`
-2. Do not rely on service versions
-3. Do not hard code service instance names
+1. Do not rely on order in `VCAP_SERVICES`.
 
-## <a id='suggested-practices'></a> Suggested practices
+1. Do not rely on service versions.
 
-### Option A
+1. Do not hard code service instance names.
 
-Specify the service name via an environment viable with your app manifest. This
-is trivial to implement in an app, and follows the [best
-practices](using-services-in-apps.html#best-practices) making it easy to rebind an apps without changing
-code in your app.
+## <a id='suggested-practices'></a> Suggested Practices
 
-### Option B
+### <a id="option-a"></a> Option A
 
-Look for a service instance with a tag, that can be hard coded in an app,
-without compromising the [best practices](using-services-in-apps.html#best-practices). This is trivial to
-implement, but you must clearly document the tag you have hard coded. The
-advantage of this option is not having to update a variable in an app manifest
-when rebinding.
+Specify the service name through an environment variable with your app manifest.
+This is trivial to implement in an app and follows the [best practices](using-services-in-apps.html#best-practices)
+to make it easy to rebind an app without changing code.
+
+### <a id="option-b"></a> Option B
+
+Look for a service instance with a tag. That can be hard coded in an app,
+without compromising the [best practices](using-services-in-apps.html#best-practices).
+This is trivial to implement too, but you must clearly document the tag you have
+hard-coded. The advantage of this option is not having to update a variable in an
+app manifest when rebinding.
 
 ## <a id='rabbitmq-go-example'></a> RabbitMQ Go example
 
-Here you can find a [RabbitMQ
-example](https://github.com/anynines/a9s-rabbitmq-app/blob/44b336e8c217e91fe4730b09ad102e97734fa8df/main.go#L90)
-of how to simultaneously implement [suggested practices](using-services-in-apps.html#suggested-practices) A
+Here you can find a [RabbitMQ example](https://github.com/anynines/a9s-rabbitmq-app/blob/44b336e8c217e91fe4730b09ad102e97734fa8df/main.go#L90)
+how to implement both [suggested practices](using-services-in-apps.html#suggested-practices) A
 and B in an app.

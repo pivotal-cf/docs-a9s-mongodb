@@ -7,16 +7,26 @@ This topic describes the name resolving capabilities of a9s MongoDB for PCF.
 
 ## <a id='name-resolving'></a> Name Resolving
 
-There are two ways to obtain the IP address for service instance DNS name.
-Either use the consul cluster which comes with the installation of a9s Elasticsearch or use the a9s BOSH DNS which can be installed on each diego cell.
+There are two ways to obtain the IP address for service instance DNS name:
 
-### <a id='name-resolving-with-consul'></a> Name Resolving With Consul
++ Use the Consul cluster which comes with the installation of a9s MongoDB
++ Use the a9s BOSH DNS which can be installed on each Diego cell
 
-a9s Elasticsearch for PCF comes with its own highly available Consul cluster for service discovery and service failover procedures.
+### <a id='name-resolving-with-consul'></a> Name Resolving with Consul
 
-Consul is an HA service discovery and configuration tool, which includes features such as failure detection, an HA key/value store, and an HA DNS service that you can control through a HTTP-based REST interface.
+a9s MongoDB for PCF comes with its own highly available Consul cluster for service
+discovery and service failover procedures.
 
-To make use of this feature you must talk to your administrator of your company's nameservers to setup a delegation of a9s Elasticsearch hostnames. The hostnames of these queries end with `a9s-elasticsearch-consul` by default and must be delegated to the IP addresses of the consul server within the a9s Elasticsearch tile. To figure out the IP addresses check the status tab of the tile and look for `a9s Consul Cluster`.
+Consul is an HA service discovery and configuration tool, which includes features
+such as failure detection, an HA key/value store, and an HA DNS service that you
+can control through an HTTP-based REST interface.
+
+To make use of this feature, talk to your company's nameserver administrator
+to set up a delegation of a9s MongoDB hostnames.
+The hostnames of these queries end with `a9s-mongodb-consul` by default
+and must be delegated to the IP addresses of the Consul server within the a9s
+MongoDB tile. To figure out the IP addresses check the status tab of the tile and
+look for `a9s Consul Cluster`.
 
 <%= image_tag("status_tab.png") %>
 
@@ -24,15 +34,27 @@ For general information about Consul, see [Consul by HashiCorp](https://www.cons
 
 ### <a id='name-resolving-with-a9s-bosh-dns-handler'></a> Name Resolving With a9s BOSH DNS Handler
 
-The PCF Ops Director comes with a native DNS support. The DNS release provides a way to delegate certain domains via handlers property to different DNS servers.
+The BOSH Director comes with a native DNS support.
+The DNS release provides a way to delegate certain domains via the handlers property
+to different DNS servers.
 
-a9s Elasticsearch comes with the a9s BOSH DNS Handler. The release creates  a file which is used by BOSH DNS to add an additional BOSH handler to the BOSH DNS configuration. See [BOSH DNS Handlers](https://bosh.io/docs/dns/#additional-handlers).
-The file is stored here: `/var/vcap/jobs/a9s-elasticsearch-bosh-dns-handler/dns/handlers.json` it follows the [file glob of BOSH DNS](https://bosh.io/jobs/bosh-dns?source=github.com/cloudfoundry/bosh-dns-release#p=handlers).
-The DNS Handler will only be applied to each diego cell where it's needed via a runtime configuration. Because of the reason it refers to an already installed a9s Elasticsearch for PCF tile, the tile must be deployed before the feature can be enabled.
+a9s MongoDB comes with the a9s BOSH DNS Handler.
+The release creates a file which is used by BOSH DNS to add an additional BOSH
+handler to the BOSH DNS configuration. See
+[Additional Handlers](https://bosh.io/docs/dns/#additional-handlers).
+The file is stored here: `/var/vcap/jobs/a9s-mongodb-bosh-dns-handler/dns/handlers.json`.
+It follows the [handlers_files_glob](https://bosh.io/jobs/bosh-dns?source=github.com/cloudfoundry/bosh-dns-release#p=handlers).
+The DNS Handler is only applied to the Diego cells where it is needed. It is applied
+through a runtime configuration. The tile must be deployed before the feature can
+be enabled, because it refers to an already installed a9s MongoDB for PCF tile.
 
-1. Import and stage a9s Elasticsearch for PCF like described above. Take care `Enable BOSH DNS Handler` is disabled.
-1. Apply the changes only for the a9s Elasticsearch for PCF tile.
-1. Once the tile is deployed and the smoke-tests run successfully set `Enable BOSH DNS Handler` in the **Management Cluster** page to enabled.
-1. Redeploy only the (PAS)[https://pivotal.io/platform/pivotal-application-service] tile and the a9s Elasticsearch for PCF tile again.
+1. Import and stage a9s MongoDB for PCF as described above.
+   Confirm that `Enable BOSH DNS Handler` is disabled.
+1. Apply the changes only for the a9s MongoDB for PCF tile.
+1. After the tile is deployed and the smoke-tests have run successfully,
+   set `Enable BOSH DNS Handler` in the **Management Cluster** page to enabled.
+1. Redeploy only the (PAS)[https://pivotal.io/platform/pivotal-application-service]
+   tile and the a9s MongoDB for PCF tile again.
 
-If the installation was successful a deployed in CF app can resolve all a9s Elasticsearch instances with its DNS name.
+If the installation was successful, an app deployed on PCF can resolve all a9s
+MongoDB instances with its DNS name.
