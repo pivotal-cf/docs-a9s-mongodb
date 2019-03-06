@@ -28,40 +28,41 @@ target="_blank">Advanced Troubleshooting with the BOSH CLI</a>.</p>
   ```
 3. Run `bosh deployments` and record the name of the a9s MongoDB for PCF
   deployment from the **Name** column:
-  
-  ```bash
+   <pre>
   $ bosh deployments
   Using environment '172.28.10.11' as client 'ops_manager'
-
+  &nbsp;
   Name                                    Release(s)                            Stemcell(s)                                       Team(s)                              Cloud Config
   a9s-mongodb-94443f82b52dcf333bbd        a9s-consul/18                         bosh-vsphere-esxi-ubuntu-trusty-go_agent/3468.25  -                                    latest
-                                          ...
-                                          template-uploader-errand/120
+                                            ...
+                                            template-uploader-errand/120
   cf-7fcd1f89150a96b381d0                 backup-and-restore-sdk/1.2.1          bosh-vsphere-esxi-ubuntu-trusty-go_agent/3468.25  -                                    latest
-                                          ...
-                                          uaa/52.7
-  ```
+                                            ...
+                                            uaa/52.7
+    </pre>
+
 4. Force the update for all existing a9s MongoDB for PCF instances.
   
-  ```bash
+    <pre>
   $ bosh -d a9s-mongodb-0476d61a219a39bf0e1b run-errand deployment-updater
   Using environment '172.28.10.11' as client 'ops_manager'
-
+  &nbsp;
   Using deployment 'a9s-mongodb-0476d61a219a39bf0e1b'
-
+  &nbsp;
   Task 14855
-
+  &nbsp;
   Task 14855 | 12:02:00 | Preparing deployment: Preparing deployment (00:00:00)
-
+  &nbsp;
   ...
-
+  &nbsp;
   Task 14855 Started  Tue May 29 12:06:13 UTC 2018
   Task 14855 Finished Tue May 29 12:26:22 UTC 2018
   Task 14855 Duration 00:01:09
   Task 14855 done
-
+  &nbsp;
   Succeeded
-  ```
+    </pre>
+
 <p class="note"><strong>Note:</strong> Depending on the number of service instances,
 the Deployment Updater might take significant time to finish running.
 BOSH shows no logging output while the errand runs.</p>
