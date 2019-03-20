@@ -5,6 +5,46 @@ owner: Partners
 
 These are release notes for MongoDB.
 
+
+## <a id="2-1-1"></a> v2.1.1
+
+**Release Date:** March 20, 2019
+
+**Added**
+* a9s Backup Manager: Enable compression for backups. gzip is used for the
+  compression.
+* a9s Deployer: Add helper script
+  /var/vcap/jobs/anynines-bosh-deployer/bin/rails_c to easily open Rails
+  console.
+
+**Updated**
+* a9s Service Guard: Remove the App Restarter from a9s Service Guard manifest
+  because the App Restarter is not usable with the current Cloud Foundry
+  Diego cells.
+* a9s Service Broker: Optimized response times for provision and deprovision
+  endpoints. Previously those requests could take longer than one minute
+  causing timeouts in CF.
+* Service Dashboard: Optimize communication with a9s Service Broker.
+* Logstash: Configure Logstash to watch the a9s Parachute path too.
+* a9s Consul: Register consul agent as BOSH DNS handler entry instead of adding
+  as resolver when using within PCF tiles.
+* Use timeout when connecting to service instances with the MongoDB SPI.
+* all services: remove recreate and restart button from dashboard
+
+**Fixed**
+* a9s Service Broker: Fix database migration if service instances
+  are being provisioned/updated during migration.
+* a9s Service Broker: Broker does not create one log file for each operation.
+  Previously these log files has not been deleted by log rotate since they
+  never reached the configured size. This ended in a full disk because of a
+  lot of small files.
+* a9s Deployer: Does not force the deployment deletion if an error occured.
+  Under certain circumstances, it was possible that orphaned deployments remain
+  in the IaaS Layer if an error occured while deleting the deployment.
+* all services: a9s Service Broker: set the instance state to failed if an
+  error is thrown during a provision job.
+
+
 ## <a id="2-1-0"></a> v2.1.0
 
 **Release Date:** March 6, 2019
