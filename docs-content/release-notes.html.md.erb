@@ -3,14 +3,88 @@ title: MongoDB for PCF Release Notes
 owner: Partners
 ---
 
-These are release notes for MongoDB.
+## Provided MongoDB Versions
 
+MongoDB v3.4.17 and v3.6.8
+
+## <a id="2-1-2"></a> v2.1.2
+
+**Release Date:** June 27, 2019
+
+**Added**
+
+* a9s Backup Manager: Adds a GUID to each instance in the Backup Manager
+* a9s Service Broker: set the instance state to failed if an
+  error is thrown during a provision job.
+* a9s Service Broker: Deleted service plans no longer appear in
+
+**Fixed**
+
+* Fix possible time side channel vulnerability
+* all service: Smoke Tests: Fix CVE in CF CLI
+* a9s Service Broker: It's only possible to create new instances
+  of active service plans. An active service plan is a service plan offering
+  that is enabled in the Service Broker configuration.
+  Instances which are already provisioned when a service plan will be disabled
+  stay available.
+* a9s Service Dashboard: Fixes issue with the dashboard when
+  specifying point-in-time recovery manually.
+* a9s Service Dashboard: solve
+[CVE-2019-11358](https://nvd.nist.gov/vuln/detail/CVE-2019-11358) by updating
+jquery to 3.4.1
+* a9s Service Dashboard: solve
+[CVE-2019-8331](https://nvd.nist.gov/vuln/detail/CVE-2019-8331) by updating
+bootstrap to 4.3.1
+* a9s Service Broker: Fixes an issue when deleting a service instance without
+  a BOSH deployment.
+* a9s Service Broker: fix error message wording
+* Smoke-Tests: Fixes an issue when the CF password contains
+  special characters.
+* a9s Backup Manager: Fixes an issue with automated backups of all service
+  instances.
+* a9s Service Broker: Instances with credentials can now be deleted. Related
+  credentials will be deleted accordingly.
+* deployment-updater errand: The deployment-updater errand
+  ignores now instances that have been deleted after the errand has been
+  started.
+* a9s Deployer: Fix bug where zombie processes can remain in the process list
+  and block the VM.
+* a9s Backup Manager: Fix a timing side channel vulnerability for the password
+  comparison during authentication.
+* a9s Service Broker: Broker does not create one log file for each operation.
+  Previously these log files has not been deleted by log rotate since they
+  never reached the configured size. This ended in a full disk because of a
+  lot of small files.
+* a9s Deployer: Does not force the deployment deletion if an error occured.
+  Under certain circumstances, it was possible that orphaned deployments remain
+  in the IaaS Layer if an error occured while deleting the deployment.
+* a9s Deployment-Updater: Get operation during update of an
+  instance and use it to get the current state. This is required because of
+  the new async a9s Service Broker
+* a9s Backup Manager: Fix that the backup job is creating multiple backup objects if some error
+  occurs during the execution.
+* a9s Service Broker: Fix database migration if service instances
+  are being provisioned/updated during migration.
+* a9s Deployer: BOSH client has no sufficient rights to read BOSH configs within PCF.
+
+**Updated**
+
+* a9s Deployer: Remove obsolete BOSH Director UUID from templates.
+* a9s Consul: set maximum number of open file descriptors to 64000.
+* Service Dashboard: Optimize communication with a9s Service Broker
+* a9s SPIs: Remove backtraces from error messages presented to
+  users for example when a user provides invalid custom parameters
+* a9s Service Broker: Optimized response times for provision and deprovision
+  endpoints. Previously those requests could take longer than one minute
+  causing timeouts in CF.
+* SPIs: Use Ruby 2.4.5 to run web process.
 
 ## <a id="2-1-1"></a> v2.1.1
 
 **Release Date:** March 20, 2019
 
 **Added**
+
 * a9s Backup Manager: Enable compression for backups. gzip is used for the
   compression.
 * a9s Deployer: Add helper script
@@ -18,6 +92,7 @@ These are release notes for MongoDB.
   console.
 
 **Updated**
+
 * a9s Service Guard: Remove the App Restarter from a9s Service Guard manifest
   because the App Restarter is not usable with the current Cloud Foundry
   Diego cells.
@@ -32,6 +107,7 @@ These are release notes for MongoDB.
 * all services: remove recreate and restart button from dashboard
 
 **Fixed**
+
 * a9s Service Broker: Fix database migration if service instances
   are being provisioned/updated during migration.
 * a9s Service Broker: Broker does not create one log file for each operation.
