@@ -7,6 +7,76 @@ owner: Partners
 
 MongoDB v3.4.17 and v3.6.8
 
+## <a id="2-1-3"></a> v2.1.3
+
+**Release Date:** August 28, 2019
+
+***Added***
+
+- a9s MongoDB: Documentation on how to migrate MongoDB data between service instances,
+- a9s Router: adds a9s Router service as a needed dependency for K8S deployments in future
+- a9s Dashboard API: Add endpoint to prepare a disaster recovery for a given
+  service instance.
+- all services: a9s Deployer: Use deployment name to create and find a deployment.
+- all services: a9s Backup Service: The metadata file is now encrypted and
+  contains additional information about the service instance and the used
+  filter_plugins in the a9s Backup Agent.
+- a9s Backup Service: The backup create request now returns also the id of the backup.
+  backup store
+
+***Fixed***
+
+- a9s MongoDB: graphite metrics: Use log level INFO for the MongoDB client
+  in the Logstash metrics plugin.
+- all services: a9s Service Dashboard API: Creation date of a backup in the
+  restore view gets shown properly.
+- all services: a9s Dashboard API: error message for encryption keys that are too short shows up again
+- a9s MongoDB: a9s Backup Agent: Improves the MongoDB plugins for backup and restore
+  to avoid leaving multiple dump directories consuming storage without being deleted
+  or used.
+- all services: a9s Dashboard App: Updates `lodash` to version `4.17.14` to
+  resolve CVE.
+- all services: a9s Service Dashboard: Updates `node` version to `10.16`.
+- all services: a9s Backup Agent: Fix multipart upload.
+- a9s SSO Proxy: Added OAuth usage for POST, PATCH, PUT and DELETE methods.
+- all services: a9s Deployer: The a9s Deployer now properly catches and saves
+  the return values from the BOSH Director in case the BOSH Task fails.
+  Fetching instance information now properly returns the instance data with a
+  `failed` status instead of `422`.
+- a9s Backup Service: Fix migration of encryption key into a new column for
+  shorter encryption keys than the current limit.
+- a9s Backup Manager: Fix an issue where under special circumstances the backup
+  encryption key is not stored in the database.
+- a9s Backup Manager: Move database migration into a pre-start script to
+  mitigate timeout issue with the start script.
+- a9s Dashboard API: Replaced logger to redact sensitive data in logs.
+- a9s SSO-Proxy: The SSO-Proxy application returns now the HTTP Code
+  `401 unauthorized` if the CF Auth Token is expired or invalid.
+- all services: a9s Dashboard API: solve open CVE by updating the corresponding
+  libraries `eslint`, `shelljs`, `diff`, `express-basic-auth`, `lodash` and
+  `growl`.
+
+***Updated***
+
+- Stemcell: Update to BOSH stemcell version 315.x.
+- all services: a9s Service Broker: Using deployment name instead of deployment
+  id for the communication with the a9s BOSH Deployer.
+- all services: a9s BOSH Deployer: Use deployment names instead of deployment
+  ids in the outdated endpoint.
+- all services: a9s Service Dashboard: Replace AngularJS with React. In this
+  context we improved the UI of the a9s Service Dashboard. Please refer to the
+  [a9s Service Dashboard documentation](./a9s-service-dashboard.html)
+  for more details.
+- all services: a9s Service Dashboard: Per default deleted backups are not
+  displayed in the a9s Service Dashboard anymore.
+- all services: a9s Backup-Agent: Improve backup mechanism for backups bigger
+  than 1 GB and improve restore.
+- a9s PostgreSQL, a9s Elasticsearch, a9s RabbitMQ, a9s MongoDB: SPI: updates the behaviour of the SPI, if you added
+  an intermediate certificate authority to a data service, the service instances will be updated with a certificate signed by
+  that new CA on the next update operation. You can use the deployment updater to update existing service instances.
+- all services: a9s Service Broker: The a9a Service Broker requests
+  `available_updates` from the a9s Deployer only when the information is needed.
+
 ## <a id="2-1-2"></a> v2.1.2
 
 **Release Date:** June 28, 2019
@@ -130,7 +200,7 @@ bootstrap to 4.3.1
   from Diego cells.
 * A backup option is added for a9s-pg.
 * a9s MongoDB now supports instance sharing between orgs an spaces,
-  see [documentation](https://docs.pivotal.io/pivotalcf/2-4/devguide/services/sharing-instances.html).
+  see [documentation](https://docs.pivotal.io/pivotalcf/2-6/devguide/services/sharing-instances.html).
 * Upgrades the stemcell to Ubuntu Xenial.
 
 ## <a id="2-0-2"></a> v2.0.2
