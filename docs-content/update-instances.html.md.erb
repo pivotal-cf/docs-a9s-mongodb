@@ -11,7 +11,7 @@ to update all provisioned service instances to the new service and stemcell vers
 this errand.</p>
 
 <p class="note"><strong>Note:</strong> To run the errand, you must know how to use the
-BOSH Director. For more information, see <a href="http://docs.pivotal.io/pivotalcf/1-9/customizing/trouble-advanced.html#prepare"
+BOSH Director. For more information, see <a href="https://docs.pivotal.io/pivotalcf/2-6/customizing/trouble-advanced.html"
 target="_blank">Advanced Troubleshooting with the BOSH CLI</a>.</p>
 
 1. SSH into the Ops Manager VM:
@@ -42,7 +42,7 @@ target="_blank">Advanced Troubleshooting with the BOSH CLI</a>.</p>
     </pre>
 
 4. Force the update for all existing a9s MongoDB for PCF instances.
-  
+
     <pre>
   $ bosh -d a9s-mongodb-0476d61a219a39bf0e1b run-errand deployment-updater
   Using environment '172.28.10.11' as client 'ops_manager'
