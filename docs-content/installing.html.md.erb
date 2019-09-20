@@ -1,18 +1,18 @@
 ---
-title: Installing and Configuring a9s MongoDB for PCF
+title: Installing and Configuring a9s MongoDB for Pivotal Platform
 owner: Partners
 ---
 
-This topic describes how to install and configure a9s MongoDB for Pivotal Cloud Foundry (PCF).
+This topic describes how to install and configure a9s MongoDB for Pivotal Platform.
 
 
-## <a id='install'></a> Install a9s MongoDB for PCF
+## <a id='install'></a> Install a9s MongoDB for Pivotal Platform
 
-<p class="note"><strong>Note:</strong> Before you install a9s-MongoDB for PCF check
+<p class="note"><strong>Note:</strong> Before you install a9s-MongoDB for Pivotal Platform check
 that <b>Enable Post Deploy Scripts</b> is selected in the BOSH director <a
 href="https://docs.pivotal.io/pivotalcf/2-4/om/vsphere/config.html#dir-config">config page</a>.</p>
 
-To install a9s MongoDB for PCF, do the following:
+To install a9s MongoDB for Pivotal Platform, do the following:
 
 
 1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/a9s-mongodb).
@@ -20,8 +20,8 @@ To install a9s MongoDB for PCF, do the following:
 2. Navigate to the Ops Manager Installation Dashboard and click **Import a Product**
   to upload the product file.
 
-3. Click **Add** or **+** (depending on the PCF version) next to the uploaded
-  a9s MongoDB for PCF tile in the Ops Manager **Available Products** view to add
+3. Click **Add** or **+** (depending on the Pivotal Platform version) next to the uploaded
+  a9s MongoDB for Pivotal Platform tile in the Ops Manager **Available Products** view to add
   it to your staging area.
 
 4. Click the new tile, then click **Settings** to review the configuration settings
@@ -38,8 +38,8 @@ To install a9s MongoDB for PCF, do the following:
 
 5. Click **Apply Changes** to deploy the service.
 
-After you install the a9s MongoDB for PCF, it is available in the list of Marketplace
-services. For more information, see [Using a9s MongoDB for PCF](./using.html).
+After you install the a9s MongoDB for Pivotal Platform, it is available in the list of Marketplace
+services. For more information, see [Using a9s MongoDB for Pivotal Platform](./using.html).
 
 ### <a id="azs"></a> Assign AZs and Networks
 
@@ -297,7 +297,7 @@ can find <a href="name-resolving.html#name-resolving-with-a9s-bosh-dns-handler">
 ### <a id='errands'></a> Configure Errands
 
 Use **Errands** to configure the lifecycle errands that run when you install or
-uninstall a9s MongoDB for PCF. The list below describes each errand. For more
+uninstall a9s MongoDB for Pivotal Platform. The list below describes each errand. For more
 information, see [Errands](https://docs.pivotal.io/tiledev/tile-errands.html).
 
 <%= image_tag("errands.png") %>
@@ -305,38 +305,38 @@ information, see [Errands](https://docs.pivotal.io/tiledev/tile-errands.html).
 #### <a id='post-deploy'></a> Post-Deploy Errands
 
 * **Run Template Uploader**: This errand is required to configure generic components
-  that are included in a9s MongoDB for PCF with MongoDB configurations. Disabling
+  that are included in a9s MongoDB for Pivotal Platform with MongoDB configurations. Disabling
   this errand may speed up the deployment of all tiles.
   &nbsp;
   <p class="note"><strong>Note:</strong> To ensure your configuration remains up-to-date,
   disable this errand only when necessary.</p>
   &nbsp;
-* **Run Broker Registrar**: This errand registers the a9s MongoDB for PCF service
+* **Run Broker Registrar**: This errand registers the a9s MongoDB for Pivotal Platform service
   broker at the Elastic Runtime. This makes the service available in the Marketplace.
 
 * **Run Smoke Tests**: This errand runs a series of basic tests against your a9s
-  MongoDB for PCF installation to ensure that it is configured properly. Those
+  MongoDB for Pivotal Platform installation to ensure that it is configured properly. Those
   tests may take a while, probably over 30 minutes.
 
 #### <a id='pre-delete'></a> Pre-Delete Errands
 
 * **Delete all a9s MongoDB instances**: This errand deletes all a9s MongoDB
-  instances which were created with `cf create-service` by PCF end users.
+  instances which were created with `cf create-service` by Pivotal Platform end users.
   &nbsp;
   <p class="note warning"><strong>WARNING:</strong> This is an absolutely destructive
   task and cannot be undone. All VMs of the service instances are deleted irrecoverably.
   In the case a service instance is bound to an app or service keys are existing,
   The errand fails.</p>
   &nbsp;
-* **Run Broker Deregistrar**: This deregisters the a9s MongoDB for PCF service
+* **Run Broker Deregistrar**: This deregisters the a9s MongoDB for Pivotal Platform service
   broker in Elastic Runtime. This errand removes the a9s MongoDB service from the
   Marketplace.
 
 ### <a id='resource-config'></a> Configure Resources
 
-You can configure the dimensions of the VMs that host the a9s MongoDB for PCF
+You can configure the dimensions of the VMs that host the a9s MongoDB for Pivotal Platform
 components. This configuration does not cover the dedicated MongoDB instances that
-run on VMs provided by the a9s BOSH tile for PCF. For more information, see
+run on VMs provided by the a9s BOSH tile for Pivotal Platform. For more information, see
 [Configure Service Plan VMs](installing.html#plan-configuration).
 
 <p class="note"><strong>Note:</strong> anynines recommends using a VM type of large

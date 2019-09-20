@@ -3,7 +3,7 @@ title: Name Resolving
 owner: Partners
 ---
 
-This topic describes the name resolving capabilities of a9s MongoDB for PCF.
+This topic describes the name resolving capabilities of a9s MongoDB for Pivotal Platform.
 
 ## <a id='name-resolving'></a> Name Resolving
 
@@ -14,7 +14,7 @@ There are two ways to obtain the IP address for service instance DNS name:
 
 ### <a id='name-resolving-with-consul'></a> Name Resolving with Consul
 
-a9s MongoDB for PCF comes with its own highly available Consul cluster for service
+a9s MongoDB for Pivotal Platform comes with its own highly available Consul cluster for service
 discovery and service failover procedures.
 
 Consul is an HA service discovery and configuration tool, which includes features
@@ -46,15 +46,15 @@ The file is stored here: `/var/vcap/jobs/a9s-mongodb-bosh-dns-handler/dns/handle
 It follows the [handlers_files_glob](https://bosh.io/jobs/bosh-dns?source=github.com/cloudfoundry/bosh-dns-release#p=handlers).
 The DNS Handler is only applied to the Diego cells where it is needed. It is applied
 through a runtime configuration. The tile must be deployed before the feature can
-be enabled, because it refers to an already installed a9s MongoDB for PCF tile.
+be enabled, because it refers to an already installed a9s MongoDB for Pivotal Platform tile.
 
-1. Import and stage a9s MongoDB for PCF as described above.
+1. Import and stage a9s MongoDB for Pivotal Platform as described above.
    Confirm that `Enable BOSH DNS Handler` is disabled.
-1. Apply the changes only for the a9s MongoDB for PCF tile.
+1. Apply the changes only for the a9s MongoDB for Pivotal Platform tile.
 1. After the tile is deployed and the smoke-tests have run successfully,
    set `Enable BOSH DNS Handler` in the **Management Cluster** page to enabled.
 1. Redeploy only the [PAS](https://pivotal.io/platform/pivotal-application-service)
-   tile and the a9s MongoDB for PCF tile again.
+   tile and the a9s MongoDB for Pivotal Platform tile again.
 
-If the installation was successful, an app deployed on PCF can resolve all a9s
+If the installation was successful, an app deployed on Pivotal Platform can resolve all a9s
 MongoDB instances with its DNS name.

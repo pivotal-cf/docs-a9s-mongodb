@@ -8,7 +8,7 @@ database **a9s-pg** from an operators perspective.
 
 ## <a id='trigger-backups-and-restore'></a> Trigger Backups and Restores on Demand for Service Instances
 
-PCF administrators can interact with the Backup Manager endpoints to trigger
+Pivotal Platform administrators can interact with the Backup Manager endpoints to trigger
 immediate backups and restore backups.
 
 ### <a id='trigger-a-backup-procedure'></a> Trigger a Backup Procedure
@@ -79,7 +79,7 @@ the backup of service instances can be handled.
 ### <a id='a9s-pg-backup-limitations'></a> Limitations
 
 Because `a9s-pg` is the main database for the a9s Backup
-Manager and all services around a9s Elasticsearch for PCF the consistency of
+Manager and all services around a9s Elasticsearch for Pivotal Platform the consistency of
 the backup information of a9s-pg is not guaranteed:
 
 - Restores of a9s-pg can not be stored in the database because at the time the

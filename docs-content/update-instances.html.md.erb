@@ -3,7 +3,7 @@ title: Updating Existing Service Instances
 owner: Partners
 ---
 
-After updating the a9s MongoDB for PCF tile, run the Deployment Updater errand
+After updating the a9s MongoDB for Pivotal Platform tile, run the Deployment Updater errand
 to update all provisioned service instances to the new service and stemcell versions.
 
 <p class="note"><strong>Note:</strong> anynines recommends running the
@@ -26,7 +26,7 @@ target="_blank">Advanced Troubleshooting with the BOSH CLI</a>.</p>
   Enter password: DIRECTOR\_CREDENTIAL
   Logged in as 'director'
   ```
-3. Run `bosh deployments` and record the name of the a9s MongoDB for PCF
+3. Run `bosh deployments` and record the name of the a9s MongoDB for Pivotal Platform
   deployment from the **Name** column:
    <pre>
   $ bosh deployments
@@ -41,7 +41,7 @@ target="_blank">Advanced Troubleshooting with the BOSH CLI</a>.</p>
                                             uaa/52.7
     </pre>
 
-4. Force the update for all existing a9s MongoDB for PCF instances.
+4. Force the update for all existing a9s MongoDB for Pivotal Platform instances.
 
     <pre>
   $ bosh -d a9s-mongodb-0476d61a219a39bf0e1b run-errand deployment-updater
