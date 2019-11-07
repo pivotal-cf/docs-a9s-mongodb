@@ -7,6 +7,70 @@ owner: Partners
 
 MongoDB v3.4.17 and v3.6.8
 
+## <a id="2-2-0"></a> v2.2.0
+
+**Release Date:** November 5th, 2019
+
+***Fixed***
+
+- all: a9s Data Service for PCF tiles are now compatible with PCF 2.7 and above.
+- all services: SPI: Logging works correct again.
+- all services: Fix migration path for SSL plans.
+- a9s Backup Service: Fix the issue that no backup encryption key can be set in
+  the a9s Service Dashboard when no backup exists.
+- all services: a9s Service Broker: Redact passwords in the a9s Service Broker logs.
+- all services: Logstash 6: Do not fail deployment if Graphite endpoint is not
+  reachably currently.
+- all services: a9s Dashboard: Requests to non-existing pages now properly
+  renders a 404 page, even after refresh.
+- all services: a9s Dashboard: Fixes a bug where the cards or part of it could
+  go on top of the navbar.
+- a9s-pg: Fixed postgresql-backup-endpoint to work with the newest a9s Backup Manager.
+- a9s-pg: Added missing credentials to the a9s-pg Backup Agent.
+- all services: SPI: Accept also single syslog and graphite endpoint.
+- all services: a9s Dashboard: There is no error message popping up anymore if there is no backup
+  for a service created yet.
+- a9s Router: Prune expired routes.
+- all services: a9s Dashboard: Fix an issue when open 2 different Service
+  Dashboards in the same browser.
+- a9s Backup Manager: Fix CVE-2019-5477 by updating the nokogiri gem.
+- all services: a9s BOSH Deployer: Fix CVE-2019-5477 by updating the nokogiri
+  gem.
+- all services: a9s Backup Agent: Fix CVE-2019-5477 by updating the nokogiri
+  gem.
+- a9s-pg: Fix CVE-2019-5477 by updating the nokogiri gem.
+- all services: a9s Dashboard: Fix CVE GHSA-3gx7-xhv7-5mx3 by updating
+  eslint-utils.
+- all services: a9s Dashboard: Fix Updates Tab in the a9s Dashboard when
+  disabling the automatic updates.
+- all services: a9s Service Broker: Fix CVE-2019-5477 by updating the nokogiri
+  gem and Ruby to v2.6.3.
+- a9s Service Guard: Fix CVE-2019-5477 by updating the nokogiri
+  gem and Ruby to v2.6.3.
+- all services: a9s Service Broker: Fix state of service instances when the
+  update is not allowed.
+
+***Added***
+
+- a9s MongoDB for PCF: added MongoDB 4.0.x service. To make use of it ensure the usage
+  is under SSPL licence. The service pland must be enabled eplicit.
+- all services: Add an Ops file that adds additional information as VM tags to
+  each service instance,.
+- all services: a9s Dashboard: add documentation about the error codes caught
+  by the NGINX and replaced with special pages.
+- a9s Backup Manager: Adds an Index endpoint that returns information about the
+  instances from all a9s Service Brokers known by the a9s Backup Manager.
+- all services: a9s Dashboard: Adds a tooltip to the Backup duration column that
+  explains what the spent time comes from.
+
+***Updated***
+
+- a9s MongoDB: Backups are streamed directly to backup store.
+- all services: a9s Backup Agent: Use metadata file on Azure.
+- Stemcell: Update to BOSH stemcell version 456.x.
+- Make service manifests and Ops files compliant to BOSH Director v270.0 and higher.
+
+
 ## <a id="2-1-3"></a> v2.1.3
 
 **Release Date:** September 6th, 2019
